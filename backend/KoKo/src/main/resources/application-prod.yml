@@ -1,0 +1,10 @@
+spring:
+  datasource:
+    url: "jdbc:postgresql://localhost:5432/koko"
+    username: "kosta"
+    password: "kosta123"
+
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: validate
