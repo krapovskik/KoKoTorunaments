@@ -25,5 +25,4 @@ data class Tournament(
 
     @ManyToMany
     val players: List<AppUser>
-
 )

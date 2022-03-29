@@ -19,5 +19,4 @@ data class Team(
 
     @ManyToMany
     val players: List<AppUser>
-
 )

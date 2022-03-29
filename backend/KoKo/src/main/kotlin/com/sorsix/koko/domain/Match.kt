@@ -16,5 +16,4 @@ data class Match(
 
     @ManyToOne
     val tournament: Tournament
-
 )

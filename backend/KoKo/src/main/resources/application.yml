@@ -5,10 +5,13 @@ spring:
 
   datasource:
     url: "jdbc:postgresql://localhost:5432/koko"
-    username: "kosta"
-    password: "kosta123"
+    username: "postgres"
+    password: "postgres"
 
   jpa:
     show-sql: true
     hibernate:
       ddl-auto: validate
+
+jwtSecret: kokosecret
+jwtExpirationMs: 86400000
