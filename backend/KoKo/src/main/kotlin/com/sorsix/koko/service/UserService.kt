@@ -1,7 +1,7 @@
 package com.sorsix.koko.service
 
 import com.sorsix.koko.domain.AppUser
-import com.sorsix.koko.domain.UserRole
+import com.sorsix.koko.domain.enumeration.AppUserRole
 import com.sorsix.koko.dto.request.ActivateAccountRequest
 import com.sorsix.koko.dto.request.RegisterRequest
 import com.sorsix.koko.dto.response.ErrorResponse
@@ -37,7 +37,7 @@ class UserService(
                 "",
                 email,
                 "",
-                UserRole.PLAYER,
+                AppUserRole.PLAYER,
                 false
             )
 
