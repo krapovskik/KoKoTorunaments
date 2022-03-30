@@ -67,10 +67,4 @@ class AuthController(
             is ErrorResponse -> ResponseEntity.badRequest().body(result)
         }
     }
-
-    @GetMapping("/test")
-    fun test()  {
-        emailService.sendNewAccountMail("", "")
-        ResponseEntity.ok("test")
-    }
 }
