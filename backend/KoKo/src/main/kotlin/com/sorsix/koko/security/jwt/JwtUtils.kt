@@ -30,10 +30,10 @@ class JwtUtils {
     }
 
     fun getUsernameFromJwtToken(token: String): String =
-        Jwts.parser().setSigningKey(jwtSecret).parseClaimsJwt(token).body.subject
+        Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(token).body.subject
 
     fun validateJwtToken(token: String) = try {
-        Jwts.parser().setSigningKey(jwtSecret).parseClaimsJwt(token)
+        Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(token)
         true
     } catch (e: Exception) {
         false
