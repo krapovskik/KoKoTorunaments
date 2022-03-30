@@ -23,7 +23,8 @@ class SecurityConfig(
 
     private val publicMatchers = arrayOf(
         "/api/auth/login",
-        "/api/auth/register"
+        "/api/auth/register",
+        "/api/auth/activate"
     )
 
     override fun configure(http: HttpSecurity) {
