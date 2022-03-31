@@ -1,6 +1,5 @@
 package com.sorsix.koko.domain.view
 
-import com.sorsix.koko.domain.AppUser
 import org.hibernate.annotations.Immutable
 import org.hibernate.annotations.Subselect
 import javax.persistence.Column
@@ -9,8 +8,8 @@ import javax.persistence.Id
 
 @Entity
 @Immutable
-@Subselect(value = "select * from players_in_individual_tournament")
-data class PlayersInIndividualTournament(
+@Subselect(value = "select * from players_in_team_tournament")
+data class PlayersInTeamTournament(
 
     @Id
     @Column(name = "app_user_id")
@@ -20,9 +19,9 @@ data class PlayersInIndividualTournament(
     val tournamentId: Long,
 
     @Column(name = "first_name")
-    val firstName: String,
+    val first_name: String,
 
     @Column(name = "last_name")
-    val lastName: String
+    val last_name: String
 
 )

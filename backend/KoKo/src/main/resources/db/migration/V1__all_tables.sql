@@ -52,7 +52,7 @@ create table individual_matches
     constraint fk_individual_matches_app_user2_id foreign key (app_user2_id) references app_users (id)
 );
 
-create table team_matches_tournament
+create table team_matches_tournaments
 (
     id            bigserial primary key,
     tournament_id bigint,
@@ -61,7 +61,7 @@ create table team_matches_tournament
     constraint fk_team_matches_tournament_team_match_id foreign key (team_match_id) references team_matches (id)
 );
 
-create table individual_matches_tournament
+create table individual_matches_tournaments
 (
     id                  bigserial primary key,
     tournament_id       bigint,

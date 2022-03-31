@@ -1,20 +1,24 @@
 create view players_in_individual_tournament as
-SELECT au.first_name, au.last_name
+SELECT distinct au.id as app_user_id, t.id as tournament_id, au.first_name as first_name, au.last_name as last_name
 FROM individual_matches_tournaments imt
-         LEFT JOIN individual_matches im ON imt.individual_match_id = im.id
-         LEFT JOIN app_users au ON im.app_user1_id = au.id AND im.app_user2_id = au.id;
+         JOIN tournaments t on t.id = imt.tournament_id
+         JOIN individual_matches im ON imt.individual_match_id = im.id
+         JOIN app_users au on im.app_user1_id = au.id or im.app_user2_id = au.id;
+
 
 create view players_in_team_tournament as
-SELECT au.first_name, au.last_name
-FROM team_matches_tournament tmt
-         LEFT JOIN team_matches tm ON tmt.team_match_id = tm.id
-         LEFT JOIN teams t ON tm.team1_id = t.id AND tm.team2_id = t.id
-         LEFT JOIN user_teams ut ON t.id = ut.team_id
-         LEFT JOIN app_users au ON ut.app_user_id = au.id;
+SELECT distinct au.id as app_user_id, t.id as tournament_id, au.first_name as first_name, au.last_name as last_name
+FROM team_matches_tournaments tmt
+         JOIN tournaments t on t.id = tmt.tournament_id
+         JOIN team_matches tm ON tmt.team_match_id = tm.id
+         JOIN teams t2 on t2.id = tm.team1_id or t2.id = tm.team2_id
+         JOIN app_user_teams aut on t2.id = aut.team_id
+         JOIN app_users au on aut.app_user_id = au.id;
+
 
 create view teams_in_tournament as
-SELECT t.name
-FROM team_matches_tournament tmt
-         LEFT JOIN team_matches tm ON tmt.team_match_id = tm.id
-         LEFT JOIN teams t ON tm.team1_id = t.id AND tm.team2_id = t.id;
-
+SELECT distinct t2.id as team_id, t.id as tournament_id, t2.name as name
+FROM team_matches_tournaments tmt
+         JOIN tournaments t on t.id = tmt.tournament_id
+         JOIN team_matches tm on tm.id = tmt.team_match_id
+         JOIN teams t2 on tm.team1_id = t2.id or tm.team2_id = t2.id;

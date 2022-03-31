@@ -3,7 +3,7 @@ package com.sorsix.koko.domain
 import javax.persistence.*
 
 @Entity
-@Table(name = "team_matches_tournament")
+@Table(name = "team_matches_tournaments")
 data class TeamMatchesTournament(
 
     @Id
