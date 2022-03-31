@@ -24,7 +24,6 @@ class AuthTokenFilter(val jwtUtils: JwtUtils, val userService: UserService) : On
                     val username: String = jwtUtils.getUsernameFromJwtToken(it)
                     val userDetails = userService.loadUserByUsername(username)
                     userDetails?.let {
-
                         val authentication = UsernamePasswordAuthenticationToken(
                             userDetails,
                             null,
