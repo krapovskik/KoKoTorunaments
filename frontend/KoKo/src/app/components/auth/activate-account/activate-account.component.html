@@ -1,0 +1,34 @@
+<mat-card>
+  <mat-card-title>Activate account</mat-card-title>
+  <mat-card-content>
+    <form [formGroup]="activationForm" (ngSubmit)="onSubmit()">
+      <div>
+        <mat-form-field appearance="fill">
+          <mat-label>Enter your first name</mat-label>
+          <input matInput formControlName="firstName" required>
+        </mat-form-field>
+      </div>
+      <div>
+        <mat-form-field appearance="fill" color="">
+          <mat-label>Enter your last name</mat-label>
+          <input matInput formControlName="lastName" required/>
+        </mat-form-field>
+      </div>
+      <div>
+        <mat-form-field appearance="fill" color="">
+          <mat-label>Enter your password</mat-label>
+          <input matInput type="password" formControlName="password" required/>
+        </mat-form-field>
+      </div>
+      <div class="button-container">
+        <div class="spinner-container" *ngIf="loading">
+          <mat-spinner diameter="24"></mat-spinner>
+        </div>
+
+        <button [disabled]="loading" mat-raised-button color="primary">
+          Activate account
+        </button>
+      </div>
+    </form>
+  </mat-card-content>
+</mat-card>

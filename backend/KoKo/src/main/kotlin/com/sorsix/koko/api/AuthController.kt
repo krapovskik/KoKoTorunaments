@@ -9,7 +9,6 @@ import com.sorsix.koko.dto.response.JwtResponse
 import com.sorsix.koko.dto.response.Response
 import com.sorsix.koko.dto.response.SuccessResponse
 import com.sorsix.koko.security.jwt.JwtUtils
-import com.sorsix.koko.service.EmailService
 import com.sorsix.koko.service.UserService
 import org.springframework.http.ResponseEntity
 import org.springframework.security.authentication.AuthenticationManager
@@ -22,8 +21,7 @@ import org.springframework.web.bind.annotation.*
 class AuthController(
     val userService: UserService,
     val authenticationManager: AuthenticationManager,
-    val jwtUtils: JwtUtils,
-    val emailService: EmailService
+    val jwtUtils: JwtUtils
 ) {
 
     @PostMapping("/login")
