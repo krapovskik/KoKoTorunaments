@@ -23,7 +23,7 @@ class UserService(
     val emailService: EmailService
 ) : UserDetailsService {
 
-    override fun loadUserByUsername(username: String): UserDetails = userRepository.findAppUserByEmail(username)
+    override fun loadUserByUsername(username: String): UserDetails? = userRepository.findAppUserByEmail(username)
 
     @Transactional
     fun registerUser(registerRequest: RegisterRequest): Response {
@@ -31,6 +31,11 @@ class UserService(
         val email = registerRequest.email
 
         if (EmailValidator.getInstance().isValid(email)) {
+
+            userRepository.findAppUserByEmail(email)?.let {
+                return ErrorResponse("Email already exists")
+            }
+
             val appUser = AppUser(
                 0,
                 "",

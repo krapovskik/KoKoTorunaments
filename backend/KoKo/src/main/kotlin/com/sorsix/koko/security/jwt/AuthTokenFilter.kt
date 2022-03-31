@@ -23,14 +23,17 @@ class AuthTokenFilter(val jwtUtils: JwtUtils, val userService: UserService) : On
                 if (jwtUtils.validateJwtToken(it)) {
                     val username: String = jwtUtils.getUsernameFromJwtToken(it)
                     val userDetails = userService.loadUserByUsername(username)
-                    val authentication = UsernamePasswordAuthenticationToken(
-                        userDetails,
-                        null,
-                        userDetails.authorities
-                    )
-                    authentication.details = WebAuthenticationDetailsSource().buildDetails(request)
+                    userDetails?.let {
 
-                    SecurityContextHolder.getContext().authentication = authentication
+                        val authentication = UsernamePasswordAuthenticationToken(
+                            userDetails,
+                            null,
+                            userDetails.authorities
+                        )
+                        authentication.details = WebAuthenticationDetailsSource().buildDetails(request)
+
+                        SecurityContextHolder.getContext().authentication = authentication
+                    }
                 }
             }
         } catch (_: Exception) {
