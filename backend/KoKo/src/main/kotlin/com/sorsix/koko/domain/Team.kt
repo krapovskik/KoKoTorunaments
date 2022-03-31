@@ -17,6 +17,4 @@ data class Team(
     @Column(name = "is_valid")
     val isValid: Boolean = true,
 
-    @ManyToMany
-    val players: List<AppUser>
 )

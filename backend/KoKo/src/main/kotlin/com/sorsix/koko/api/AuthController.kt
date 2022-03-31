@@ -47,7 +47,7 @@ class AuthController(
                 appUser.firstName,
                 appUser.lastName,
                 appUser.email,
-                appUser.userRole.name
+                appUser.appUserRole.name
             )
         )
     }

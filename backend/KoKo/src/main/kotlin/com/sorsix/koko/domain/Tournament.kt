@@ -1,5 +1,6 @@
 package com.sorsix.koko.domain
 
+import com.sorsix.koko.domain.enumeration.TournamentType
 import javax.persistence.*
 
 @Entity
@@ -20,9 +21,7 @@ data class Tournament(
     @Column(name = "number_of_participants")
     val numberOfParticipants: Int,
 
-    @ManyToMany
-    val teams: List<Team>,
-
-    @ManyToMany
-    val players: List<AppUser>
+    @Column(name = "type")
+    @Enumerated(value = EnumType.STRING)
+    val type: TournamentType
 )

@@ -1,11 +1,12 @@
 create table app_users
 (
-    id         bigserial primary key,
-    first_name text not null,
-    last_name  text not null,
-    email      text not null,
-    password   text not null,
-    is_valid   boolean default false
+    id            bigserial primary key,
+    first_name    text not null,
+    last_name     text not null,
+    email         text not null,
+    password      text not null,
+    is_valid      boolean default false,
+    app_user_role text    default 'PLAYER'
 );
 
 create table activation_tokens
@@ -27,67 +28,54 @@ create table tournaments
     id                     bigserial primary key,
     name                   text    not null,
     category               text    not null,
-    number_of_participants integer not null
+    number_of_participants integer not null,
+    type                   text    not null
 );
 
-create table teams_tournaments
+create table team_matches
 (
-    tournament_id bigint,
-    constraint pk_teams_tournaments primary key (tournament_id),
-    constraint fk_teams_tournaments_tournament_id foreign key (tournament_id) references tournaments (id)
-);
-
-create table individual_tournaments
-(
-    tournament_id bigint,
-    constraint pk_individual_tournaments primary key (tournament_id),
-    constraint fk_individual_tournaments_tournament_id foreign key (tournament_id) references tournaments (id)
-);
-
-create table matches
-(
-    id            bigserial primary key,
-    winner        integer,
-    tournament_id bigint not null,
-    constraint fk_matches_tournament_id foreign key (tournament_id) references tournaments (id)
-);
-
-create table teams_matches
-(
-    match_id bigint,
-    constraint pk_teams_matches primary key (match_id),
-    constraint fk_teams_matches_match_id foreign key (match_id) references matches (id)
+    id       bigserial primary key,
+    winner   integer,
+    team1_id bigint not null,
+    team2_id bigint not null,
+    constraint fk_team_matches_team1_id foreign key (team1_id) references teams (id),
+    constraint fk_team_matches_team2_id foreign key (team2_id) references teams (id)
 );
 
 create table individual_matches
 (
-    match_id bigint,
-    constraint pk_individual_matches primary key (match_id),
-    constraint fk_individual_matches_match_id foreign key (match_id) references matches (id)
-);
-create table teams_players
-(
-    team_id    bigint,
-    players_id bigint,
-    constraint pk_team_has_users primary key (team_id, players_id),
-    constraint fk_team_has_users_team_id foreign key (team_id) references teams (id),
-    constraint fk_team_has_users_players_id foreign key (players_id) references app_users (id)
+    id           bigserial primary key,
+    winner       integer,
+    app_user1_id bigint not null,
+    app_user2_id bigint not null,
+    constraint fk_individual_matches_app_user1_id foreign key (app_user1_id) references app_users (id),
+    constraint fk_individual_matches_app_user2_id foreign key (app_user2_id) references app_users (id)
 );
 
-create table tournaments_teams
+create table team_matches_tournaments
 (
+    id            bigserial primary key,
     tournament_id bigint,
-    teams_id      bigint,
-    constraint pk_tournament_has_teams primary key (tournament_id, teams_id),
-    constraint fk_tournament_has_teams_tournament_id foreign key (tournament_id) references tournaments (id),
-    constraint fk_tournament_has_teams_teams_id foreign key (teams_id) references teams (id)
+    team_match_id bigint,
+    constraint fk_team_matches_tournament_tournament_id foreign key (tournament_id) references tournaments (id),
+    constraint fk_team_matches_tournament_team_match_id foreign key (team_match_id) references team_matches (id)
 );
 
-create table tournaments_players
+create table individual_matches_tournaments
 (
-    tournament_id bigint,
-    players_id    bigint,
-    constraint pk_tournament_has_users primary key (tournament_id, players_id),
-    constraint fk_tournament_has_users_tournament_id foreign key (tournament_id) references tournaments (id),
-    constraint fk_tournament_has_users_players_id foreign key (players_id) references app_users (id)
+    id                  bigserial primary key,
+    tournament_id       bigint,
+    individual_match_id bigint,
+    constraint fk_individual_matches_tournament_tournament_id foreign key (tournament_id) references tournaments (id),
+    constraint fk_individual_matches_tournament_individual_match_id foreign key (individual_match_id) references individual_matches (id)
 );
+
+create table app_user_teams
+(
+    id          bigserial primary key,
+    team_id     bigint not null,
+    app_user_id bigint not null,
+    constraint fk_app_user_teams_team_id foreign key (team_id) references teams (id),
+    constraint fk_app_user_teams_app_user_id foreign key (app_user_id) references app_users (id)
+);
+

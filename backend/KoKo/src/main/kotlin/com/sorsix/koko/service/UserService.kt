@@ -1,13 +1,13 @@
 package com.sorsix.koko.service
 
 import com.sorsix.koko.domain.AppUser
-import com.sorsix.koko.domain.UserRole
+import com.sorsix.koko.domain.enumeration.AppUserRole
 import com.sorsix.koko.dto.request.ActivateAccountRequest
 import com.sorsix.koko.dto.request.RegisterRequest
 import com.sorsix.koko.dto.response.ErrorResponse
 import com.sorsix.koko.dto.response.Response
 import com.sorsix.koko.dto.response.SuccessResponse
-import com.sorsix.koko.repository.UserRepository
+import com.sorsix.koko.repository.AppUserRepository
 import org.apache.commons.validator.routines.EmailValidator
 import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.security.core.userdetails.UserDetailsService
@@ -17,13 +17,13 @@ import javax.transaction.Transactional
 
 @Service
 class UserService(
-    val userRepository: UserRepository,
+    val appUserRepository: AppUserRepository,
     val passwordEncoder: PasswordEncoder,
     val activationTokenService: ActivationTokenService,
     val emailService: EmailService
 ) : UserDetailsService {
 
-    override fun loadUserByUsername(username: String): UserDetails? = userRepository.findAppUserByEmail(username)
+    override fun loadUserByUsername(username: String): UserDetails = appUserRepository.findAppUserByEmail(username)
 
     @Transactional
     fun registerUser(registerRequest: RegisterRequest): Response {
@@ -31,18 +31,13 @@ class UserService(
         val email = registerRequest.email
 
         if (EmailValidator.getInstance().isValid(email)) {
-
-            userRepository.findAppUserByEmail(email)?.let {
-                return ErrorResponse("Email already exists")
-            }
-
             val appUser = AppUser(
                 0,
                 "",
                 "",
                 email,
                 "",
-                UserRole.PLAYER,
+                AppUserRole.PLAYER,
                 false
             )
 
@@ -78,5 +73,5 @@ class UserService(
         return SuccessResponse("Account activated successfully")
     }
 
-    fun saveUser(appUser: AppUser) = userRepository.save(appUser)
+    fun saveUser(appUser: AppUser) = appUserRepository.save(appUser)
 }
