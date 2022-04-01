@@ -1,5 +1,5 @@
-import {Component, Inject, OnInit} from '@angular/core';
-import {MAT_DIALOG_DATA, MatDialog} from "@angular/material/dialog";
+import {Component} from '@angular/core';
+import {MatDialog} from "@angular/material/dialog";
 import {RegisterUserDialog} from "./registerUserDialog/register-user-dialog.component";
 import {TokenService} from "../../service/token.service";
 import {Router} from "@angular/router";
@@ -9,13 +9,9 @@ import {Router} from "@angular/router";
     templateUrl: './header.component.html',
     styleUrls: ['./header.component.css']
 })
-export class HeaderComponent implements OnInit {
+export class HeaderComponent {
 
     constructor(private dialog: MatDialog, private tokenService: TokenService, private router: Router) {
-    }
-
-    ngOnInit(): void {
-
     }
 
     isLoggedIn(): boolean {
@@ -33,4 +29,3 @@ export class HeaderComponent implements OnInit {
         this.router.navigate(["/"])
     }
 }
-

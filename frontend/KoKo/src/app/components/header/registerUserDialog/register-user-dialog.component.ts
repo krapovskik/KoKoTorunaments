@@ -21,7 +21,8 @@ export class RegisterUserDialog {
         private formBuilder: FormBuilder,
         private authService: AuthService,
         private messageService: MessageService
-    ) {}
+    ) {
+    }
 
     onNoClick(): void {
         this.dialogRef.close();
@@ -29,7 +30,7 @@ export class RegisterUserDialog {
 
     onSubmit() {
 
-        if(this.registerForm.invalid) {
+        if (this.registerForm.invalid) {
             return;
         }
 

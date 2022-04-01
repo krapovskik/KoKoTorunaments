@@ -30,7 +30,7 @@ import {MatSnackBarModule} from "@angular/material/snack-bar";
 import {ActivateAccountComponent} from './components/auth/activate-account/activate-account.component';
 import {MatDialogModule} from "@angular/material/dialog";
 import {RegisterUserDialog} from "./components/header/registerUserDialog/register-user-dialog.component";
-import { HomeComponent } from './components/home/home.component';
+import {HomeComponent} from './components/home/home.component';
 
 @NgModule({
     declarations: [
