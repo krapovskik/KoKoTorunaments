@@ -1,7 +1,7 @@
 package com.sorsix.koko.security
 
 import com.sorsix.koko.security.jwt.AuthTokenFilter
-import com.sorsix.koko.service.UserService
+import com.sorsix.koko.service.AppUserService
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.security.authentication.AuthenticationManager
@@ -17,7 +17,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableWebSecurity
 class SecurityConfig(
     val authTokenFilter: AuthTokenFilter,
-    val userService: UserService,
+    val appUserService: AppUserService,
     val passwordEncoder: PasswordEncoder,
 ) : WebSecurityConfigurerAdapter() {
 
@@ -37,7 +37,7 @@ class SecurityConfig(
     }
 
     override fun configure(auth: AuthenticationManagerBuilder) {
-        auth.userDetailsService(userService).passwordEncoder(passwordEncoder)
+        auth.userDetailsService(appUserService).passwordEncoder(passwordEncoder)
     }
 
     @Bean
