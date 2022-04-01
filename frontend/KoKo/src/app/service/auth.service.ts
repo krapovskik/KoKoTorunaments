@@ -19,7 +19,7 @@ export class AuthService {
         });
     }
 
-    activateAccount(token: string, firstName: string, lastName: string, password: string) {
+    activateAccount(token: string, firstName: string, lastName: string, password: string): Observable<Response<string>> {
         return this.http.post<Response<string>>('/api/auth/activate', {
             token: token,
             firstName: firstName,
@@ -28,7 +28,7 @@ export class AuthService {
         });
     }
 
-    register(email: string): Observable<any> {
+    register(email: string): Observable<Response<string>> {
         return this.http.post<Response<string>>('/api/auth/register', {
             email: email
         });

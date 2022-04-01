@@ -51,7 +51,7 @@ class UserService(
             val activationToken = activationTokenService.createTokenForUser(appUser)
             emailService.sendNewAccountMail(email, activationToken.token)
 
-            return SuccessResponse("User registered successfully")
+            return SuccessResponse("User registered successfully check your email")
         }
 
         return ErrorResponse("Invalid email format")
