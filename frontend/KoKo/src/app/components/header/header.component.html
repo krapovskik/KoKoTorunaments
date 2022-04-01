@@ -1,0 +1,40 @@
+<mat-toolbar color="primary">
+  <mat-toolbar-row>
+
+    <a routerLink="/">
+      <span><img src="assets/logo.png" class="logo"></span>
+    </a>
+
+    <div fxFlex fxLayout="row" fxLayoutAlign="flex-end" fxLayoutGap="10px">
+      <mat-chip-list *ngIf="!isLoggedIn()">
+        <mat-chip color="accent" selected (click)="openDialog()">Join</mat-chip>
+        <a routerLink="/login">
+          <mat-chip>
+            Log in
+          </mat-chip>
+        </a>
+      </mat-chip-list>
+
+      <div *ngIf="isLoggedIn">
+
+        <mat-chip-list *ngIf="isLoggedIn()">
+          <mat-chip color="accent" selected>Ask to be an organizer</mat-chip>
+
+          <button mat-icon-button [matMenuTriggerFor]="menu">
+            <mat-icon>menu</mat-icon>
+          </button>
+          <mat-menu #menu="matMenu">
+            <button mat-menu-item>
+              <mat-icon>person</mat-icon>
+              <span>My profile</span>
+            </button>
+            <button mat-menu-item (click)="logOut()">
+              <mat-icon>exit_to_app</mat-icon>
+              <span>Log out</span>
+            </button>
+          </mat-menu>
+        </mat-chip-list>
+      </div>
+    </div>
+  </mat-toolbar-row>
+</mat-toolbar>

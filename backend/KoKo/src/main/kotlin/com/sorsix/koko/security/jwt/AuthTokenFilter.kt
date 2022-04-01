@@ -1,6 +1,6 @@
 package com.sorsix.koko.security.jwt
 
-import com.sorsix.koko.service.AppUserService
+import com.sorsix.koko.service.UserService
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource
@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 
 @Component
-class AuthTokenFilter(val jwtUtils: JwtUtils, val appUserService: AppUserService) : OncePerRequestFilter() {
+class AuthTokenFilter(val jwtUtils: JwtUtils, val userService: UserService) : OncePerRequestFilter() {
     override fun doFilterInternal(
         request: HttpServletRequest,
         response: HttpServletResponse,
@@ -22,15 +22,17 @@ class AuthTokenFilter(val jwtUtils: JwtUtils, val appUserService: AppUserService
             jwt?.let {
                 if (jwtUtils.validateJwtToken(it)) {
                     val username: String = jwtUtils.getUsernameFromJwtToken(it)
-                    val userDetails = appUserService.loadUserByUsername(username)
-                    val authentication = UsernamePasswordAuthenticationToken(
-                        userDetails,
-                        null,
-                        userDetails.authorities
-                    )
-                    authentication.details = WebAuthenticationDetailsSource().buildDetails(request)
+                    val userDetails = userService.loadUserByUsername(username)
+                    userDetails?.let {
+                        val authentication = UsernamePasswordAuthenticationToken(
+                            userDetails,
+                            null,
+                            userDetails.authorities
+                        )
+                        authentication.details = WebAuthenticationDetailsSource().buildDetails(request)
 
-                    SecurityContextHolder.getContext().authentication = authentication
+                        SecurityContextHolder.getContext().authentication = authentication
+                    }
                 }
             }
         } catch (_: Exception) {

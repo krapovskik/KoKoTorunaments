@@ -25,7 +25,7 @@ class AppUserService(
     val emailService: EmailService
 ) : UserDetailsService {
 
-    override fun loadUserByUsername(username: String): UserDetails = appUserRepository.findAppUserByEmail(username)
+    override fun loadUserByUsername(username: String): UserDetails? = appUserRepository.findAppUserByEmail(username)
 
     fun findAppUserByIdOrNull(appUserId: Long): AppUser? = appUserRepository.findByIdOrNull(appUserId)
 
@@ -35,6 +35,11 @@ class AppUserService(
         val email = registerRequest.email
 
         if (EmailValidator.getInstance().isValid(email)) {
+
+            appUserRepository.findAppUserByEmail(email)?.let {
+                return ErrorResponse("Email already exists")
+            }
+
             val appUser = AppUser(
                 0,
                 "",
@@ -50,7 +55,7 @@ class AppUserService(
             val activationToken = activationTokenService.createTokenForUser(appUser)
             emailService.sendNewAccountMail(email, activationToken.token)
 
-            return SuccessResponse("User registered successfully")
+            return SuccessResponse("User registered successfully check your email")
         }
 
         return NotFoundResponse("Invalid email format")
