@@ -4,12 +4,9 @@ import com.sorsix.koko.domain.AppUser
 import com.sorsix.koko.dto.request.ActivateAccountRequest
 import com.sorsix.koko.dto.request.LoginRequest
 import com.sorsix.koko.dto.request.RegisterRequest
-import com.sorsix.koko.dto.response.ErrorResponse
-import com.sorsix.koko.dto.response.JwtResponse
-import com.sorsix.koko.dto.response.Response
-import com.sorsix.koko.dto.response.SuccessResponse
+import com.sorsix.koko.dto.response.*
 import com.sorsix.koko.security.jwt.JwtUtils
-import com.sorsix.koko.service.UserService
+import com.sorsix.koko.service.AppUserService
 import org.springframework.http.ResponseEntity
 import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
@@ -19,7 +16,7 @@ import org.springframework.web.bind.annotation.*
 @RestController
 @RequestMapping("/api/auth")
 class AuthController(
-    val userService: UserService,
+    val appUserService: AppUserService,
     val authenticationManager: AuthenticationManager,
     val jwtUtils: JwtUtils
 ) {
@@ -52,17 +49,19 @@ class AuthController(
 
     @PostMapping("/register")
     fun register(@RequestBody registerRequest: RegisterRequest): ResponseEntity<Response> {
-        return when(val result = userService.registerUser(registerRequest)) {
+        return when(val result = appUserService.registerUser(registerRequest)) {
             is SuccessResponse<*> -> ResponseEntity.ok(result)
-            is ErrorResponse -> ResponseEntity.badRequest().body(result)
+            is NotFoundResponse -> ResponseEntity.badRequest().body(result)
+            is BadRequestResponse -> ResponseEntity.badRequest().body(result)
         }
     }
 
     @PostMapping("/activate")
     fun activateAccount(@RequestBody activateAccountRequest: ActivateAccountRequest): ResponseEntity<Response> {
-        return when(val result = userService.activateAccount(activateAccountRequest)) {
+        return when(val result = appUserService.activateAccount(activateAccountRequest)) {
             is SuccessResponse<*> -> ResponseEntity.ok(result)
-            is ErrorResponse -> ResponseEntity.badRequest().body(result)
+            is NotFoundResponse -> ResponseEntity.badRequest().body(result)
+            is BadRequestResponse -> ResponseEntity.badRequest().body(result)
         }
     }
 }

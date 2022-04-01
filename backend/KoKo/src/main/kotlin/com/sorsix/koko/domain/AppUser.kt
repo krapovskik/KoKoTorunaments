@@ -30,8 +30,8 @@ data class AppUser(
     @Enumerated(value = EnumType.STRING)
     val appUserRole: AppUserRole,
 
-    @Column(name = "is_valid")
-    val isValid: Boolean = false,
+    @Column(name = "is_active")
+    val isActive: Boolean = false,
 
     ) : UserDetails {
 
@@ -47,5 +47,5 @@ data class AppUser(
 
     override fun isCredentialsNonExpired() = true
 
-    override fun isEnabled() = isValid
+    override fun isEnabled() = isActive
 }

@@ -5,7 +5,7 @@ create table app_users
     last_name     text not null,
     email         text not null,
     password      text not null,
-    is_valid      boolean default false,
+    is_active     boolean default false,
     app_user_role text    default 'PLAYER'
 );
 
@@ -20,7 +20,7 @@ create table teams
 (
     id       bigserial primary key,
     name     text not null,
-    is_valid boolean default true
+    is_active boolean default true
 );
 
 create table tournaments

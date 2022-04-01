@@ -27,7 +27,7 @@ class AppUserTeamsService
             val teams = appUserTeamsRepository.findAppUserTeamsByAppUser(it)
                 .map { AppUserTeams::team }
             SuccessResponse(teams)
-        } ?: NotFoundResponse("Team with $playerId not found.")
+        } ?: NotFoundResponse("Player with $playerId not found.")
 
     fun addPlayerToTeam(teamId: Long, playerId: Long): Response =
         teamService.findTeamByIdOrNull(teamId)?.let { team ->

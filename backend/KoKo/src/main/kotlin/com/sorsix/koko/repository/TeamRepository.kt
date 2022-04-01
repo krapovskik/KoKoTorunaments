@@ -14,7 +14,7 @@ interface TeamRepository : JpaRepository<Team,Long>{
     fun updateTeamName(teamId: Long, teamName: String): Int
 
     @Modifying
-    @Query(value = "update Team t set t.isValid = :teamStatus where t.id = :teamId ")
+    @Query(value = "update Team t set t.isActive = :teamStatus where t.id = :teamId ")
     fun updateTeamStatus(teamId: Long, teamStatus: Boolean): Int
 
 }

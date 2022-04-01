@@ -14,7 +14,7 @@ data class Team(
     @Column(name = "name")
     val name: String,
 
-    @Column(name = "is_valid")
-    val isValid: Boolean = true,
+    @Column(name = "is_active")
+    val isActive: Boolean = true,
 
 )

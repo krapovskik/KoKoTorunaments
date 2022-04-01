@@ -37,7 +37,7 @@ class AppUserService(
         if (EmailValidator.getInstance().isValid(email)) {
 
             appUserRepository.findAppUserByEmail(email)?.let {
-                return ErrorResponse("Email already exists")
+                return NotFoundResponse("Email already exists")
             }
 
             val appUser = AppUser(
@@ -73,7 +73,7 @@ class AppUserService(
                 firstName = firstName,
                 lastName = lastName,
                 password = passwordEncoder.encode(password),
-                isValid = true
+                isActive = true
             )
 
         this.saveUser(activatedUser)
@@ -86,3 +86,5 @@ class AppUserService(
 
 
 }
+
+//TODO() invite function - send invite, create account, add player to team
