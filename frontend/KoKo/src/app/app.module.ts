@@ -28,6 +28,9 @@ import {LoginComponent} from "./components/auth/login/login.component";
 import {HttpClientModule} from "@angular/common/http";
 import {MatSnackBarModule} from "@angular/material/snack-bar";
 import {ActivateAccountComponent} from './components/auth/activate-account/activate-account.component';
+import {MatDialogModule} from "@angular/material/dialog";
+import {RegisterUserDialog} from "./components/header/registerUserDialog/register-user-dialog.component";
+import { HomeComponent } from './components/home/home.component';
 
 @NgModule({
     declarations: [
@@ -35,7 +38,9 @@ import {ActivateAccountComponent} from './components/auth/activate-account/activ
         HeaderComponent,
         AuthComponent,
         LoginComponent,
-        ActivateAccountComponent
+        ActivateAccountComponent,
+        RegisterUserDialog,
+        HomeComponent
     ],
     imports: [
         BrowserModule,
@@ -64,7 +69,8 @@ import {ActivateAccountComponent} from './components/auth/activate-account/activ
         MatInputModule,
         MatOptionModule,
         MatSelectModule,
-        MatSnackBarModule
+        MatSnackBarModule,
+        MatDialogModule
     ],
     providers: [],
     bootstrap: [AppComponent]
