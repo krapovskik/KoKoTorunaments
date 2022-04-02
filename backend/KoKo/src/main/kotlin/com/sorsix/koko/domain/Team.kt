@@ -9,12 +9,12 @@ data class Team(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    val id: Long,
+    val id: Long = 0L,
 
     @Column(name = "name")
     val name: String,
 
-    @Column(name = "is_valid")
-    val isValid: Boolean = true,
+    @Column(name = "is_active")
+    val isActive: Boolean = true,
 
 )

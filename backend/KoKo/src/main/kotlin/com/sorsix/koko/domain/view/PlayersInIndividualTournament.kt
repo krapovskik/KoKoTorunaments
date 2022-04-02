@@ -1,6 +1,5 @@
 package com.sorsix.koko.domain.view
 
-import com.sorsix.koko.domain.AppUser
 import org.hibernate.annotations.Immutable
 import org.hibernate.annotations.Subselect
 import javax.persistence.Column

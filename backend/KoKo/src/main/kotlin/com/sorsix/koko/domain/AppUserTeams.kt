@@ -9,7 +9,7 @@ data class AppUserTeams(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    val id: Long,
+    val id: Long = 0L,
 
     @ManyToOne
     @JoinColumn(name = "team_id")

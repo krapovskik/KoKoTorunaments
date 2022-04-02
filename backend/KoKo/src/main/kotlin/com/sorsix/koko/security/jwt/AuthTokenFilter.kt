@@ -1,6 +1,6 @@
 package com.sorsix.koko.security.jwt
 
-import com.sorsix.koko.service.UserService
+import com.sorsix.koko.service.AppUserService
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource
@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 
 @Component
-class AuthTokenFilter(val jwtUtils: JwtUtils, val userService: UserService) : OncePerRequestFilter() {
+class AuthTokenFilter(val jwtUtils: JwtUtils, val appUserService: AppUserService) : OncePerRequestFilter() {
     override fun doFilterInternal(
         request: HttpServletRequest,
         response: HttpServletResponse,
@@ -22,7 +22,7 @@ class AuthTokenFilter(val jwtUtils: JwtUtils, val userService: UserService) : On
             jwt?.let {
                 if (jwtUtils.validateJwtToken(it)) {
                     val username: String = jwtUtils.getUsernameFromJwtToken(it)
-                    val userDetails = userService.loadUserByUsername(username)
+                    val userDetails = appUserService.loadUserByUsername(username)
                     userDetails?.let {
                         val authentication = UsernamePasswordAuthenticationToken(
                             userDetails,

@@ -1,4 +1,4 @@
-package com.sorsix.koko.service
+package com.sorsix.koko.util
 
 import org.springframework.mail.SimpleMailMessage
 import org.springframework.mail.javamail.JavaMailSender
