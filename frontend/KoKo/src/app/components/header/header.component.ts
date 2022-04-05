@@ -3,6 +3,7 @@ import {MatDialog} from "@angular/material/dialog";
 import {RegisterUserDialog} from "./registerUserDialog/register-user-dialog.component";
 import {TokenService} from "../../service/token.service";
 import {Router} from "@angular/router";
+import {BecomeOrganizerDialogComponent} from "./become-organizer-dialog/become-organizer-dialog.component";
 
 @Component({
     selector: 'app-header',
@@ -18,8 +19,14 @@ export class HeaderComponent {
         return !!this.tokenService.getUser()
     }
 
-    openDialog(): void {
-        const dialogRef = this.dialog.open(RegisterUserDialog, {
+    openRegisterDialog(): void {
+        this.dialog.open(RegisterUserDialog, {
+            width: '500px',
+        });
+    }
+
+    openBecomeOrganizerDialog(): void {
+        this.dialog.open(BecomeOrganizerDialogComponent, {
             width: '500px',
         });
     }

@@ -1,5 +1,11 @@
 /* You can add global styles to this file, and also import other style files */
 
+:root {
+  --primary-color: #673ab7;
+  --accent-color: #ffd740;
+  --warn-color: #f44336;
+}
+
 html, body {
   height: 100%;
 }
@@ -15,7 +21,6 @@ body {
 }
 
 .errorAlert {
-  background: red;
+  background: var(--warn-color);
   color: black;
 }
-

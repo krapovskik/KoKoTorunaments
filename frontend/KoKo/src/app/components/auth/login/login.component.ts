@@ -49,7 +49,11 @@ export class LoginComponent implements OnInit {
             next: user => {
                 this.tokenService.saveUser(user)
                 this.tokenService.saveToken(user.token)
-                this.router.navigate(['/'])
+                if (user.role == 'ADMIN') {
+                    this.router.navigate(['/admin/organizerRequests/1/15'])
+                } else {
+                    this.router.navigate(['/'])
+                }
             },
             error: () => {
                 this.messageService.showErrorMessage("Incorrect username or password")

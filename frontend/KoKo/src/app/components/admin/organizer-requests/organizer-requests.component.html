@@ -1,0 +1,26 @@
+<div class="container">
+  <mat-accordion>
+    <mat-expansion-panel *ngFor="let organizerRequest of organizerRequests">
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          {{ organizerRequest.title}}
+        </mat-panel-title>
+        <mat-panel-description>
+          {{ organizerRequest.userFullName }}
+        </mat-panel-description>
+      </mat-expansion-panel-header>
+      <p class="description">{{ organizerRequest.description }}</p>
+      <button mat-raised-button color="primary" style="margin-right: 5px"
+              (click)="approveRequest(organizerRequest.requestId)">Allow
+      </button>
+      <button mat-raised-button color="warn" (click)="rejectRequest(organizerRequest.requestId)">Reject</button>
+    </mat-expansion-panel>
+  </mat-accordion>
+</div>
+
+<mat-paginator [length]="length"
+               [pageIndex]="pageIndex"
+               [pageSize]="pageSize"
+               [pageSizeOptions]="pageSizeOptions"
+               (page)="onPageEvent($event)">
+</mat-paginator>

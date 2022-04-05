@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {MatSnackBar} from "@angular/material/snack-bar";
 import {MessageService} from "./service/message.service";
+import {TokenService} from "./service/token.service";
 
 @Component({
     selector: 'app-root',
@@ -9,7 +10,7 @@ import {MessageService} from "./service/message.service";
 })
 export class AppComponent implements OnInit {
 
-    constructor(private snackBar: MatSnackBar, private messageService: MessageService) {
+    constructor(private snackBar: MatSnackBar, private messageService: MessageService, public tokenService: TokenService) {
     }
 
     ngOnInit(): void {

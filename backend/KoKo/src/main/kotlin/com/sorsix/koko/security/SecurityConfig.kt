@@ -1,5 +1,6 @@
 package com.sorsix.koko.security
 
+import com.sorsix.koko.domain.enumeration.AppUserRole
 import com.sorsix.koko.security.jwt.AuthTokenFilter
 import com.sorsix.koko.service.AppUserService
 import org.springframework.context.annotation.Bean
@@ -22,15 +23,18 @@ class SecurityConfig(
 ) : WebSecurityConfigurerAdapter() {
 
     private val publicMatchers = arrayOf(
-        "/api/auth/login",
-        "/api/auth/register",
-        "/api/auth/activate"
+        "/api/auth/**",
+    )
+
+    private val adminMatchers = arrayOf(
+        "/api/admin/**",
     )
 
     override fun configure(http: HttpSecurity) {
         http.csrf().disable()
             .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
-            .authorizeRequests().antMatchers(*publicMatchers).permitAll()
+            .authorizeRequests().antMatchers(*publicMatchers).permitAll().and()
+            .authorizeRequests().antMatchers(*adminMatchers).hasAuthority(AppUserRole.ADMIN.name)
             .anyRequest().authenticated()
 
         http.addFilterBefore(authTokenFilter, UsernamePasswordAuthenticationFilter::class.java)

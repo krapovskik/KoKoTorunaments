@@ -79,3 +79,11 @@ create table app_user_teams
     constraint fk_app_user_teams_app_user_id foreign key (app_user_id) references app_users (id)
 );
 
+create table organizer_requests
+(
+    id bigserial primary key,
+    title text not null,
+    description text not null,
+    app_user_id bigint not null,
+    constraint fk_organizer_requests_app_user_id foreign key (app_user_id) references app_users (id)
+);

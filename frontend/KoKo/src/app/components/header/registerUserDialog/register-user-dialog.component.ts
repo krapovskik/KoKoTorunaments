@@ -17,7 +17,7 @@ export class RegisterUserDialog {
     loading = false;
 
     constructor(
-        public dialogRef: MatDialogRef<RegisterUserDialog>,
+        private dialogRef: MatDialogRef<RegisterUserDialog>,
         private formBuilder: FormBuilder,
         private authService: AuthService,
         private messageService: MessageService

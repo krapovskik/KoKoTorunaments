@@ -25,12 +25,24 @@ import {MatOptionModule} from "@angular/material/core";
 import {MatInputModule} from "@angular/material/input";
 import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
 import {LoginComponent} from "./components/auth/login/login.component";
-import {HttpClientModule} from "@angular/common/http";
+import {HTTP_INTERCEPTORS, HttpClientModule} from "@angular/common/http";
 import {MatSnackBarModule} from "@angular/material/snack-bar";
 import {ActivateAccountComponent} from './components/auth/activate-account/activate-account.component';
 import {MatDialogModule} from "@angular/material/dialog";
 import {RegisterUserDialog} from "./components/header/registerUserDialog/register-user-dialog.component";
 import {HomeComponent} from './components/home/home.component';
+import {AdminComponent} from './components/admin/admin.component';
+import {SidebarComponent} from './components/admin/sidebar/sidebar.component';
+import {MatSidenavModule} from "@angular/material/sidenav";
+import {OrganizerRequestsComponent} from './components/admin/organizer-requests/organizer-requests.component';
+import {AdminHeaderComponent} from "./components/admin/admin-header/admin-header.component";
+import {OrganizersComponent} from './components/admin/organizers/organizers.component';
+import {MatPaginatorModule} from "@angular/material/paginator";
+import {MatExpansionModule} from "@angular/material/expansion";
+import {
+    BecomeOrganizerDialogComponent
+} from './components/header/become-organizer-dialog/become-organizer-dialog.component';
+import {JwtInterceptor} from "./helper/jwt.interceptor";
 
 @NgModule({
     declarations: [
@@ -40,7 +52,13 @@ import {HomeComponent} from './components/home/home.component';
         LoginComponent,
         ActivateAccountComponent,
         RegisterUserDialog,
-        HomeComponent
+        HomeComponent,
+        AdminComponent,
+        SidebarComponent,
+        OrganizerRequestsComponent,
+        AdminHeaderComponent,
+        OrganizersComponent,
+        BecomeOrganizerDialogComponent
     ],
     imports: [
         BrowserModule,
@@ -70,9 +88,14 @@ import {HomeComponent} from './components/home/home.component';
         MatOptionModule,
         MatSelectModule,
         MatSnackBarModule,
-        MatDialogModule
+        MatDialogModule,
+        MatSidenavModule,
+        MatPaginatorModule,
+        MatExpansionModule
     ],
-    providers: [],
+    providers: [
+        {provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true},
+    ],
     bootstrap: [AppComponent]
 })
 export class AppModule {

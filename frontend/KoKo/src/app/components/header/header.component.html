@@ -7,7 +7,7 @@
 
     <div fxFlex fxLayout="row" fxLayoutAlign="flex-end" fxLayoutGap="10px">
       <mat-chip-list *ngIf="!isLoggedIn()">
-        <mat-chip color="accent" selected (click)="openDialog()">Join</mat-chip>
+        <mat-chip color="accent" selected (click)="openRegisterDialog()">Join</mat-chip>
         <a routerLink="/login">
           <mat-chip>
             Log in
@@ -16,10 +16,10 @@
       </mat-chip-list>
 
       <mat-chip-list *ngIf="isLoggedIn()">
-        <mat-chip color="accent" selected>Ask to be an organizer</mat-chip>
+        <mat-chip color="accent" selected (click)="openBecomeOrganizerDialog()">Become an organizer</mat-chip>
 
         <button mat-icon-button [matMenuTriggerFor]="menu">
-          <mat-icon>menu</mat-icon>
+          <mat-icon>more_vert</mat-icon>
         </button>
         <mat-menu #menu="matMenu">
           <button mat-menu-item>
