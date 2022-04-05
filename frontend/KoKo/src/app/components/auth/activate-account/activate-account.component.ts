@@ -3,7 +3,6 @@ import {FormBuilder, FormGroup} from "@angular/forms";
 import {ActivatedRoute, Router} from "@angular/router";
 import {AuthService} from "../../../service/auth.service";
 import {MessageService} from "../../../service/message.service";
-import {TokenService} from "../../../service/token.service";
 import {finalize} from "rxjs";
 
 @Component({
@@ -22,8 +21,7 @@ export class ActivateAccountComponent implements OnInit {
         private route: ActivatedRoute,
         private router: Router,
         private authService: AuthService,
-        private messageService: MessageService,
-        private tokenService: TokenService
+        private messageService: MessageService
     ) {
     }
 
@@ -59,10 +57,8 @@ export class ActivateAccountComponent implements OnInit {
                 this.router.navigate(["/login"])
             },
             error: err => {
-                console.log(err)
                 this.messageService.showErrorMessage(err.error.message)
             }
         })
-
     }
 }

@@ -7,11 +7,15 @@ import com.sorsix.koko.dto.request.RegisterRequest
 import com.sorsix.koko.dto.response.*
 import com.sorsix.koko.security.jwt.JwtUtils
 import com.sorsix.koko.service.AppUserService
+import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.core.context.SecurityContextHolder
-import org.springframework.web.bind.annotation.*
+import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.RequestBody
+import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RestController
 
 @RestController
 @RequestMapping("/api/auth")
@@ -49,18 +53,18 @@ class AuthController(
 
     @PostMapping("/register")
     fun register(@RequestBody registerRequest: RegisterRequest): ResponseEntity<Response> {
-        return when(val result = appUserService.registerUser(registerRequest)) {
+        return when (val result = appUserService.registerUser(registerRequest)) {
             is SuccessResponse<*> -> ResponseEntity.ok(result)
-            is NotFoundResponse -> ResponseEntity.badRequest().body(result)
+            is NotFoundResponse -> ResponseEntity(result, HttpStatus.NOT_FOUND)
             is BadRequestResponse -> ResponseEntity.badRequest().body(result)
         }
     }
 
     @PostMapping("/activate")
     fun activateAccount(@RequestBody activateAccountRequest: ActivateAccountRequest): ResponseEntity<Response> {
-        return when(val result = appUserService.activateAccount(activateAccountRequest)) {
+        return when (val result = appUserService.activateAccount(activateAccountRequest)) {
             is SuccessResponse<*> -> ResponseEntity.ok(result)
-            is NotFoundResponse -> ResponseEntity.badRequest().body(result)
+            is NotFoundResponse -> ResponseEntity(result, HttpStatus.NOT_FOUND)
             is BadRequestResponse -> ResponseEntity.badRequest().body(result)
         }
     }

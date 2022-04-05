@@ -28,6 +28,11 @@ values ('Kosta', 'Krapovski', 'kosta.krapovski@sorsix.com',
        ('Nikola', 'Lazarevski', 'nikola.lazarevski@sorsix.com',
         '$2a$10$xDmfApNkwR4cbXXR2VzDNO9sjQsQmbVMPfWk8CahJJO4.PTu8hQqK');
 
+insert into app_users (first_name, last_name, email, password, is_active, app_user_role)
+values
+       ('Admin', 'Admin', 'admin',
+        '$2a$10$pvnUPSWNzseMf4v1MqE7F.F0dOyFSvpXTR7XdJGZff.mLbKOcS4Zm', true, 'ADMIN');
+
 insert into tournaments (name, category, number_of_participants, type)
 values
        ('Kosharka', 'Kosharka', 4,'TEAM'),
@@ -77,3 +82,19 @@ values
        (2,1),
        (2,2);
 
+insert into organizer_requests (title, description, app_user_id)
+values
+       ('Tournament title', 'Tournament description', 1),
+       ('Tournament title', 'Tournament description', 2),
+       ('Tournament title', 'Tournament description', 3),
+       ('Tournament title', 'Tournament description', 4),
+       ('Tournament title', 'Tournament description', 5),
+       ('Tournament title', 'Tournament description', 6),
+       ('Tournament title', 'Tournament description', 7),
+       ('Tournament title', 'Tournament description', 8),
+       ('Tournament title', 'Tournament description', 9),
+       ('Tournament title', 'Tournament description', 10),
+       ('Tournament title', 'Tournament description', 11),
+       ('Tournament title', 'Tournament description', 12),
+       ('Tournament title', 'Tournament description', 13),
+       ('Tournament title', 'Tournament description', 14);

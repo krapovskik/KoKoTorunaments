@@ -1,6 +1,5 @@
 import {Injectable} from "@angular/core";
-import {ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot, UrlTree} from "@angular/router";
-import {Observable} from "rxjs";
+import {ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot} from "@angular/router";
 import {TokenService} from "../service/token.service";
 
 @Injectable({
@@ -11,7 +10,7 @@ export class AuthGuard implements CanActivate {
     constructor(private tokenService: TokenService, private router: Router) {
     }
 
-    canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
+    canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
         let currentUser = this.tokenService.getUser();
         if (currentUser) {
             let requiredRole = route.data['role'];

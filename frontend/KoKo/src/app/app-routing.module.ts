@@ -4,13 +4,15 @@ import {AuthComponent} from "./components/auth/auth.component";
 import {LoginComponent} from "./components/auth/login/login.component";
 import {ActivateAccountComponent} from "./components/auth/activate-account/activate-account.component";
 import {HomeComponent} from "./components/home/home.component";
+import {AdminComponent} from "./components/admin/admin.component";
+import {OrganizerRequestsComponent} from "./components/admin/organizer-requests/organizer-requests.component";
+import {OrganizersComponent} from "./components/admin/organizers/organizers.component";
+import {AuthGuard} from "./helper/auth.guard";
 
 const routes: Routes = [
     {
         path: '',
-        component: HomeComponent,
-        // canActivate: [AuthComponent],
-        // data: { role: 'PLAYER'}
+        component: HomeComponent
     },
     {
         path: '',
@@ -23,6 +25,22 @@ const routes: Routes = [
             {
                 path: 'activate',
                 component: ActivateAccountComponent
+            }
+        ]
+    },
+    {
+        path: 'admin',
+        component: AdminComponent,
+        canActivate: [AuthGuard],
+        data: {role: 'ADMIN'},
+        children: [
+            {
+                path: 'organizerRequests/:currentPage/:size',
+                component: OrganizerRequestsComponent
+            },
+            {
+                path: 'organizers/:currentPage/:size',
+                component: OrganizersComponent
             }
         ]
     }

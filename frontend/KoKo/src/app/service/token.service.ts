@@ -35,4 +35,9 @@ export class TokenService {
 
         return null;
     }
+
+    getRole(): String | null {
+        let role = this.getUser()?.role;
+        return role ? role : null;
+    }
 }

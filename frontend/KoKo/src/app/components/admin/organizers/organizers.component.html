@@ -1,0 +1,17 @@
+<div class="container">
+  <mat-card *ngFor="let organizer of organizers">
+    <mat-card-content fxFlex fxLayout="row" fxLayoutAlign="space-between center">
+      {{ organizer.fullName }}
+      <button mat-raised-button color="warn" (click)="revokeOrganizer(organizer.id)">Remove organizer privileges
+      </button>
+    </mat-card-content>
+  </mat-card>
+  <mat-divider></mat-divider>
+</div>
+
+<mat-paginator [length]="length"
+               [pageIndex]="pageIndex"
+               [pageSize]="pageSize"
+               [pageSizeOptions]="pageSizeOptions"
+               (page)="onPageEvent($event)">
+</mat-paginator>
