@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {finalize, map, switchMap} from "rxjs";
+import {finalize, Subject, switchMap} from "rxjs";
 import {ActivatedRoute, Router} from "@angular/router";
 import {AdminService} from "../../../service/admin.service";
 import {MessageService} from "../../../service/message.service";
@@ -13,16 +13,9 @@ import {Organizer} from "../../../model/Organizer";
 })
 export class OrganizersComponent implements OnInit {
 
-    $currentPage = this.route.paramMap.pipe(
-        map((params) => {
-            let currentPage = params.get('currentPage')
-            let size = params.get('size')
-            this.pageIndex = +currentPage! - 1;
-            this.pageSize = +size!;
-            return {pageIndex: this.pageIndex, pageSize: this.pageSize};
-        })
-    )
+    $pageEvent = new Subject<{pageIndex: number, pageSize: number}>()
 
+    loading = false;
     pageIndex = 0;
     length!: number;
     pageSize = 15;
@@ -34,29 +27,43 @@ export class OrganizersComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        this.$currentPage.pipe(
+        this.$pageEvent.pipe(
             switchMap(({pageIndex, pageSize}) => {
-                    return this.adminService.getOrganizers(pageIndex, pageSize)
-                }
-            )).subscribe({
-            next: (data) => {
+                return this.adminService.getOrganizers(pageIndex, pageSize)
+            })
+        ).subscribe({
+            next: data => {
+                this.loading = false;
                 this.length = data.totalElements;
                 this.organizers = data.content;
+                if(this.pageIndex >= data.totalPages) {
+                    this.pageIndex = data.totalPages - 1;
+                    this.newPageEvent();
+                }
             }
         })
+
+        this.pageIndex = +this.route.snapshot.params['currentPage'] - 1;
+        this.pageSize = +this.route.snapshot.params['size'];
+        this.newPageEvent();
+    }
+
+    newPageEvent() {
+        this.loading = true;
+        this.$pageEvent.next({pageIndex: this.pageIndex, pageSize: this.pageSize})
+        this.router.navigate([`/admin/organizers/${this.pageIndex + 1}/${this.pageSize}`]);
     }
 
     onPageEvent(pageEvent: PageEvent) {
-        this.router.navigate([`/admin/organizers/${pageEvent.pageIndex + 1}/${pageEvent.pageSize}`])
+        this.pageIndex = pageEvent.pageIndex;
+        this.pageSize = pageEvent.pageSize;
+        this.newPageEvent();
     }
 
     revokeOrganizer(userId: number) {
         this.adminService.revokeOrganizer(userId).pipe(
             finalize(() => {
-                this.organizers = this.organizers.filter(el => el.id != userId)
-                if (this.organizers.length == 0 && this.pageIndex > 0) {
-                    this.router.navigate([`/admin/organizers/${this.pageIndex}/${this.pageSize}`])
-                }
+                this.newPageEvent();
             })
         ).subscribe({
             next: data => {

@@ -43,6 +43,7 @@ import {
     BecomeOrganizerDialogComponent
 } from './components/header/become-organizer-dialog/become-organizer-dialog.component';
 import {JwtInterceptor} from "./helper/jwt.interceptor";
+import {MatProgressBarModule} from "@angular/material/progress-bar";
 
 @NgModule({
     declarations: [
@@ -91,7 +92,8 @@ import {JwtInterceptor} from "./helper/jwt.interceptor";
         MatDialogModule,
         MatSidenavModule,
         MatPaginatorModule,
-        MatExpansionModule
+        MatExpansionModule,
+        MatProgressBarModule
     ],
     providers: [
         {provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true},
