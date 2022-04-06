@@ -18,10 +18,7 @@
   </mat-accordion>
 </div>
 
-<mat-paginator [length]="length"
-               [pageIndex]="pageIndex"
-               [pageSize]="pageSize"
-               [pageSizeOptions]="pageSizeOptions"
-               (page)="onPageEvent($event)">
-</mat-paginator>
-<mat-progress-bar mode="indeterminate" *ngIf="loading"></mat-progress-bar>
+<app-pagination [navigationPath]="navigationPath"
+                [functionToCall]="functionToCall"
+                (result)="onResult($event)"
+></app-pagination>

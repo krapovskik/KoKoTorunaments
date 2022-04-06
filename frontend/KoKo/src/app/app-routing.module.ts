@@ -43,6 +43,10 @@ const routes: Routes = [
                 component: OrganizersComponent
             }
         ]
+    },
+    {
+        path: '**',
+        component: HomeComponent
     }
 ];
 
