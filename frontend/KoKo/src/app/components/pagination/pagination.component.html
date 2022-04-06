@@ -1,0 +1,7 @@
+<mat-paginator [length]="length"
+               [pageIndex]="pageIndex"
+               [pageSize]="pageSize"
+               [pageSizeOptions]="pageSizeOptions"
+               (page)="onPageEvent($event)">
+</mat-paginator>
+<mat-progress-bar mode="indeterminate" *ngIf="loading"></mat-progress-bar>

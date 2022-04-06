@@ -1,69 +1,36 @@
-import {Component, OnInit} from '@angular/core';
-import {finalize, Subject, switchMap} from "rxjs";
+import {Component, ViewChild} from '@angular/core';
+import {finalize} from "rxjs";
 import {ActivatedRoute, Router} from "@angular/router";
 import {AdminService} from "../../../service/admin.service";
 import {MessageService} from "../../../service/message.service";
-import {PageEvent} from "@angular/material/paginator";
 import {Organizer} from "../../../model/Organizer";
+import {PaginationComponent} from "../../pagination/pagination.component";
 
 @Component({
     selector: 'app-organizers',
     templateUrl: './organizers.component.html',
     styleUrls: ['./organizers.component.css']
 })
-export class OrganizersComponent implements OnInit {
+export class OrganizersComponent {
 
-    $pageEvent = new Subject<{pageIndex: number, pageSize: number}>()
+    @ViewChild(PaginationComponent) pagination!: PaginationComponent;
 
-    loading = false;
-    pageIndex = 0;
-    length!: number;
-    pageSize = 15;
-    pageSizeOptions: number[] = [15, 50, 100];
+    navigationPath = "/admin/organizers"
     organizers: Organizer[] = [];
+    functionToCall = this.adminService.getOrganizers
 
-    constructor(private route: ActivatedRoute, private router: Router, private adminService: AdminService, private messageService: MessageService) {
+    constructor(private route: ActivatedRoute, private router: Router, public adminService: AdminService, private messageService: MessageService) {
 
     }
 
-    ngOnInit(): void {
-        this.$pageEvent.pipe(
-            switchMap(({pageIndex, pageSize}) => {
-                return this.adminService.getOrganizers(pageIndex, pageSize)
-            })
-        ).subscribe({
-            next: data => {
-                this.loading = false;
-                this.length = data.totalElements;
-                this.organizers = data.content;
-                if(this.pageIndex >= data.totalPages) {
-                    this.pageIndex = data.totalPages - 1;
-                    this.newPageEvent();
-                }
-            }
-        })
-
-        this.pageIndex = +this.route.snapshot.params['currentPage'] - 1;
-        this.pageSize = +this.route.snapshot.params['size'];
-        this.newPageEvent();
-    }
-
-    newPageEvent() {
-        this.loading = true;
-        this.$pageEvent.next({pageIndex: this.pageIndex, pageSize: this.pageSize})
-        this.router.navigate([`/admin/organizers/${this.pageIndex + 1}/${this.pageSize}`]);
-    }
-
-    onPageEvent(pageEvent: PageEvent) {
-        this.pageIndex = pageEvent.pageIndex;
-        this.pageSize = pageEvent.pageSize;
-        this.newPageEvent();
+    onResult(event: Organizer[]) {
+        this.organizers = event
     }
 
     revokeOrganizer(userId: number) {
         this.adminService.revokeOrganizer(userId).pipe(
             finalize(() => {
-                this.newPageEvent();
+                this.pagination.newPageEvent();
             })
         ).subscribe({
             next: data => {
