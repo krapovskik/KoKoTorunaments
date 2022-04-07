@@ -15,7 +15,7 @@ export class HeaderComponent {
     constructor(
         private dialog: MatDialog,
         public tokenService: TokenService,
-        private router: Router) {
+        public router: Router) {
     }
 
     isLoggedIn(): boolean {

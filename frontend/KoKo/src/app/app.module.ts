@@ -65,8 +65,7 @@ import {LoadingButtonComponent} from "./components/loading-button/loading-button
         BecomeOrganizerDialogComponent,
         PaginationComponent,
         TournamentsComponent,
-        LoadingButtonComponent
-
+        LoadingButtonComponent,
     ],
     imports: [
         BrowserModule,

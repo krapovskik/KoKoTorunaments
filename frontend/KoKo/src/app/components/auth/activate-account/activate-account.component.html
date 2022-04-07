@@ -20,7 +20,7 @@
           <input matInput type="password" formControlName="password" required/>
         </mat-form-field>
       </div>
-      <app-loading-button></app-loading-button>
+      <app-loading-button [loading]="loading" [text]="'Activate'"></app-loading-button>
     </form>
   </mat-card-content>
 </mat-card>

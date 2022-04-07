@@ -3,6 +3,10 @@
   min-width: 300px;
 }
 
+mat-card{
+  border: 2px solid var(--primary-color);
+}
+
 mat-card-title,
 mat-card-content {
   display: flex;

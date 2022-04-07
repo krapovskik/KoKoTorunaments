@@ -9,7 +9,7 @@
       <mat-label>Description</mat-label>
       <textarea matInput formControlName="description" required></textarea>
     </mat-form-field>
-    <app-loading-button [loading]="loading"></app-loading-button>
+    <app-loading-button [loading]="loading" [text]="'Send'"></app-loading-button>
     <button mat-button (click)="onNoClick()" type="reset">No Thanks</button>
   </form>
 </div>

@@ -51,7 +51,7 @@ export class LoginComponent implements OnInit {
                 if (user.role == 'ADMIN') {
                     this.router.navigate(['/admin/organizerRequests/1/15'])
                 } else {
-                    this.router.navigate(['/'])
+                    this.router.navigate(['/tournaments'])
                 }
             },
             error: () => {

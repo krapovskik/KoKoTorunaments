@@ -5,7 +5,7 @@
       <mat-label>Email</mat-label>
       <input matInput formControlName="email" required>
     </mat-form-field>
-    <app-loading-button [loading]="loading"></app-loading-button>
+    <app-loading-button [loading]="loading" [text]="'Register'"></app-loading-button>
     <button mat-button (click)="onNoClick()" type="reset">No Thanks</button>
   </form>
 </div>
