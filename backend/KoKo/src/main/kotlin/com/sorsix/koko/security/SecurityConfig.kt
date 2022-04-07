@@ -24,6 +24,7 @@ class SecurityConfig(
 
     private val publicMatchers = arrayOf(
         "/api/auth/**",
+        "/api/tournament/**"
     )
 
     private val adminMatchers = arrayOf(

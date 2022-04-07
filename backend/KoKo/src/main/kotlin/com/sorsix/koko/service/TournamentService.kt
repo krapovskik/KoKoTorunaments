@@ -67,5 +67,8 @@ class TournamentService(val tournamentRepository: TournamentRepository) {
     fun findAllGroupByTimeLine(): Map<String, List<Tournament>> =
         tournamentRepository.findAll().groupBy { it.timelineType.name }
 
+    fun findAllByTimelineType(timelineTournamentType: TimelineTournamentType): List<Tournament> =
+        tournamentRepository.findAllByTimelineType(timelineTournamentType)
+
 
 }
