@@ -1,6 +1,8 @@
 package com.sorsix.koko.domain
 
+import com.sorsix.koko.domain.enumeration.TimelineTournamentType
 import com.sorsix.koko.domain.enumeration.TournamentType
+import java.time.LocalDateTime
 import javax.persistence.*
 
 @Entity
@@ -23,5 +25,13 @@ data class Tournament(
 
     @Column(name = "type")
     @Enumerated(value = EnumType.STRING)
-    val type: TournamentType
+    val type: TournamentType,
+
+    @Column(name = "timeline")
+    @Enumerated(value = EnumType.STRING)
+    val timelineType: TimelineTournamentType,
+
+    @Column(name = "date_created")
+    val dateCreated: LocalDateTime = LocalDateTime.now()
+
 )

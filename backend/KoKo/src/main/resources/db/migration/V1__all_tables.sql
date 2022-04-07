@@ -18,18 +18,20 @@ create table activation_tokens
 
 create table teams
 (
-    id       bigserial primary key,
-    name     text not null,
+    id        bigserial primary key,
+    name      text not null,
     is_active boolean default true
 );
 
 create table tournaments
 (
     id                     bigserial primary key,
-    name                   text    not null,
-    category               text    not null,
-    number_of_participants integer not null,
-    type                   text    not null
+    name                   text      not null,
+    category               text      not null,
+    number_of_participants integer   not null,
+    type                   text      not null,
+    timeline               text      not null,
+    date_created           timestamp not null default now()
 );
 
 create table team_matches
@@ -81,9 +83,9 @@ create table app_user_teams
 
 create table organizer_requests
 (
-    id bigserial primary key,
-    title text not null,
-    description text not null,
+    id          bigserial primary key,
+    title       text   not null,
+    description text   not null,
     app_user_id bigint not null,
     constraint fk_organizer_requests_app_user_id foreign key (app_user_id) references app_users (id)
 );

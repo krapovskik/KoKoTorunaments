@@ -1,6 +1,7 @@
 package com.sorsix.koko.service
 
 import com.sorsix.koko.domain.Tournament
+import com.sorsix.koko.domain.enumeration.TimelineTournamentType
 import com.sorsix.koko.domain.enumeration.TournamentType
 import com.sorsix.koko.dto.response.NotFoundResponse
 import com.sorsix.koko.dto.response.Response
@@ -18,14 +19,16 @@ class TournamentService(val tournamentRepository: TournamentRepository) {
         tournamentName: String,
         tournamentCategory: String,
         numberOfParticipants: Int,
-        tournamentType: TournamentType
+        tournamentType: TournamentType,
+        tournamentTimelineType: TimelineTournamentType
     ): Response = SuccessResponse(
         tournamentRepository.save(
             Tournament(
                 name = tournamentName,
                 category = tournamentCategory,
                 numberOfParticipants = numberOfParticipants,
-                type = tournamentType
+                type = tournamentType,
+                timelineType = tournamentTimelineType
             )
         )
     )
@@ -36,14 +39,16 @@ class TournamentService(val tournamentRepository: TournamentRepository) {
         tournamentName: String,
         tournamentCategory: String,
         numberOfParticipants: Int,
-        tournamentType: TournamentType
+        tournamentType: TournamentType,
+        tournamentTimelineType: TimelineTournamentType
     ): Response =
         if (tournamentRepository.updateTournament(
                 tournamentId,
                 tournamentName,
                 tournamentCategory,
                 numberOfParticipants,
-                tournamentType
+                tournamentType,
+                tournamentTimelineType
             ) == 1
         ) {
             SuccessResponse("Successfully updated.")
@@ -58,6 +63,9 @@ class TournamentService(val tournamentRepository: TournamentRepository) {
         } else {
             NotFoundResponse("Tournament with $tournamentId not found.")
         }
+
+    fun findAllGroupByTimeLine(): Map<String, List<Tournament>> =
+        tournamentRepository.findAll().groupBy { it.timelineType.name }
 
 
 }

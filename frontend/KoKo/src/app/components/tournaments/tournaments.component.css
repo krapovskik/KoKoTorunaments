@@ -1,3 +1,7 @@
+a {
+  text-decoration: none;
+}
+
 .backgorund {
   background-image: url("/./assets/bg.jpg");
   background-size: cover;
@@ -10,16 +14,35 @@
   line-height: 50px;
 }
 
-mat-expansion-panel{
+mat-panel-title {
+  font-size: 20px;
+  font-weight: bold;
+}
+
+p {
+  font-size: 15px;
+  font-weight: bold;
+}
+
+mat-expansion-panel {
   margin-bottom: 10px;
   border: 2px solid var(--primary-color);
 }
-mat-accordion{
+
+mat-accordion {
 
 }
 
-.text-center{
+.text-center {
   text-align: center;
+}
+
+.text-white {
+  color: white;
+}
+
+.mt-5 {
+  margin-top: 5px;
 }
 
 .f-chango {

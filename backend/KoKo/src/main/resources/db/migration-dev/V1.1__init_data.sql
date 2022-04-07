@@ -33,10 +33,11 @@ values
        ('Admin', 'Admin', 'admin',
         '$2a$10$pvnUPSWNzseMf4v1MqE7F.F0dOyFSvpXTR7XdJGZff.mLbKOcS4Zm', true, 'ADMIN');
 
-insert into tournaments (name, category, number_of_participants, type)
+insert into tournaments (name, category, number_of_participants, type, timeline)
 values
-       ('Kosharka', 'Kosharka', 4,'TEAM'),
-       ('Ping pong', 'Ping Pong', 4,'INDIVIDUAL');
+       ('Kosharka', 'Kosharka', 4,'TEAM', 'ONGOING'),
+       ('Ping pong', 'Ping Pong', 4,'INDIVIDUAL', 'COMING_SOON'),
+       ('Ping pong1', 'Ping Pong1', 4,'INDIVIDUAL', 'FINISHED');
 
 insert into teams (name)
 values
@@ -80,21 +81,23 @@ values
 insert into individual_matches_tournaments (tournament_id, individual_match_id)
 values
        (2,1),
-       (2,2);
+       (2,2),
+       (3,1),
+       (3,2);
 
 insert into organizer_requests (title, description, app_user_id)
 values
-       ('Tournament title', 'Tournament description', 1),
-       ('Tournament title', 'Tournament description', 2),
-       ('Tournament title', 'Tournament description', 3),
-       ('Tournament title', 'Tournament description', 4),
-       ('Tournament title', 'Tournament description', 5),
-       ('Tournament title', 'Tournament description', 6),
-       ('Tournament title', 'Tournament description', 7),
-       ('Tournament title', 'Tournament description', 8),
-       ('Tournament title', 'Tournament description', 9),
-       ('Tournament title', 'Tournament description', 10),
-       ('Tournament title', 'Tournament description', 11),
-       ('Tournament title', 'Tournament description', 12),
-       ('Tournament title', 'Tournament description', 13),
-       ('Tournament title', 'Tournament description', 14);
+       ('Tournaments title', 'Tournaments description', 1),
+       ('Tournaments title', 'Tournaments description', 2),
+       ('Tournaments title', 'Tournaments description', 3),
+       ('Tournaments title', 'Tournaments description', 4),
+       ('Tournaments title', 'Tournaments description', 5),
+       ('Tournaments title', 'Tournaments description', 6),
+       ('Tournaments title', 'Tournaments description', 7),
+       ('Tournaments title', 'Tournaments description', 8),
+       ('Tournaments title', 'Tournaments description', 9),
+       ('Tournaments title', 'Tournaments description', 10),
+       ('Tournaments title', 'Tournaments description', 11),
+       ('Tournaments title', 'Tournaments description', 12),
+       ('Tournaments title', 'Tournaments description', 13),
+       ('Tournaments title', 'Tournaments description', 14);
