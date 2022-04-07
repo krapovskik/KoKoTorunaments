@@ -9,6 +9,7 @@ import {OrganizerRequestsComponent} from "./components/admin/organizer-requests/
 import {OrganizersComponent} from "./components/admin/organizers/organizers.component";
 import {AuthGuard} from "./helper/auth.guard";
 import {TournamentsComponent} from "./components/tournaments/tournaments.component";
+import {AllTournamentsComponent} from "./components/all-tournaments/all-tournaments.component";
 
 const routes: Routes = [
     {
@@ -48,6 +49,10 @@ const routes: Routes = [
     {
         path: 'tournaments',
         component: TournamentsComponent
+    },
+    {
+        path: 'allTournaments/:type/:currentPage/:size',
+        component: AllTournamentsComponent
     },
     {
         path: '**',

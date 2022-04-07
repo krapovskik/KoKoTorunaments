@@ -47,6 +47,7 @@ import {MatProgressBarModule} from "@angular/material/progress-bar";
 import {PaginationComponent} from './components/pagination/pagination.component';
 import {TournamentsComponent} from './components/tournaments/tournaments.component';
 import {LoadingButtonComponent} from "./components/loading-button/loading-button.component";
+import { AllTournamentsComponent } from './components/all-tournaments/all-tournaments.component';
 
 @NgModule({
     declarations: [
@@ -66,6 +67,7 @@ import {LoadingButtonComponent} from "./components/loading-button/loading-button
         PaginationComponent,
         TournamentsComponent,
         LoadingButtonComponent,
+        AllTournamentsComponent,
     ],
     imports: [
         BrowserModule,

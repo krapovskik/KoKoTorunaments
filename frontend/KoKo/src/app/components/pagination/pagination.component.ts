@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, Input, OnChanges, OnInit, Output} from '@angular/core';
 import {Observable, Subject, switchMap} from "rxjs";
 import {Organizer} from "../../model/Organizer";
 import {ActivatedRoute, Router} from "@angular/router";
@@ -10,7 +10,7 @@ import {HttpClient} from "@angular/common/http";
     templateUrl: './pagination.component.html',
     styleUrls: ['./pagination.component.css']
 })
-export class PaginationComponent implements OnInit {
+export class PaginationComponent implements OnInit, OnChanges {
 
     $pageEvent = new Subject<{ pageIndex: number, pageSize: number }>()
 
@@ -30,6 +30,12 @@ export class PaginationComponent implements OnInit {
         private http: HttpClient,
         private route: ActivatedRoute,
         private router: Router) {
+    }
+
+    ngOnChanges(changes: any) {
+        this.navigationPath = changes.navigationPath.currentValue
+        this.functionToCall = changes.functionToCall.currentValue
+        this.newPageEvent();
     }
 
     ngOnInit(): void {

@@ -1,0 +1,74 @@
+<div class="background">
+  <div class="container">
+    <div fxFlex fxLayout="column" fxLayoutAlign="center center">
+      <div class="fs-30 f-chango text-center">
+        <div fxFlex fxLayout="row" fxLayoutAlign="center center">
+          <a routerLink="/allTournaments/soon/1/15" class="arrow">
+            <mat-icon style="transform: scale(2)">chevron_left</mat-icon>
+          </a>
+          <p class="title">{{title | titlecase}} Tournaments</p>
+          <a routerLink="/allTournaments/finished/1/15" class="arrow">
+            <mat-icon style="transform: scale(2)">chevron_right</mat-icon>
+          </a>
+        </div>
+      </div>
+      <div class="tournaments">
+        <mat-card>
+          <mat-card-content fxFlex fxLayout="row" fxLayoutAlign="space-between center">
+            <mat-card-title>Tournament</mat-card-title>
+            <button mat-raised-button color="primary">Open tournament</button>
+          </mat-card-content>
+        </mat-card>
+        <mat-card>
+          <mat-card-content fxFlex fxLayout="row" fxLayoutAlign="space-between center">
+            <mat-card-title>Tournament</mat-card-title>
+            <button mat-raised-button color="primary">Open tournament</button>
+          </mat-card-content>
+        </mat-card>
+        <mat-card>
+          <mat-card-content fxFlex fxLayout="row" fxLayoutAlign="space-between center">
+            <mat-card-title>Tournament</mat-card-title>
+            <button mat-raised-button color="primary">Open tournament</button>
+          </mat-card-content>
+        </mat-card>
+        <mat-card>
+          <mat-card-content fxFlex fxLayout="row" fxLayoutAlign="space-between center">
+            <mat-card-title>Tournament</mat-card-title>
+            <button mat-raised-button color="primary">Open tournament</button>
+          </mat-card-content>
+        </mat-card>
+        <mat-card>
+          <mat-card-content fxFlex fxLayout="row" fxLayoutAlign="space-between center">
+            <mat-card-title>Tournament</mat-card-title>
+            <button mat-raised-button color="primary">Open tournament</button>
+          </mat-card-content>
+        </mat-card>
+        <mat-card>
+          <mat-card-content fxFlex fxLayout="row" fxLayoutAlign="space-between center">
+            <mat-card-title>Tournament</mat-card-title>
+            <button mat-raised-button color="primary">Open tournament</button>
+          </mat-card-content>
+        </mat-card>
+        <mat-card>
+          <mat-card-content fxFlex fxLayout="row" fxLayoutAlign="space-between center">
+            <mat-card-title>Tournament</mat-card-title>
+            <button mat-raised-button color="primary">Open tournament</button>
+          </mat-card-content>
+        </mat-card>
+        <mat-card>
+          <mat-card-content fxFlex fxLayout="row" fxLayoutAlign="space-between center">
+            <mat-card-title>Tournament</mat-card-title>
+            <button mat-raised-button color="primary">Open tournament</button>
+          </mat-card-content>
+        </mat-card>
+
+
+      </div>
+      <app-pagination [navigationPath]="navigationPath"
+                      [functionToCall]="functionToCall"
+                      (result)="onResult($event)"
+                      style="margin-top: 10px"
+      ></app-pagination>
+    </div>
+  </div>
+</div>
