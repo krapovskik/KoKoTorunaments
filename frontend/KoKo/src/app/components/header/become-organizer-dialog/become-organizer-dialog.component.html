@@ -1,7 +1,7 @@
 <h1 mat-dialog-title>Become an organizer</h1>
 <div mat-dialog-content>
   <form [formGroup]="becomeOrganizerForm" (ngSubmit)="onSubmit()">
-    <mat-form-field appearance="fill" style="display: block">
+    <mat-form-field appearance="fill">
       <mat-label>Title</mat-label>
       <input matInput formControlName="title" required>
     </mat-form-field>
@@ -9,15 +9,7 @@
       <mat-label>Description</mat-label>
       <textarea matInput formControlName="description" required></textarea>
     </mat-form-field>
-    <div class="button-container">
-      <div class="spinner-container" *ngIf="loading">
-        <mat-spinner diameter="24"></mat-spinner>
-      </div>
-
-      <button [disabled]="loading" mat-raised-button color="primary" type="submit">
-        Submit
-      </button>
-    </div>
+    <app-loading-button [loading]="loading"></app-loading-button>
     <button mat-button (click)="onNoClick()" type="reset">No Thanks</button>
   </form>
 </div>

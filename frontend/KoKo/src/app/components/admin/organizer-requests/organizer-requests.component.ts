@@ -19,11 +19,22 @@ export class OrganizerRequestsComponent {
     functionToCall = this.adminService.getOrganizerRequests;
     organizerRequests: OrganizerRequests[] = [];
 
-    constructor(private route: ActivatedRoute, private router: Router, private adminService: AdminService, private messageService: MessageService) {
+    constructor(
+        private route: ActivatedRoute,
+        private router: Router,
+        private adminService: AdminService,
+        private messageService: MessageService) {
     }
 
     onResult(event: OrganizerRequests[]) {
-        this.organizerRequests = event
+        this.organizerRequests = event.map(el => {
+            return {
+                requestId: el.requestId,
+                userFullName: el.userFullName,
+                title: el.title,
+                description: el.description.replace(/\n/g, '<br/>')
+            }
+        })
     }
 
     approveRequest(requestId: number) {

@@ -7,7 +7,9 @@ import {TokenService} from "../service/token.service";
 })
 export class AuthGuard implements CanActivate {
 
-    constructor(private tokenService: TokenService, private router: Router) {
+    constructor(
+        private tokenService: TokenService,
+        private router: Router) {
     }
 
     canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {

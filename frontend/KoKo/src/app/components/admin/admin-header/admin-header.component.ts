@@ -11,7 +11,9 @@ export class AdminHeaderComponent {
 
     @Output() toggleSideBarEvent: EventEmitter<any> = new EventEmitter();
 
-    constructor(private tokenService: TokenService, private router: Router) {
+    constructor(
+        private tokenService: TokenService,
+        private router: Router) {
     }
 
     logOut() {

@@ -10,7 +10,10 @@ import {TokenService} from "./service/token.service";
 })
 export class AppComponent implements OnInit {
 
-    constructor(private snackBar: MatSnackBar, private messageService: MessageService, public tokenService: TokenService) {
+    constructor(
+        private snackBar: MatSnackBar,
+        private messageService: MessageService,
+        public tokenService: TokenService) {
     }
 
     ngOnInit(): void {

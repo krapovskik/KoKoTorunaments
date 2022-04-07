@@ -45,7 +45,6 @@ import {
 import {JwtInterceptor} from "./helper/jwt.interceptor";
 import {MatProgressBarModule} from "@angular/material/progress-bar";
 import { PaginationComponent } from './components/pagination/pagination.component';
-import { TournamentComponent } from './components/tournament/tournament.component';
 
 @NgModule({
     declarations: [
@@ -62,9 +61,7 @@ import { TournamentComponent } from './components/tournament/tournament.componen
         AdminHeaderComponent,
         OrganizersComponent,
         BecomeOrganizerDialogComponent,
-        PaginationComponent,
-        TournamentComponent,
-
+        PaginationComponent
     ],
     imports: [
         BrowserModule,

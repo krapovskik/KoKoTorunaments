@@ -1,8 +1,9 @@
 import {Component} from '@angular/core';
 import {MatDialogRef} from "@angular/material/dialog";
 import {FormBuilder} from "@angular/forms";
-import {AuthService} from "../../../service/auth.service";
 import {MessageService} from "../../../service/message.service";
+import {UserService} from "../../../service/user.service";
+import {finalize} from "rxjs";
 
 @Component({
     selector: 'app-become-organizer-dialog',
@@ -20,14 +21,12 @@ export class BecomeOrganizerDialogComponent {
     constructor(
         private dialogRef: MatDialogRef<BecomeOrganizerDialogComponent>,
         private formBuilder: FormBuilder,
-        private authService: AuthService,
-        private messageService: MessageService
-    ) {
+        private userService: UserService,
+        private messageService: MessageService) {
     }
 
     onNoClick(): void {
         this.dialogRef.close();
-        this.dialogRef.componentInstance
     }
 
     onSubmit() {
@@ -40,7 +39,17 @@ export class BecomeOrganizerDialogComponent {
         let title = this.becomeOrganizerForm.controls['title'].value
         let description = this.becomeOrganizerForm.controls['description'].value
 
-        console.log(title)
-        console.log(description)
+        this.userService.sendOrganizerRequest(title, description).pipe(
+            finalize(() => {
+                this.loading = false;
+            })
+        ).subscribe({
+            next: data => {
+                this.messageService.showSuccessMessage(data.response)
+            },
+            error: err => {
+                this.messageService.showErrorMessage(err.error.message)
+            }
+        })
     }
 }

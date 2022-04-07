@@ -14,15 +14,7 @@
           <input matInput type="password" formControlName="password" required/>
         </mat-form-field>
       </div>
-      <div class="button-container">
-        <div class="spinner-container" *ngIf="loading">
-          <mat-spinner diameter="24"></mat-spinner>
-        </div>
-
-        <button [disabled]="loading" mat-raised-button color="primary">
-          Login
-        </button>
-      </div>
+      <app-loading-button [loading]="loading"></app-loading-button>
     </form>
   </mat-card-content>
 </mat-card>

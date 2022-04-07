@@ -21,8 +21,7 @@ export class ActivateAccountComponent implements OnInit {
         private route: ActivatedRoute,
         private router: Router,
         private authService: AuthService,
-        private messageService: MessageService
-    ) {
+        private messageService: MessageService) {
     }
 
     ngOnInit(): void {
