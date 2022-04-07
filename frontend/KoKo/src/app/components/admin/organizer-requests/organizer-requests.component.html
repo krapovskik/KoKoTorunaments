@@ -9,7 +9,7 @@
           {{ organizerRequest.userFullName }}
         </mat-panel-description>
       </mat-expansion-panel-header>
-      <p class="description">{{ organizerRequest.description }}</p>
+      <p class="description" [innerHTML]="organizerRequest.description"></p>
       <button mat-raised-button color="primary" style="margin-right: 5px"
               (click)="approveRequest(organizerRequest.requestId)">Allow
       </button>

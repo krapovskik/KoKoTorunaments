@@ -20,8 +20,7 @@ export class RegisterUserDialog {
         private dialogRef: MatDialogRef<RegisterUserDialog>,
         private formBuilder: FormBuilder,
         private authService: AuthService,
-        private messageService: MessageService
-    ) {
+        private messageService: MessageService) {
     }
 
     onNoClick(): void {

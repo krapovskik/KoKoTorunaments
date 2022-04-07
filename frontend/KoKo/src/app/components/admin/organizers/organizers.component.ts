@@ -19,8 +19,11 @@ export class OrganizersComponent {
     organizers: Organizer[] = [];
     functionToCall = this.adminService.getOrganizers
 
-    constructor(private route: ActivatedRoute, private router: Router, public adminService: AdminService, private messageService: MessageService) {
-
+    constructor(
+        private route: ActivatedRoute,
+        private router: Router,
+        private adminService: AdminService,
+        private messageService: MessageService) {
     }
 
     onResult(event: Organizer[]) {

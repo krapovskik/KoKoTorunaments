@@ -23,3 +23,7 @@ body {
   background: var(--warn-color);
   color: black;
 }
+
+.mat-button {
+  margin-right: 5px;
+}

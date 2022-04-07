@@ -1,16 +1,21 @@
 package com.sorsix.koko.service
 
 import com.sorsix.koko.domain.AppUser
+import com.sorsix.koko.domain.OrganizerRequest
 import com.sorsix.koko.domain.enumeration.AppUserRole
 import com.sorsix.koko.dto.request.ActivateAccountRequest
 import com.sorsix.koko.dto.request.RegisterRequest
+import com.sorsix.koko.dto.request.RequestOrganizerRequest
+import com.sorsix.koko.dto.response.BadRequestResponse
 import com.sorsix.koko.dto.response.NotFoundResponse
 import com.sorsix.koko.dto.response.Response
 import com.sorsix.koko.dto.response.SuccessResponse
 import com.sorsix.koko.repository.AppUserRepository
+import com.sorsix.koko.repository.OrganizerRequestRepository
 import com.sorsix.koko.util.EmailService
 import org.apache.commons.validator.routines.EmailValidator
 import org.springframework.data.repository.findByIdOrNull
+import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.security.crypto.password.PasswordEncoder
@@ -20,6 +25,7 @@ import javax.transaction.Transactional
 @Service
 class AppUserService(
     val appUserRepository: AppUserRepository,
+    val organizerRequestRepository: OrganizerRequestRepository,
     val passwordEncoder: PasswordEncoder,
     val activationTokenService: ActivationTokenService,
     val emailService: EmailService
@@ -84,7 +90,18 @@ class AppUserService(
 
     fun saveUser(appUser: AppUser) = appUserRepository.save(appUser)
 
+    fun saveOrganizerRequest(requestOrganizer: RequestOrganizerRequest): Response {
+        val appUser = SecurityContextHolder.getContext().authentication.principal as AppUser
 
+        if(organizerRequestRepository.existsByUser(appUser)) {
+            return BadRequestResponse("You have already sent a request")
+        }
+
+        val (title, description) = requestOrganizer
+        organizerRequestRepository.save(OrganizerRequest(0, title, description, appUser))
+
+        return SuccessResponse("Request sent successfully")
+    }
 }
 
 //TODO() invite function - send invite, create account, add player to team

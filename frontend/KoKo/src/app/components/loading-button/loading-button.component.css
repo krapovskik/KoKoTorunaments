@@ -13,8 +13,5 @@
 .button-container {
   display: inline-block;
   position: relative;
-}
-
-.mat-form-field {
-  display: block;
+  margin-right: 5px;
 }

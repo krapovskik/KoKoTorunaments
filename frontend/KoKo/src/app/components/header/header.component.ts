@@ -12,7 +12,10 @@ import {BecomeOrganizerDialogComponent} from "./become-organizer-dialog/become-o
 })
 export class HeaderComponent {
 
-    constructor(private dialog: MatDialog, private tokenService: TokenService, private router: Router) {
+    constructor(
+        private dialog: MatDialog,
+        public tokenService: TokenService,
+        private router: Router) {
     }
 
     isLoggedIn(): boolean {
