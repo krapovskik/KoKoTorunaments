@@ -44,7 +44,8 @@ import {
 } from './components/header/become-organizer-dialog/become-organizer-dialog.component';
 import {JwtInterceptor} from "./helper/jwt.interceptor";
 import {MatProgressBarModule} from "@angular/material/progress-bar";
-import { PaginationComponent } from './components/pagination/pagination.component';
+import {PaginationComponent} from './components/pagination/pagination.component';
+import {TournamentsComponent} from './components/tournaments/tournaments.component';
 
 @NgModule({
     declarations: [
@@ -61,7 +62,9 @@ import { PaginationComponent } from './components/pagination/pagination.componen
         AdminHeaderComponent,
         OrganizersComponent,
         BecomeOrganizerDialogComponent,
-        PaginationComponent
+        PaginationComponent,
+        TournamentsComponent,
+
     ],
     imports: [
         BrowserModule,

@@ -1,0 +1,33 @@
+.backgorund {
+  background-image: url("/./assets/bg.jpg");
+  background-size: cover;
+  background-attachment: fixed;
+  height: calc(90vh + 8.5px);
+}
+
+.container {
+  height: 70vh;
+  line-height: 50px;
+}
+
+mat-expansion-panel{
+  margin-bottom: 10px;
+  border: 2px solid var(--primary-color);
+}
+mat-accordion{
+
+}
+
+.text-center{
+  text-align: center;
+}
+
+.f-chango {
+  color: white;
+  font-family: 'Chango', cursive;
+  -webkit-text-stroke: 2px var(--primary-color);
+}
+
+.fs-40 {
+  font-size: 50px;
+}
