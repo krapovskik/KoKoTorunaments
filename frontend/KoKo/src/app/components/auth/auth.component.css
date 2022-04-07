@@ -1,11 +1,9 @@
 :host {
-  background-image: url("/./assets/main.jpg");
-  background-position: center center;
-  background-repeat: no-repeat;
+  background-image: url("/./assets/bg.jpg");
   background-attachment: fixed;
   background-size: cover;
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 90vh;
+  height: calc(90vh + 8.5px);
 }

@@ -8,6 +8,7 @@ import {AdminComponent} from "./components/admin/admin.component";
 import {OrganizerRequestsComponent} from "./components/admin/organizer-requests/organizer-requests.component";
 import {OrganizersComponent} from "./components/admin/organizers/organizers.component";
 import {AuthGuard} from "./helper/auth.guard";
+import {TournamentComponent} from "./components/tournament/tournament.component";
 
 const routes: Routes = [
     {
@@ -43,6 +44,10 @@ const routes: Routes = [
                 component: OrganizersComponent
             }
         ]
+    },
+    {
+        path: 'tournaments',
+        component: TournamentComponent
     },
     {
         path: '**',

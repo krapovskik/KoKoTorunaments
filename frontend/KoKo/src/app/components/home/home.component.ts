@@ -1,15 +1,21 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
+import {RegisterUserDialog} from "../header/registerUserDialog/register-user-dialog.component";
+import {MatDialog} from "@angular/material/dialog";
 
 @Component({
-  selector: 'app-home',
-  templateUrl: './home.component.html',
-  styleUrls: ['./home.component.css']
+    selector: 'app-home',
+    templateUrl: './home.component.html',
+    styleUrls: ['./home.component.css']
 })
-export class HomeComponent implements OnInit {
+export class HomeComponent {
 
-  constructor() { }
+    constructor(private dialog: MatDialog) {
+    }
 
-  ngOnInit(): void {
-  }
+    openRegisterDialog(): void {
+        this.dialog.open(RegisterUserDialog, {
+            width: '500px',
+        });
+    }
 
 }
