@@ -6,7 +6,11 @@ import com.sorsix.koko.domain.enumeration.TournamentType
 import com.sorsix.koko.dto.response.NotFoundResponse
 import com.sorsix.koko.dto.response.Response
 import com.sorsix.koko.dto.response.SuccessResponse
+import com.sorsix.koko.dto.response.TournamentListResponse
 import com.sorsix.koko.repository.TournamentRepository
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.PageImpl
+import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Service
 import javax.transaction.Transactional
 
@@ -71,4 +75,16 @@ class TournamentService(val tournamentRepository: TournamentRepository) {
         tournamentRepository.findAllByTimelineType(timelineTournamentType)
 
 
+    fun getAllTournamentsByTimelinePaginated(
+        pageable: Pageable,
+        timelineTournamentType: TimelineTournamentType
+    ): Page<TournamentListResponse> {
+        val tournaments = tournamentRepository.findAllByTimelineType(timelineTournamentType, pageable)
+
+        val list = tournaments.content.map {
+            TournamentListResponse(it.id, it.name)
+        }
+
+        return PageImpl(list, pageable, tournaments.totalElements)
+    }
 }

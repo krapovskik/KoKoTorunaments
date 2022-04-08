@@ -3,6 +3,8 @@ package com.sorsix.koko.repository
 import com.sorsix.koko.domain.Tournament
 import com.sorsix.koko.domain.enumeration.TimelineTournamentType
 import com.sorsix.koko.domain.enumeration.TournamentType
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.Pageable
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.Modifying
 import org.springframework.data.jpa.repository.Query
@@ -12,6 +14,8 @@ import org.springframework.stereotype.Repository
 interface TournamentRepository : JpaRepository<Tournament, Long> {
 
     fun findAllByTimelineType(timelineTournamentType: TimelineTournamentType): List<Tournament>
+
+    fun findAllByTimelineType(timelineTournamentType: TimelineTournamentType, pageable: Pageable): Page<Tournament>
 
     @Modifying
     @Query(
