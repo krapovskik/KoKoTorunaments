@@ -47,4 +47,5 @@ app-pagination {
 
 .arrow {
   margin: 10px;
+  transform: scale(2);
 }

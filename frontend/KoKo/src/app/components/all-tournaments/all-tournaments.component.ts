@@ -1,6 +1,9 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
-import {AdminService} from "../../service/admin.service";
-import {PaginationComponent} from "../pagination/pagination.component";
+import {Component, OnInit} from '@angular/core';
+import {TournamentService} from "../../service/tournament.service";
+import {TournamentList} from "../../model/TournamentList";
+import {ActivatedRoute} from "@angular/router";
+import {map, Observable} from "rxjs";
+import {Page} from "../../model/Page";
 
 @Component({
     selector: 'app-all-tournaments',
@@ -9,21 +12,48 @@ import {PaginationComponent} from "../pagination/pagination.component";
 })
 export class AllTournamentsComponent implements OnInit {
 
-    @ViewChild(PaginationComponent) pagination!: PaginationComponent;
+    $type = this.route.paramMap.pipe(
+        map(param => param.get('type'))
+    );
 
-    navigationPath = "/allTournaments/ongoing"
-    functionToCall: any = this.adminService.getOrganizerRequests;
+    navigationPath!: string
+    functionToCall!: (pageIndex: number, pageSize: number) => Observable<Page<any>>;
+    titles = ['ongoing', 'finished', 'comingsoon']
+    currentIndex = 0
+    nextIndex = 1;
+    prevIndex = 2;
 
-    title = 'ongoing'
+    tournaments: TournamentList[] = [];
 
-    constructor(private adminService: AdminService) {
+    constructor(private tournamentService: TournamentService, private route: ActivatedRoute) {
     }
 
     ngOnInit(): void {
+        this.$type.subscribe({
+            next: data => {
+                switch (data) {
+                    case 'ongoing':
+                        this.functionToCall = this.tournamentService.getOngoingTournaments
+                        this.currentIndex = 0;
+                        break;
+                    case 'finished':
+                        this.functionToCall = this.tournamentService.getFinishedTournaments
+                        this.currentIndex = 1;
+                        break;
+                    case 'comingsoon':
+                        this.functionToCall = this.tournamentService.getComingSoonTournaments
+                        this.currentIndex = 2;
+                        break;
+                }
 
+                this.navigationPath = `/allTournaments/${data}`
+                this.nextIndex = (this.currentIndex + 1) % this.titles.length;
+                this.prevIndex = (this.currentIndex - 1) == -1 ? 2 : this.currentIndex - 1;
+            }
+        })
     }
 
-    onResult(event: any) {
-
+    onResult(event: TournamentList[]) {
+        this.tournaments = event;
     }
 }

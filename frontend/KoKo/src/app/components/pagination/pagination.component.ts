@@ -4,6 +4,7 @@ import {Organizer} from "../../model/Organizer";
 import {ActivatedRoute, Router} from "@angular/router";
 import {PageEvent} from "@angular/material/paginator";
 import {HttpClient} from "@angular/common/http";
+import {Page} from "../../model/Page";
 
 @Component({
     selector: 'app-pagination',
@@ -15,7 +16,7 @@ export class PaginationComponent implements OnInit, OnChanges {
     $pageEvent = new Subject<{ pageIndex: number, pageSize: number }>()
 
     @Input() navigationPath!: string;
-    @Input() functionToCall!: (pageIndex: number, pageSize: number) => Observable<any>;
+    @Input() functionToCall!: (pageIndex: number, pageSize: number) => Observable<Page<any>>;
 
     @Output() result = new EventEmitter();
 
