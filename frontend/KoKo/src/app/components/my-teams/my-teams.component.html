@@ -1,0 +1,53 @@
+<div class="background">
+  <div class="container">
+    <div class="fs-30 f-chango text-center">
+      <div fxFlex fxLayout="row" fxLayoutAlign="center center">
+        <p class="title">My Teams</p>
+      </div>
+    </div>
+    <div class="teams">
+      <mat-accordion fxFlex fxLayout="row wrap" fxLayoutAlign="start start">
+        <mat-expansion-panel *ngFor="let myTeam of myTeams">
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              {{myTeam.teamName}}
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+          <form>
+            <mat-form-field appearance="fill">
+              <mat-label>Add team member</mat-label>
+              <input type="text"
+                     placeholder="Search..."
+                     matInput
+                     [formControl]="searchFormControl"
+                     name="searchField"
+                     [matAutocomplete]="auto">
+              <mat-autocomplete #auto="matAutocomplete">
+                <mat-option *ngFor="let option of options" [value]="option.fullNameId">
+                  {{option.fullNameId}}
+                </mat-option>
+              </mat-autocomplete>
+            </mat-form-field>
+            <app-loading-button style="margin-left: 5px" [text]="'Add team member'"
+                                (click)="addUserToTeam(myTeam.teamId)"></app-loading-button>
+            <p class="sendInvite" (click)="sendInvite()">
+              Cant find who you are looking for? Send an invite
+            </p>
+          </form>
+          <mat-expansion-panel style="width: 80%">
+            <mat-expansion-panel-header>
+              <mat-panel-title>
+                Team members:
+              </mat-panel-title>
+              <mat-panel-description>
+                Open for more
+              </mat-panel-description>
+            </mat-expansion-panel-header>
+            <p *ngFor="let teamMember of myTeam.teamMemberResponse">- {{teamMember.fullNameId}}</p>
+          </mat-expansion-panel>
+        </mat-expansion-panel>
+      </mat-accordion>
+    </div>
+    <button mat-raised-button color="accent" (click)="openCreateTeamDialog()">Create new team</button>
+  </div>
+</div>

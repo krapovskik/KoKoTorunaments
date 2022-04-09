@@ -10,6 +10,7 @@ import {OrganizersComponent} from "./components/admin/organizers/organizers.comp
 import {AuthGuard} from "./helper/auth.guard";
 import {TournamentsComponent} from "./components/tournaments/tournaments.component";
 import {AllTournamentsComponent} from "./components/all-tournaments/all-tournaments.component";
+import {MyTeamsComponent} from "./components/my-teams/my-teams.component";
 
 const routes: Routes = [
     {
@@ -53,6 +54,10 @@ const routes: Routes = [
     {
         path: 'allTournaments/:type/:currentPage/:size',
         component: AllTournamentsComponent
+    },
+    {
+        path: 'myTeams',
+        component: MyTeamsComponent
     },
     {
         path: '**',

@@ -1,0 +1,60 @@
+.background {
+  background-image: url("/./assets/bg.jpg");
+  background-size: cover;
+  background-attachment: fixed;
+  height: calc(90vh + 8.5px);
+  display: flex;
+  justify-content: center;
+}
+
+.teams {
+  height: calc(100vh - 200px);
+  overflow: auto;
+}
+
+.container {
+  height: 80vh;
+  width: 80vw;
+}
+
+mat-expansion-panel {
+  padding: 5px;
+  margin: 1em;
+  border: 2px solid var(--primary-color);
+  width: 30%;
+}
+
+button {
+  width: 100%;
+  margin-top: 10px;
+}
+
+@media only screen and (max-width: 600px) {
+  mat-expansion-panel {
+    width: 85%;
+  }
+}
+
+.title {
+  line-height: 50px;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.f-chango {
+  color: white;
+  font-family: 'Chango', cursive;
+  -webkit-text-stroke: 2px var(--primary-color);
+}
+
+.fs-30 {
+  font-size: 30px;
+}
+
+.sendInvite {
+  color: blue;
+  text-decoration: underline;
+  cursor: pointer;
+}

@@ -2,6 +2,7 @@ import {Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {Observable} from "rxjs";
 import {Response} from "../model/Response";
+import {TeamMember} from "../model/TeamMember";
 
 @Injectable({
     providedIn: 'root'
@@ -16,5 +17,9 @@ export class UserService {
             title: title,
             description: description
         });
+    }
+
+    searchUser(query: string): Observable<TeamMember[]> {
+        return this.http.get<TeamMember[]>(`/api/user/searchUser?query=${query}`)
     }
 }

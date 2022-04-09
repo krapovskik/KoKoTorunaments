@@ -14,9 +14,16 @@ interface AppUserRepository : JpaRepository<AppUser, Long> {
 
     fun findAppUserByEmail(email: String): AppUser?
 
+    fun findTopByAppUserRole(userRole: AppUserRole)
+
     fun findAllByAppUserRole(pageable: Pageable, appUserRole: AppUserRole): Page<AppUser>
 
     @Modifying
     @Query(value = "update AppUser a set a.appUserRole = :userRole where a.id = :userId")
     fun updateAppUserRole(userId: Long, userRole: AppUserRole): Int
+
+    @Query(
+        value = "select au from AppUser au where lower(concat(au.firstName, ' ', au.lastName, '-', au.id)) like %:query%"
+    )
+    fun searchAppUserByFirstNameOrLastName(query: String): List<AppUser>
 }
