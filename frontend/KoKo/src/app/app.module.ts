@@ -49,6 +49,8 @@ import {TournamentsComponent} from './components/tournaments/tournaments.compone
 import {LoadingButtonComponent} from "./components/loading-button/loading-button.component";
 import { AllTournamentsComponent } from './components/all-tournaments/all-tournaments.component';
 import { CreateTeamDialogComponent } from './components/header/create-team-dialog/create-team-dialog.component';
+import { MyTeamsComponent } from './components/my-teams/my-teams.component';
+import {MatAutocompleteModule} from "@angular/material/autocomplete";
 
 @NgModule({
     declarations: [
@@ -70,6 +72,7 @@ import { CreateTeamDialogComponent } from './components/header/create-team-dialo
         LoadingButtonComponent,
         AllTournamentsComponent,
         CreateTeamDialogComponent,
+        MyTeamsComponent,
     ],
     imports: [
         BrowserModule,
@@ -103,7 +106,8 @@ import { CreateTeamDialogComponent } from './components/header/create-team-dialo
         MatSidenavModule,
         MatPaginatorModule,
         MatExpansionModule,
-        MatProgressBarModule
+        MatProgressBarModule,
+        MatAutocompleteModule
     ],
     providers: [
         {provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true},

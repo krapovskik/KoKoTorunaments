@@ -4,7 +4,6 @@ import {RegisterUserDialog} from "./registerUserDialog/register-user-dialog.comp
 import {TokenService} from "../../service/token.service";
 import {Router} from "@angular/router";
 import {BecomeOrganizerDialogComponent} from "./become-organizer-dialog/become-organizer-dialog.component";
-import {CreateTeamDialogComponent} from "./create-team-dialog/create-team-dialog.component";
 
 @Component({
     selector: 'app-header',
@@ -33,12 +32,6 @@ export class HeaderComponent {
         this.dialog.open(BecomeOrganizerDialogComponent, {
             width: '500px',
         });
-    }
-
-    openCreateTeamDialog() {
-        this.dialog.open(CreateTeamDialogComponent, {
-            width: '500px',
-        })
     }
 
     logOut() {

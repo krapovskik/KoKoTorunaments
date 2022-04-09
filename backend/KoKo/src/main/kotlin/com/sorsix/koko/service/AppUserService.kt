@@ -6,10 +6,7 @@ import com.sorsix.koko.domain.enumeration.AppUserRole
 import com.sorsix.koko.dto.request.ActivateAccountRequest
 import com.sorsix.koko.dto.request.RegisterRequest
 import com.sorsix.koko.dto.request.RequestOrganizerRequest
-import com.sorsix.koko.dto.response.BadRequestResponse
-import com.sorsix.koko.dto.response.NotFoundResponse
-import com.sorsix.koko.dto.response.Response
-import com.sorsix.koko.dto.response.SuccessResponse
+import com.sorsix.koko.dto.response.*
 import com.sorsix.koko.repository.AppUserRepository
 import com.sorsix.koko.repository.OrganizerRequestRepository
 import com.sorsix.koko.util.EmailService
@@ -93,7 +90,7 @@ class AppUserService(
     fun saveOrganizerRequest(requestOrganizer: RequestOrganizerRequest): Response {
         val appUser = SecurityContextHolder.getContext().authentication.principal as AppUser
 
-        if(organizerRequestRepository.existsByUser(appUser)) {
+        if (organizerRequestRepository.existsByUser(appUser)) {
             return BadRequestResponse("You have already sent a request")
         }
 
@@ -101,6 +98,15 @@ class AppUserService(
         organizerRequestRepository.save(OrganizerRequest(0, title, description, appUser))
 
         return SuccessResponse("Request sent successfully")
+    }
+
+    fun searchUser(query: String?): List<TeamMemberResponse> {
+        query?.let {
+            return appUserRepository.searchAppUserByFirstNameOrLastName(query.lowercase()).map { result ->
+                println(result)
+                TeamMemberResponse("${result.firstName} ${result.lastName}-${result.id}")
+            }
+        } ?: return listOf()
     }
 }
 
