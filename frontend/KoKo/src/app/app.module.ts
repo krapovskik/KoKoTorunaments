@@ -48,6 +48,7 @@ import {PaginationComponent} from './components/pagination/pagination.component'
 import {TournamentsComponent} from './components/tournaments/tournaments.component';
 import {LoadingButtonComponent} from "./components/loading-button/loading-button.component";
 import { AllTournamentsComponent } from './components/all-tournaments/all-tournaments.component';
+import { CreateTeamDialogComponent } from './components/header/create-team-dialog/create-team-dialog.component';
 
 @NgModule({
     declarations: [
@@ -68,6 +69,7 @@ import { AllTournamentsComponent } from './components/all-tournaments/all-tourna
         TournamentsComponent,
         LoadingButtonComponent,
         AllTournamentsComponent,
+        CreateTeamDialogComponent,
     ],
     imports: [
         BrowserModule,

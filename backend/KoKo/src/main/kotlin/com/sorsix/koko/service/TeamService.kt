@@ -1,6 +1,8 @@
 package com.sorsix.koko.service
 
 import com.sorsix.koko.domain.Team
+import com.sorsix.koko.dto.request.CreateTeamRequest
+import com.sorsix.koko.dto.response.BadRequestResponse
 import com.sorsix.koko.dto.response.NotFoundResponse
 import com.sorsix.koko.dto.response.Response
 import com.sorsix.koko.dto.response.SuccessResponse
@@ -18,7 +20,16 @@ class TeamService(
 
     fun findTeamByIdOrNull(teamId: Long): Team? = teamRepository.findByIdOrNull(teamId)
 
-    fun createTeam(teamName: String): Response = SuccessResponse(teamRepository.save(Team(name = teamName)))
+    fun createTeam(createTeamRequest: CreateTeamRequest): Response {
+
+        val teamName = createTeamRequest.teamName
+        if(teamRepository.existsByName(teamName)) {
+            return BadRequestResponse("Team already exists")
+        }
+
+        teamRepository.save(Team(name = teamName))
+        return SuccessResponse("Team created successfully")
+    }
 
     @Transactional
     fun deleteTeam(teamId: Long): Response =

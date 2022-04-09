@@ -14,6 +14,8 @@ interface AppUserRepository : JpaRepository<AppUser, Long> {
 
     fun findAppUserByEmail(email: String): AppUser?
 
+    fun findTopByAppUserRole(userRole: AppUserRole)
+
     fun findAllByAppUserRole(pageable: Pageable, appUserRole: AppUserRole): Page<AppUser>
 
     @Modifying
