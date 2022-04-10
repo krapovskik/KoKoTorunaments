@@ -43,7 +43,7 @@ export class CreateTeamDialogComponent {
             })).subscribe({
             next: (data) => {
                 this.messageService.showSuccessMessage(data.response)
-                this.dialogRef.close()
+                this.dialogRef.close('success')
             },
             error: err => {
                 this.messageService.showErrorMessage(err.error.message)

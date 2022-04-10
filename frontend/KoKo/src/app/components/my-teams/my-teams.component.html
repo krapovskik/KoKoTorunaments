@@ -1,12 +1,17 @@
 <div class="background">
   <div class="container">
     <div class="fs-30 f-chango text-center">
-      <div fxFlex fxLayout="row" fxLayoutAlign="center center">
+      <div fxFlex fxLayout="column" fxLayoutAlign="center center">
         <p class="title">My Teams</p>
+        <div>
+          <button mat-button (click)="accordion.openAll()" fxFlex="50">Expand All</button>
+          <button mat-button (click)="accordion.closeAll()" fxFlex="50">Collapse All</button>
+        </div>
       </div>
     </div>
     <div class="teams">
-      <mat-accordion fxFlex fxLayout="row wrap" fxLayoutAlign="start start">
+      <mat-accordion fxFlex fxLayout="row wrap" fxLayoutAlign="start start" multi>
+        <div style="display:none;"></div>
         <mat-expansion-panel *ngFor="let myTeam of myTeams">
           <mat-expansion-panel-header>
             <mat-panel-title>
@@ -28,7 +33,7 @@
                 </mat-option>
               </mat-autocomplete>
             </mat-form-field>
-            <app-loading-button style="margin-left: 5px" [text]="'Add team member'"
+            <app-loading-button [text]="'Add team member'"
                                 (click)="addUserToTeam(myTeam.teamId)"></app-loading-button>
             <p class="sendInvite" (click)="sendInvite()">
               Cant find who you are looking for? Send an invite

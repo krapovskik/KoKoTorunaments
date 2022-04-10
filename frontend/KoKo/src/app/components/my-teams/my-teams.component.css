@@ -8,13 +8,13 @@
 }
 
 .teams {
-  height: calc(100vh - 200px);
+  height: calc(100vh - 250px);
   overflow: auto;
 }
 
 .container {
   height: 80vh;
-  width: 80vw;
+  width: 85vw;
 }
 
 mat-expansion-panel {
@@ -57,4 +57,8 @@ button {
   color: blue;
   text-decoration: underline;
   cursor: pointer;
+}
+
+app-loading-button {
+  margin-left: 5px;
 }
