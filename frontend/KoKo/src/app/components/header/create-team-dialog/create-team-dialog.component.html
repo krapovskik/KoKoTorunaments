@@ -1,0 +1,11 @@
+<h1 mat-dialog-title>Create new team</h1>
+<div mat-dialog-content>
+  <form [formGroup]="createTeamForm" (ngSubmit)="onSubmit()">
+    <mat-form-field appearance="fill">
+      <mat-label>Team name</mat-label>
+      <input matInput formControlName="teamName" required>
+    </mat-form-field>
+    <app-loading-button [loading]="loading" [text]="'Create team'"></app-loading-button>
+    <button mat-button (click)="onNoClick()" type="reset">No Thanks</button>
+  </form>
+</div>

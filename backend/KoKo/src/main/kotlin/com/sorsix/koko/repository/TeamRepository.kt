@@ -9,6 +9,8 @@ import org.springframework.stereotype.Repository
 @Repository
 interface TeamRepository : JpaRepository<Team,Long>{
 
+    fun existsByName(name: String): Boolean
+
     @Modifying
     @Query(value = "update Team t set t.name = :teamName where t.id = :teamId ")
     fun updateTeamName(teamId: Long, teamName: String): Int
