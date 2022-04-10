@@ -27,6 +27,7 @@ p {
 mat-expansion-panel {
   margin-bottom: 10px;
   border: 2px solid var(--primary-color);
+  background: darkgray;
 }
 
 mat-accordion {
@@ -37,8 +38,8 @@ mat-accordion {
   text-align: center;
 }
 
-.text-white {
-  color: white;
+.text-black {
+  color: black;
 }
 
 .mt-5 {

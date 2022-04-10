@@ -30,4 +30,8 @@ export class TournamentsComponent implements OnInit {
         })
     }
 
+    joinTournament(type: String) {
+
+    }
+
 }

@@ -13,9 +13,10 @@ import org.springframework.stereotype.Repository
 @Repository
 interface TournamentRepository : JpaRepository<Tournament, Long> {
 
-    fun findAllByTimelineType(timelineTournamentType: TimelineTournamentType): List<Tournament>
+    fun findAllByTimelineTypeOrderByDateCreatedDesc(timelineTournamentType: TimelineTournamentType): List<Tournament>
 
-    fun findAllByTimelineType(timelineTournamentType: TimelineTournamentType, pageable: Pageable): Page<Tournament>
+    fun findAllByTimelineTypeOrderByDateCreatedDesc(timelineTournamentType: TimelineTournamentType, pageable: Pageable): Page<Tournament>
+
 
     @Modifying
     @Query(

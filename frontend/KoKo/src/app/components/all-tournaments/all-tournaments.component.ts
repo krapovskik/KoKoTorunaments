@@ -1,9 +1,9 @@
 import {Component, OnInit} from '@angular/core';
 import {TournamentService} from "../../service/tournament.service";
-import {TournamentList} from "../../model/TournamentList";
 import {ActivatedRoute} from "@angular/router";
 import {map, Observable} from "rxjs";
 import {Page} from "../../model/Page";
+import {Tournament} from "../../model/Tournament";
 
 @Component({
     selector: 'app-all-tournaments',
@@ -23,7 +23,7 @@ export class AllTournamentsComponent implements OnInit {
     nextIndex = 1;
     prevIndex = 2;
 
-    tournaments: TournamentList[] = [];
+    tournaments: Tournament[] = [];
 
     constructor(private tournamentService: TournamentService, private route: ActivatedRoute) {
     }
@@ -53,7 +53,9 @@ export class AllTournamentsComponent implements OnInit {
         })
     }
 
-    onResult(event: TournamentList[]) {
+    onResult(event: Tournament[]) {
         this.tournaments = event;
     }
+
+    joinTournament(){}
 }

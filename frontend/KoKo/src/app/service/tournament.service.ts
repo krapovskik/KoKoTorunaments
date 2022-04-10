@@ -3,7 +3,7 @@ import {HttpClient} from "@angular/common/http";
 import {Observable} from "rxjs";
 import {TournamentResponse} from "../model/TournamentResponse";
 import {Page} from "../model/Page";
-import {TournamentList} from "../model/TournamentList";
+import {Tournament} from "../model/Tournament";
 
 @Injectable({
     providedIn: 'root'
@@ -17,15 +17,15 @@ export class TournamentService {
         return this.http.get<TournamentResponse>('/api/tournament')
     }
 
-    getOngoingTournaments(page: number, size: number): Observable<Page<TournamentList>> {
-        return this.http.get<Page<TournamentList>>(`/api/tournament/ongoing?page=${page}&size=${size}`);
+    getOngoingTournaments(page: number, size: number): Observable<Page<Tournament>> {
+        return this.http.get<Page<Tournament>>(`/api/tournament/ongoing?page=${page}&size=${size}`);
     }
 
-    getFinishedTournaments(page: number, size: number): Observable<Page<TournamentList>> {
-        return this.http.get<Page<TournamentList>>(`/api/tournament/finished?page=${page}&size=${size}`);
+    getFinishedTournaments(page: number, size: number): Observable<Page<Tournament>> {
+        return this.http.get<Page<Tournament>>(`/api/tournament/finished?page=${page}&size=${size}`);
     }
 
-    getComingSoonTournaments(page: number, size: number): Observable<Page<TournamentList>> {
-        return this.http.get<Page<TournamentList>>(`/api/tournament/comingSoon?page=${page}&size=${size}`);
+    getComingSoonTournaments(page: number, size: number): Observable<Page<Tournament>> {
+        return this.http.get<Page<Tournament>>(`/api/tournament/comingSoon?page=${page}&size=${size}`);
     }
 }

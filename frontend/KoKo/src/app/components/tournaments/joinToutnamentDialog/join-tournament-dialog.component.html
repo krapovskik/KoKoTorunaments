@@ -1,0 +1,13 @@
+<h1 mat-dialog-title>Register new account</h1>
+<div mat-dialog-content>
+  <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+    <mat-form-field appearance="fill">
+      <mat-label>Email</mat-label>
+      <input matInput formControlName="email" required>
+    </mat-form-field>
+    <app-loading-button [loading]="loading" [text]="'Register'"></app-loading-button>
+    <button mat-button (click)="onNoClick()" type="reset">No Thanks</button>
+  </form>
+</div>
+<div mat-dialog-actions>
+</div>

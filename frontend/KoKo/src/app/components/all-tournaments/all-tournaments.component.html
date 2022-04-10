@@ -6,7 +6,7 @@
           <a routerLink="/allTournaments/{{titles[prevIndex]}}/1/15" class="arrow">
             <mat-icon>chevron_left</mat-icon>
           </a>
-          <p class="title">{{titles[currentIndex] | titlecase}} Tournaments</p>
+          <p class="title">{{ titles[currentIndex] | titlecase }} Tournaments</p>
           <a routerLink="/allTournaments/{{titles[nextIndex]}}/1/15" class="arrow">
             <mat-icon>chevron_right</mat-icon>
           </a>
@@ -14,8 +14,11 @@
       </div>
       <div class="tournaments">
         <mat-card *ngFor="let tournament of tournaments">
-          <mat-card-content fxFlex fxLayout="row" fxLayoutAlign="space-between center">
-            <mat-card-title>{{tournament.tournamentName}}</mat-card-title>
+          <mat-card-content fxFlex fxLayout="row" fxLayoutAlign="space-between center" class="fs-20">
+            <p>Name: {{ tournament.tournamentName | uppercase }}</p>
+            <p>Category: {{ tournament.tournamentCategory }}</p>
+            <p>Type: {{ tournament.tournamentType }}</p>
+            <p>{{ tournament.tournamentActualParticipants }}/{{ tournament.tournamentNumberOfParticipants }}</p>
             <a mat-raised-button color="primary" routerLink="/tournament/{{tournament.tournamentId}}">Open
               tournament</a>
           </mat-card-content>

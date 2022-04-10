@@ -3,11 +3,14 @@ package com.sorsix.koko.service
 import com.sorsix.koko.domain.Tournament
 import com.sorsix.koko.domain.enumeration.TimelineTournamentType
 import com.sorsix.koko.domain.enumeration.TournamentType
+import com.sorsix.koko.domain.view.PlayersInIndividualTournament
 import com.sorsix.koko.dto.response.NotFoundResponse
 import com.sorsix.koko.dto.response.Response
 import com.sorsix.koko.dto.response.SuccessResponse
-import com.sorsix.koko.dto.response.TournamentListResponse
+import com.sorsix.koko.dto.response.TournamentResponse
 import com.sorsix.koko.repository.TournamentRepository
+import com.sorsix.koko.repository.view.PlayersInIndividualTournamentRepository
+import com.sorsix.koko.repository.view.TeamsInTournamentRepository
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageImpl
 import org.springframework.data.domain.Pageable
@@ -15,7 +18,11 @@ import org.springframework.stereotype.Service
 import javax.transaction.Transactional
 
 @Service
-class TournamentService(val tournamentRepository: TournamentRepository) {
+class TournamentService(
+    val tournamentRepository: TournamentRepository,
+    val playersInIndividualTournamentRepository: PlayersInIndividualTournamentRepository,
+    val teamsInTournamentRepository: TeamsInTournamentRepository
+) {
 
     fun findAll(tournamentId: Long): List<Tournament> = tournamentRepository.findAll()
 
@@ -68,23 +75,63 @@ class TournamentService(val tournamentRepository: TournamentRepository) {
             NotFoundResponse("Tournament with $tournamentId not found.")
         }
 
-    fun findAllGroupByTimeLine(): Map<String, List<Tournament>> =
-        tournamentRepository.findAll().groupBy { it.timelineType.name }
+    fun findAllGroupByTimeLine(latest: Int = 3): Map<String, List<TournamentResponse>> {
+        val ongoing =
+            tournamentRepository
+                .findAllByTimelineTypeOrderByDateCreatedDesc(TimelineTournamentType.ONGOING)
+                .take(latest)
+                .map { mapTournamentsWithParticipantsNumber(it) }
+        val finished =
+            tournamentRepository
+                .findAllByTimelineTypeOrderByDateCreatedDesc(TimelineTournamentType.FINISHED)
+                .take(latest)
+                .map { mapTournamentsWithParticipantsNumber(it) }
+        val comingSoon =
+            tournamentRepository
+                .findAllByTimelineTypeOrderByDateCreatedDesc(TimelineTournamentType.COMING_SOON)
+                .take(latest)
+                .map { mapTournamentsWithParticipantsNumber(it) }
 
-    fun findAllByTimelineType(timelineTournamentType: TimelineTournamentType): List<Tournament> =
-        tournamentRepository.findAllByTimelineType(timelineTournamentType)
-
+        return mapOf(
+            "ONGOING" to ongoing,
+            "FINISHED" to finished,
+            "COMING_SOON" to comingSoon
+        )
+    }
 
     fun getAllTournamentsByTimelinePaginated(
         pageable: Pageable,
         timelineTournamentType: TimelineTournamentType
-    ): Page<TournamentListResponse> {
-        val tournaments = tournamentRepository.findAllByTimelineType(timelineTournamentType, pageable)
+    ): Page<TournamentResponse> {
+        val tournaments =
+            tournamentRepository.findAllByTimelineTypeOrderByDateCreatedDesc(timelineTournamentType, pageable)
 
-        val list = tournaments.content.map {
-            TournamentListResponse(it.id, it.name)
-        }
+        val list = tournaments.content
+            .map { mapTournamentsWithParticipantsNumber(it) }
 
         return PageImpl(list, pageable, tournaments.totalElements)
     }
+
+    private fun mapTournamentsWithParticipantsNumber(tournament: Tournament): TournamentResponse =
+        when (tournament.type) {
+            TournamentType.INDIVIDUAL -> TournamentResponse(
+                tournament.id,
+                tournament.name,
+                tournament.category,
+                playersInIndividualTournamentRepository.findAllByTournamentId(tournament.id).size,
+                tournament.numberOfParticipants,
+                tournament.type.name,
+                tournament.timelineType.name
+            )
+            TournamentType.TEAM -> TournamentResponse(
+                tournament.id,
+                tournament.name,
+                tournament.category,
+                teamsInTournamentRepository.findAllByTournamentId(tournament.id).size,
+                tournament.numberOfParticipants,
+                tournament.type.name,
+                tournament.timelineType.name
+            )
+        }
+
 }

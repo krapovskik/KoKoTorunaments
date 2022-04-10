@@ -1,7 +1,9 @@
 export interface Tournament {
-    name: string
-    category: string
-    numberOfParticipants: number
-    timelineType: string
-    type: string
+    tournamentId: number
+    tournamentName: string
+    tournamentCategory: string
+    tournamentActualParticipants: number
+    tournamentNumberOfParticipants: number
+    tournamentTimelineType: string
+    tournamentType: string
 }

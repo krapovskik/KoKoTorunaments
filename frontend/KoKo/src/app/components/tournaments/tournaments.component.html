@@ -8,6 +8,38 @@
           <mat-expansion-panel hideToggle>
             <mat-expansion-panel-header>
               <mat-panel-title>
+                Coming soon tournaments
+              </mat-panel-title>
+              <mat-panel-description>
+                Open for more
+              </mat-panel-description>
+            </mat-expansion-panel-header>
+            <div *ngFor="let tournament of comingSoonTournaments">
+              <div fxLayoutAlign="space-between center">
+                <p>Name: {{ tournament.tournamentName | uppercase }}</p>
+                <p>Category: {{ tournament.tournamentCategory }}</p>
+                <p>Type: {{ tournament.tournamentType }}</p>
+                <p>{{ tournament.tournamentActualParticipants }}/{{ tournament.tournamentNumberOfParticipants }}</p>
+                <button mat-raised-button color="primary"
+                        (click) = "joinTournament(tournament.tournamentType)"
+                        [disabled]="tournament.tournamentActualParticipants == tournament.tournamentNumberOfParticipants">
+                  Join
+                </button>
+                <a mat-raised-button color="primary" routerLink="/tournament/{{tournament.tournamentId}}">Open
+                  tournament</a>
+              </div>
+              <mat-divider></mat-divider>
+            </div>
+            <div class="text-center mt-5">
+              <mat-chip color="accent" selected>
+                <a routerLink="/allTournaments/comingsoon/1/15" class="text-black">View more</a>
+              </mat-chip>
+            </div>
+          </mat-expansion-panel>
+
+          <mat-expansion-panel hideToggle>
+            <mat-expansion-panel-header>
+              <mat-panel-title>
                 Ongoing tournaments
               </mat-panel-title>
               <mat-panel-description>
@@ -15,12 +47,19 @@
               </mat-panel-description>
             </mat-expansion-panel-header>
             <div *ngFor="let tournament of ongoingTournaments">
-              <p>{{ tournament.name }}</p>
+              <div fxLayoutAlign="space-between center">
+                <p>Name: {{ tournament.tournamentName | uppercase }}</p>
+                <p>Category: {{ tournament.tournamentCategory }}</p>
+                <p>Type: {{ tournament.tournamentType }}</p>
+                <p>{{ tournament.tournamentActualParticipants }}/{{ tournament.tournamentNumberOfParticipants }}</p>
+                <a mat-raised-button color="primary" routerLink="/tournament/{{tournament.tournamentId}}">Open
+                  tournament</a>
+              </div>
               <mat-divider></mat-divider>
             </div>
-            <div class="text-center f-chango mt-5">
+            <div class="text-center mt-5">
               <mat-chip color="accent" selected>
-                <a routerLink="/allTournaments/ongoing/1/15" class="text-white">View more</a>
+                <a routerLink="/allTournaments/ongoing/1/15" class="text-black">View more</a>
               </mat-chip>
             </div>
           </mat-expansion-panel>
@@ -35,35 +74,23 @@
               </mat-panel-description>
             </mat-expansion-panel-header>
             <div *ngFor="let tournament of finishedTournaments">
-              <p>{{ tournament.name }}</p>
+              <div fxLayoutAlign="space-between center">
+                <p>Name: {{ tournament.tournamentName | uppercase }}</p>
+                <p>Category: {{ tournament.tournamentCategory }}</p>
+                <p>Type: {{ tournament.tournamentType }}</p>
+                <p>{{ tournament.tournamentActualParticipants }}/{{ tournament.tournamentNumberOfParticipants }}</p>
+                <a mat-raised-button color="primary" routerLink="/tournament/{{tournament.tournamentId}}">Open
+                  tournament</a>
+              </div>
               <mat-divider></mat-divider>
             </div>
-            <div class="text-center f-chango mt-5">
+            <div class="text-center mt-5">
               <mat-chip color="accent" selected>
-                <a routerLink="/allTournaments/finished/1/15" class="text-white">View more</a>
+                <a routerLink="/allTournaments/finished/1/15" class="text-black">View more</a>
               </mat-chip>
             </div>
           </mat-expansion-panel>
 
-          <mat-expansion-panel hideToggle>
-            <mat-expansion-panel-header>
-              <mat-panel-title>
-                Coming soon tournaments
-              </mat-panel-title>
-              <mat-panel-description>
-                Open for more
-              </mat-panel-description>
-            </mat-expansion-panel-header>
-            <div *ngFor="let tournament of comingSoonTournaments">
-              <p>{{ tournament.name }}</p>
-              <mat-divider></mat-divider>
-            </div>
-            <div class="text-center f-chango mt-5">
-              <mat-chip color="accent" selected>
-                <a routerLink="/allTournaments/comingsoon/1/15" class="text-white">View more</a>
-              </mat-chip>
-            </div>
-          </mat-expansion-panel>
         </mat-accordion>
       </div>
     </div>
