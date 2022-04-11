@@ -72,7 +72,9 @@ class TeamService(
                 MyTeamsResponse(
                     it.key.id,
                     it.key.name,
-                    it.value.map { value ->
+                    it.value.filter { user ->
+                        user.appUser.isActive
+                    }.map { value ->
                         TeamMemberResponse("${value.appUser.firstName} ${value.appUser.lastName}-${value.appUser.id}")
                     }
                 )

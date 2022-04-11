@@ -23,4 +23,19 @@ class EmailService(val mailSender: JavaMailSender) {
 
         mailSender.send(message)
     }
+
+    fun sendInviteEmail(to: String, teamName: String, invitedBy: String, token: String) {
+        val message = SimpleMailMessage()
+
+        message.setFrom(fromMail)
+        message.setTo(to)
+        message.setSubject("KoKo Tournaments team invitation")
+
+        val text = """You have been invited by $invitedBy to join $teamName.
+            |Join on the following link
+            |http://localhost:4200/activate?token=${token}""".trimMargin()
+        message.setText(text)
+
+        mailSender.send(message)
+    }
 }
