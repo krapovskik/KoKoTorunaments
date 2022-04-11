@@ -22,4 +22,11 @@ export class UserService {
     searchUser(query: string): Observable<TeamMember[]> {
         return this.http.get<TeamMember[]>(`/api/user/searchUser?query=${query}`)
     }
+
+    sendInvite(email: string, teamId: number): Observable<Response<string>> {
+        return this.http.post<Response<string>>("/api/user/sendInvite", {
+            email: email,
+            teamId: teamId
+        })
+    }
 }

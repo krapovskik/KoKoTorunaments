@@ -1,14 +1,19 @@
 package com.sorsix.koko.service
 
+import com.sorsix.koko.domain.ActivationToken
 import com.sorsix.koko.domain.AppUser
+import com.sorsix.koko.domain.AppUserTeams
 import com.sorsix.koko.domain.OrganizerRequest
 import com.sorsix.koko.domain.enumeration.AppUserRole
 import com.sorsix.koko.dto.request.ActivateAccountRequest
 import com.sorsix.koko.dto.request.RegisterRequest
 import com.sorsix.koko.dto.request.RequestOrganizerRequest
+import com.sorsix.koko.dto.request.SendInviteRequest
 import com.sorsix.koko.dto.response.*
 import com.sorsix.koko.repository.AppUserRepository
+import com.sorsix.koko.repository.AppUserTeamsRepository
 import com.sorsix.koko.repository.OrganizerRequestRepository
+import com.sorsix.koko.repository.TeamRepository
 import com.sorsix.koko.util.EmailService
 import org.apache.commons.validator.routines.EmailValidator
 import org.springframework.data.repository.findByIdOrNull
@@ -23,6 +28,8 @@ import javax.transaction.Transactional
 class AppUserService(
     val appUserRepository: AppUserRepository,
     val organizerRequestRepository: OrganizerRequestRepository,
+    val teamRepository: TeamRepository,
+    val appUserTeamsRepository: AppUserTeamsRepository,
     val passwordEncoder: PasswordEncoder,
     val activationTokenService: ActivationTokenService,
     val emailService: EmailService
@@ -37,31 +44,13 @@ class AppUserService(
 
         val email = registerRequest.email
 
-        if (EmailValidator.getInstance().isValid(email)) {
-
-            appUserRepository.findAppUserByEmail(email)?.let {
-                return NotFoundResponse("Email already exists")
+        return when (val result = createUser(email)) {
+            is SuccessResponse<*> -> {
+                emailService.sendNewAccountMail(email, result.response.toString())
+                SuccessResponse("User registered successfully. Check your email")
             }
-
-            val appUser = AppUser(
-                0,
-                "",
-                "",
-                email,
-                "",
-                AppUserRole.PLAYER,
-                false
-            )
-
-            this.saveUser(appUser)
-
-            val activationToken = activationTokenService.createTokenForUser(appUser)
-            emailService.sendNewAccountMail(email, activationToken.token)
-
-            return SuccessResponse("User registered successfully check your email")
+            else -> result
         }
-
-        return NotFoundResponse("Invalid email format")
     }
 
     @Transactional
@@ -100,13 +89,59 @@ class AppUserService(
         return SuccessResponse("Request sent successfully")
     }
 
-    fun searchUser(query: String?): List<TeamMemberResponse> {
-        query?.let {
-            return appUserRepository.searchAppUserByFirstNameOrLastName(query.lowercase()).map { result ->
-                println(result)
-                TeamMemberResponse("${result.firstName} ${result.lastName}-${result.id}")
+    fun searchUser(query: String?): List<TeamMemberResponse> = query?.let {
+        appUserRepository.searchAppUserByFirstNameOrLastName(query.lowercase()).map { result ->
+            TeamMemberResponse("${result.firstName} ${result.lastName}-${result.id}")
+        }
+    } ?: listOf()
+
+    fun sendInvite(sendInviteRequest: SendInviteRequest): Response {
+        val (email, teamId) = sendInviteRequest
+
+        return when (val result = createUser(email)) {
+            is SuccessResponse<*> -> {
+                val team = teamRepository.findByIdOrNull(teamId)
+                team?.let {
+                    val invitedBy = SecurityContextHolder.getContext().authentication.principal as AppUser
+                    val activationToken = result.response as ActivationToken
+                    appUserTeamsRepository.save(AppUserTeams(team = team, appUser = activationToken.user))
+                    emailService.sendInviteEmail(
+                        email,
+                        team.name,
+                        "${invitedBy.firstName} ${invitedBy.lastName}",
+                        activationToken.token
+                    )
+                    SuccessResponse("Invitation sent successfully")
+                } ?: NotFoundResponse("Team not found")
             }
-        } ?: return listOf()
+            else -> result
+        }
+    }
+
+    private fun createUser(email: String): Response {
+
+        if (EmailValidator.getInstance().isValid(email)) {
+
+            appUserRepository.findAppUserByEmail(email)?.let {
+                return NotFoundResponse("Email already exists")
+            }
+
+            val appUser = AppUser(
+                0,
+                "",
+                "",
+                email,
+                "",
+                AppUserRole.PLAYER,
+                false
+            )
+
+            this.saveUser(appUser)
+            val activationToken = activationTokenService.createTokenForUser(appUser)
+            return SuccessResponse<ActivationToken>(activationToken)
+        }
+
+        return NotFoundResponse("Invalid email format")
     }
 }
 

@@ -52,6 +52,7 @@ import { CreateTeamDialogComponent } from './components/header/create-team-dialo
 import { MyTeamsComponent } from './components/my-teams/my-teams.component';
 import {MatAutocompleteModule} from "@angular/material/autocomplete";
 import { JoinTournamentDialogComponent } from './components/tournaments/joinToutnamentDialog/join-tournament-dialog.component';
+import { SendInviteDialogComponent } from './components/header/send-invite-dialog/send-invite-dialog.component';
 
 @NgModule({
     declarations: [
@@ -75,6 +76,7 @@ import { JoinTournamentDialogComponent } from './components/tournaments/joinTout
         CreateTeamDialogComponent,
         MyTeamsComponent,
         JoinTournamentDialogComponent,
+        SendInviteDialogComponent,
     ],
     imports: [
         BrowserModule,

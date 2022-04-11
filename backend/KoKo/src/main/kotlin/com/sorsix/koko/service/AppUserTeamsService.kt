@@ -17,6 +17,7 @@ class AppUserTeamsService
     fun findAllPlayersByTeam(teamId: Long): Response =
         teamService.findTeamByIdOrNull(teamId)?.let {
             val players = appUserTeamsRepository.findAppUserTeamsByTeam(it)
+                .filter { user -> user.appUser.isActive }
                 .map { userTeams -> TeamMemberResponse("${userTeams.appUser.firstName} ${userTeams.appUser.lastName}-${userTeams.appUser.id}") }
             SuccessResponse(players)
         } ?: NotFoundResponse("Team with $teamId not found.")

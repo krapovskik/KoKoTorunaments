@@ -9,6 +9,7 @@ import {UserService} from "../../service/user.service";
 import {TeamMember} from "../../model/TeamMember";
 import {MessageService} from "../../service/message.service";
 import {MatAccordion} from "@angular/material/expansion";
+import {SendInviteDialogComponent} from "../header/send-invite-dialog/send-invite-dialog.component";
 
 @Component({
     selector: 'app-my-teams',
@@ -73,8 +74,11 @@ export class MyTeamsComponent implements OnInit {
         }
     }
 
-    sendInvite() {
-
+    sendInvite(teamId: number) {
+        this.dialog.open(SendInviteDialogComponent, {
+            width: '500px',
+            data: teamId,
+        })
     }
 
     openCreateTeamDialog() {
