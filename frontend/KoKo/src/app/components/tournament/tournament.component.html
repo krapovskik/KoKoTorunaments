@@ -1,0 +1,12 @@
+<button class="sidebar-toggle" (click)="sideBarToggle()"
+        [style]="!sideBarOpen ? 'opacity: 1' : 'opacity: 0; visibility: hidden'">
+  <mat-icon>keyboard_arrow_left</mat-icon>
+</button>
+<mat-drawer-container style="height: 90vh">
+  <mat-drawer mode="side" position="end" [opened]="sideBarOpen">
+    <app-tournament-side-bar (toggleSideBarEvent)="sideBarToggle()"></app-tournament-side-bar>
+  </mat-drawer>
+  <mat-drawer-content>
+    <p>tournament works!</p>
+  </mat-drawer-content>
+</mat-drawer-container>

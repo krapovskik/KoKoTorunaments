@@ -21,7 +21,7 @@ import {FlexLayoutModule} from "@angular/flex-layout"
 import {MatChipsModule} from "@angular/material/chips";
 import {AuthComponent} from './components/auth/auth.component';
 import {MatFormFieldModule} from "@angular/material/form-field";
-import {MatOptionModule} from "@angular/material/core";
+import {MatOptionModule, MatRippleModule} from "@angular/material/core";
 import {MatInputModule} from "@angular/material/input";
 import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
 import {LoginComponent} from "./components/auth/login/login.component";
@@ -53,6 +53,8 @@ import { MyTeamsComponent } from './components/my-teams/my-teams.component';
 import {MatAutocompleteModule} from "@angular/material/autocomplete";
 import { JoinTournamentDialogComponent } from './components/tournaments/joinToutnamentDialog/join-tournament-dialog.component';
 import { SendInviteDialogComponent } from './components/header/send-invite-dialog/send-invite-dialog.component';
+import { TournamentComponent } from './components/tournament/tournament.component';
+import { TournamentSideBarComponent } from './components/tournament/tournament-side-bar/tournament-side-bar.component';
 
 @NgModule({
     declarations: [
@@ -77,6 +79,8 @@ import { SendInviteDialogComponent } from './components/header/send-invite-dialo
         MyTeamsComponent,
         JoinTournamentDialogComponent,
         SendInviteDialogComponent,
+        TournamentComponent,
+        TournamentSideBarComponent,
     ],
     imports: [
         BrowserModule,
@@ -111,7 +115,8 @@ import { SendInviteDialogComponent } from './components/header/send-invite-dialo
         MatPaginatorModule,
         MatExpansionModule,
         MatProgressBarModule,
-        MatAutocompleteModule
+        MatAutocompleteModule,
+        MatRippleModule
     ],
     providers: [
         {provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true},
