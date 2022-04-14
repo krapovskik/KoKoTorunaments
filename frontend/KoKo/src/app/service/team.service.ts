@@ -4,6 +4,7 @@ import {Observable} from "rxjs";
 import {Response} from "../model/Response";
 import {MyTeams} from "../model/MyTeams";
 import {TeamMember} from "../model/TeamMember";
+import {Team} from "../model/Team";
 
 @Injectable({
     providedIn: 'root'
@@ -21,6 +22,10 @@ export class TeamService {
 
     getMyTeams(): Observable<MyTeams[]> {
         return this.http.get<MyTeams[]>("/api/team/myTeams");
+    }
+
+    getTeamsForUser(): Observable<Team[]>{
+        return this.http.get<Team[]>("/api/team/userTeams");
     }
 
     addUserToTeam(userId: number, teamId: number): Observable<Response<string>> {

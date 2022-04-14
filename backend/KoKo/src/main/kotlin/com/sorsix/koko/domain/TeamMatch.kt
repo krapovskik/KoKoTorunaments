@@ -9,10 +9,10 @@ data class TeamMatch(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    val id: Long,
+    val id: Long = 0L,
 
     @Column(name = "winner")
-    val winner: Int?,
+    val winner: Int? = null,
 
     @OneToOne
     @JoinColumn(name = "team1_id")

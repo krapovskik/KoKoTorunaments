@@ -3,8 +3,8 @@ package com.sorsix.koko.domain
 import javax.persistence.*
 
 @Entity
-@Table(name = "individual_matches_tournaments")
-data class IndividualMatchesTournament(
+@Table(name = "app_user_tournaments")
+data class AppUserTournament(
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -16,7 +16,7 @@ data class IndividualMatchesTournament(
     val tournament: Tournament,
 
     @ManyToOne
-    @JoinColumn(name = "individual_match_id")
-    val individualMatch: IndividualMatch
+    @JoinColumn(name = "app_user_id")
+    val appUser: AppUser
 
 )

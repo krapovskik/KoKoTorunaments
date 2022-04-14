@@ -37,7 +37,8 @@ insert into tournaments (name, category, number_of_participants, type, timeline)
 values
        ('Kosharka', 'Kosharka', 4,'TEAM', 'ONGOING'),
        ('Ping pong', 'Ping Pong', 4,'INDIVIDUAL', 'COMING_SOON'),
-       ('Ping pong1', 'Ping Pong1', 4,'INDIVIDUAL', 'FINISHED');
+       ('Ping pong1', 'Ping Pong1', 4,'INDIVIDUAL', 'FINISHED'),
+       ('Kosharka', 'Kosharka', 4, 'TEAM','COMING_SOON');
 
 insert into teams (name)
 values
@@ -76,7 +77,10 @@ values
 insert into team_matches_tournaments (tournament_id, team_match_id)
 values
        (1,1),
-       (1,2);
+       (1,2),
+       (4,1),
+       (4,2);
+
 
 insert into individual_matches_tournaments (tournament_id, individual_match_id)
 values

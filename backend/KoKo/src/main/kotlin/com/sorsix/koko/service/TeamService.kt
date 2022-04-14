@@ -61,6 +61,18 @@ class TeamService(
             NotFoundResponse("Team with $teamId not found.")
         }
 
+    fun getTeamsForUser(): List<TeamResponse> {
+        val user = SecurityContextHolder.getContext().authentication.principal as AppUser
+        val appUserTeams = appUserTeamsRepository.findAppUserTeamsByAppUser(user)
+
+        return appUserTeams.map {
+            TeamResponse(
+                it.team.id,
+                it.team.name
+            )
+        }
+    }
+
     fun getMyTeams(): List<MyTeamsResponse> {
         val user = SecurityContextHolder.getContext().authentication.principal as AppUser
         val appUserTeams = appUserTeamsRepository.findTeamsForUser(user)

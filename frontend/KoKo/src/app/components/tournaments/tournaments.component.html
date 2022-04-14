@@ -21,7 +21,8 @@
                 <p>Type: {{ tournament.tournamentType }}</p>
                 <p>{{ tournament.tournamentActualParticipants }}/{{ tournament.tournamentNumberOfParticipants }}</p>
                 <button mat-raised-button color="primary"
-                        (click) = "joinTournament(tournament.tournamentType)"
+                        *ngIf="isLoggedIn()"
+                        (click) = "joinTournament(tournament.tournamentType, tournament.tournamentId)"
                         [disabled]="tournament.tournamentActualParticipants == tournament.tournamentNumberOfParticipants">
                   Join
                 </button>

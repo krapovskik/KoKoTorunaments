@@ -37,6 +37,10 @@ class TeamController(val teamService: TeamService, val appUserTeamsService: AppU
         }
     }
 
+    @GetMapping("/userTeams")
+    fun getTeamsForUser() = teamService.getTeamsForUser()
+
+
     @GetMapping("{teamId}/players")
     fun getPlayersInTeam(@PathVariable teamId: Long): ResponseEntity<Response> {
         return when (val result = appUserTeamsService.findAllPlayersByTeam(teamId)) {

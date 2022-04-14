@@ -17,7 +17,6 @@ interface TournamentRepository : JpaRepository<Tournament, Long> {
 
     fun findAllByTimelineTypeOrderByDateCreatedDesc(timelineTournamentType: TimelineTournamentType, pageable: Pageable): Page<Tournament>
 
-
     @Modifying
     @Query(
         value = "update Tournament t set " +
@@ -36,6 +35,10 @@ interface TournamentRepository : JpaRepository<Tournament, Long> {
         tournamentType: TournamentType,
         tournamentTimelineType: TimelineTournamentType
     ): Int
+
+    @Modifying
+    @Query(value = "update Tournament t set t.timelineType = :timelineType where t.id = :tournamentId")
+    fun updateTournamentStatus(timelineType: TimelineTournamentType, tournamentId: Long)
 
     @Modifying
     @Query(value = "delete from Tournament t where t.id = :tournamentId")

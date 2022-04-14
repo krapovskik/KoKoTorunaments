@@ -34,6 +34,24 @@ create table tournaments
     date_created           timestamp not null default now()
 );
 
+create table app_user_tournaments
+(
+    id            bigserial primary key,
+    tournament_id bigint not null,
+    app_user_id   bigint not null,
+    constraint fk_app_user_tournaments_tournament_id foreign key (tournament_id) references tournaments (id),
+    constraint fk_app_user_tournaments_app_user_id foreign key (app_user_id) references app_users (id)
+);
+
+create table team_tournaments
+(
+    id            bigserial primary key,
+    tournament_id bigint not null,
+    team_id       bigint not null,
+    constraint fk_team_tournaments_tournament_id foreign key (tournament_id) references tournaments (id),
+    constraint fk_team_tournaments_team_id foreign key (team_id) references teams (id)
+);
+
 create table team_matches
 (
     id       bigserial primary key,

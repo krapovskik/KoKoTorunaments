@@ -25,7 +25,6 @@
                      placeholder="Search..."
                      matInput
                      [formControl]="searchFormControl"
-                     name="searchField"
                      [matAutocomplete]="auto">
               <mat-autocomplete #auto="matAutocomplete">
                 <mat-option *ngFor="let option of options" [value]="option.fullNameId">

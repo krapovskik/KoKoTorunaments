@@ -2,6 +2,9 @@ import {Component, OnInit} from '@angular/core';
 import {TournamentService} from "../../service/tournament.service";
 import {Tournament} from "../../model/Tournament";
 import {MessageService} from "../../service/message.service";
+import {MatDialog} from "@angular/material/dialog";
+import {JoinTournamentDialogComponent} from "./joinToutnamentDialog/join-tournament-dialog.component";
+import {TokenService} from "../../service/token.service";
 
 @Component({
     selector: 'app-tournaments',
@@ -14,7 +17,11 @@ export class TournamentsComponent implements OnInit {
     finishedTournaments: Tournament[] = []
     comingSoonTournaments: Tournament[] = []
 
-    constructor(private tournamentService: TournamentService, private messageService: MessageService) {
+    constructor(private tournamentService: TournamentService,
+                private messageService: MessageService,
+                private dialog: MatDialog,
+                private tokenService: TokenService
+    ) {
     }
 
     ngOnInit(): void {
@@ -24,14 +31,22 @@ export class TournamentsComponent implements OnInit {
                 this.finishedTournaments = data['FINISHED']
                 this.comingSoonTournaments = data['COMING_SOON']
             },
-            error: data =>{
+            error: data => {
                 this.messageService.showErrorMessage(data.error.message)
             }
         })
     }
 
-    joinTournament(type: String) {
+    isLoggedIn(): boolean {
+        return !!this.tokenService.getUser()
+    }
 
+    joinTournament(type: String, tournamentId: number) {
+        if (type == "TEAM")
+            this.dialog.open(JoinTournamentDialogComponent, {
+                width: '500px',
+                data: tournamentId
+            });
     }
 
 }
