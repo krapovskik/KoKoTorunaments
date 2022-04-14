@@ -11,6 +11,7 @@ import {AuthGuard} from "./helper/auth.guard";
 import {TournamentsComponent} from "./components/tournaments/tournaments.component";
 import {AllTournamentsComponent} from "./components/all-tournaments/all-tournaments.component";
 import {MyTeamsComponent} from "./components/my-teams/my-teams.component";
+import {TournamentComponent} from "./components/tournament/tournament.component";
 
 const routes: Routes = [
     {
@@ -46,6 +47,10 @@ const routes: Routes = [
                 component: OrganizersComponent
             }
         ]
+    },
+    {
+        path: 'tournament/:id',
+        component: TournamentComponent
     },
     {
         path: 'tournaments',

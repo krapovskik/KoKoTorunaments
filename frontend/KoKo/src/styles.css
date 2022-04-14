@@ -27,3 +27,21 @@ body {
 .mat-button {
   margin-right: 5px;
 }
+
+.opponents {
+  border: 2px solid var(--primary-color) !important;
+}
+
+/*.brackets-viewer .match {*/
+/*  width: 200px;*/
+/*}*/
+
+/*.participant {*/
+/*  height: 50px;*/
+/*  align-items: center;*/
+/*  font-size: 16px;*/
+/*}*/
+
+/*.round {*/
+/*  --round-margin: 90px !important;*/
+/*}*/
