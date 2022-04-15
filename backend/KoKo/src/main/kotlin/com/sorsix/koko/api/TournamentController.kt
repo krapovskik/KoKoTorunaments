@@ -37,7 +37,7 @@ class TournamentController(val tournamentService: TournamentService) {
             is BadRequestResponse -> ResponseEntity.badRequest().body(result)
         }
 
-    @PostMapping
+    @PostMapping("/addPlayer")
     fun addPlayerToTournament(@RequestBody request: JoinUserTournamentRequest): ResponseEntity<Response> =
         when(val result =this.tournamentService.addUserToTournament(request.appUserId, request.tournamentId)){
             is SuccessResponse<*> -> ResponseEntity.ok(result)

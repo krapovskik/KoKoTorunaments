@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.Query
 
 interface TeamTournamentRepository : JpaRepository<TeamTournament, Long>{
 
-    fun findAllByTournamentId(tournamentId: Long): List<TeamTournament>
+    fun findAllByTournamentId(tournamentId: Long): MutableList<TeamTournament>
 
     @Modifying
     @Query(value = "delete from TeamTournament t where t.tournament.id = :tournamentId")

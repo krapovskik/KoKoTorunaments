@@ -96,7 +96,7 @@ class TournamentService(
             tournamentRepository
                 .findAllByTimelineTypeOrderByDateCreatedDesc(TimelineTournamentType.COMING_SOON)
                 .take(latest)
-                .map { mapTournamentsWithParticipantsNumber(it) }
+                .map { mapTournamentsWithParticipantsNumberComingSoon(it) }
 
         return mapOf(
             "ONGOING" to ongoing,
@@ -118,6 +118,7 @@ class TournamentService(
         return PageImpl(list, pageable, tournaments.totalElements)
     }
 
+    @Transactional
     fun addTeamToTournament(teamId: Long, tournamentId: Long): Response =
         tournamentRepository.findByIdOrNull(tournamentId)?.let { tournament ->
             teamService.findTeamByIdOrNull(teamId)?.let { team ->
@@ -130,7 +131,7 @@ class TournamentService(
                 } else if (participants.size == tournament.numberOfParticipants - 1) {
                     teamTournamentRepository.save(TeamTournament(tournament = tournament, team = team))
                     val teamMatches = mutableListOf<TeamMatch>()
-                    val actualTeams = teamTournamentRepository.findAll()
+                    val actualTeams = teamTournamentRepository.findAllByTournamentId(tournament.id)
                     actualTeams.shuffle()
                     for (i in 0 until actualTeams.size - 1 step 2) {
                         teamMatches.add(TeamMatch(team1 = actualTeams[i].team, team2 = actualTeams[i + 1].team))
@@ -148,6 +149,7 @@ class TournamentService(
             } ?: NotFoundResponse("Team with $teamId was not found.")
         } ?: NotFoundResponse("Tournament with $tournamentId was not found.")
 
+    @Transactional
     fun addUserToTournament(appUserId: Long, tournamentId: Long): Response =
         tournamentRepository.findByIdOrNull(tournamentId)?.let { tournament ->
             appUserService.findAppUserByIdOrNull(appUserId)?.let { appUser ->
@@ -160,7 +162,7 @@ class TournamentService(
                 } else if (participants.size == tournament.numberOfParticipants - 1) {
                     appUserTournamentRepository.save(AppUserTournament(tournament = tournament, appUser = appUser))
                     val individualMatches = mutableListOf<IndividualMatch>()
-                    val actualUsers = appUserTournamentRepository.findAll()
+                    val actualUsers = appUserTournamentRepository.findAllByTournamentId(tournament.id)
                     actualUsers.shuffle()
                     for (i in 0 until actualUsers.size - 1 step 2) {
                         individualMatches.add(
@@ -192,6 +194,29 @@ class TournamentService(
     @Transactional
     fun updateTournamentStatus(tournamentTimelineType: TimelineTournamentType, tournamentId: Long) =
         tournamentRepository.updateTournamentStatus(tournamentTimelineType, tournamentId)
+
+
+    private fun mapTournamentsWithParticipantsNumberComingSoon(tournament: Tournament): TournamentResponse =
+        when (tournament.type) {
+            TournamentType.INDIVIDUAL -> TournamentResponse(
+            tournament.id,
+            tournament.name,
+            tournament.category,
+            appUserTournamentRepository.findAllByTournamentId(tournament.id).size,
+            tournament.numberOfParticipants,
+            tournament.type.name,
+            tournament.timelineType.name
+            )
+            TournamentType.TEAM -> TournamentResponse(
+            tournament.id,
+            tournament.name,
+            tournament.category,
+            teamTournamentRepository.findAllByTournamentId(tournament.id).size,
+            tournament.numberOfParticipants,
+            tournament.type.name,
+            tournament.timelineType.name
+            )
+        }
 
     private fun mapTournamentsWithParticipantsNumber(tournament: Tournament): TournamentResponse =
         when (tournament.type) {

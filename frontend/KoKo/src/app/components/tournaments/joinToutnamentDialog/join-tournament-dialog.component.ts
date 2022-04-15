@@ -55,13 +55,20 @@ export class JoinTournamentDialogComponent implements OnInit {
 
         let team = this.teams.filter(team => team.teamName == searchedTeam)
 
-        if (team.length == 0){
+        if (team.length == 0) {
             this.messageService.showErrorMessage("Please select given teams.")
-        }else{
-            //TODO() function to add team to tournament
-            this.tournamentService.addTeamToTournament(team[0].teamId, this.tournamentId).subscribe()
-            this.dialogRef.close();
-            this.messageService.showSuccessMessage("Your team is added to this tournament.")
+        } else {
+            this.tournamentService.addTeamToTournament(team[0].teamId, this.tournamentId)
+                .subscribe({
+                    next: data => {
+                        this.messageService.showSuccessMessage(data.response)
+                        this.dialogRef.close("success");
+                    },
+                    error: data => {
+                        this.loading = false
+                        this.messageService.showErrorMessage(data.error.message)
+                    }
+                })
         }
 
 

@@ -26,12 +26,10 @@
                         [disabled]="tournament.tournamentActualParticipants == tournament.tournamentNumberOfParticipants">
                   Join
                 </button>
-                <a mat-raised-button color="primary" routerLink="/tournament/{{tournament.tournamentId}}">Open
-                  tournament</a>
               </div>
               <mat-divider></mat-divider>
             </div>
-            <div class="text-center mt-5">
+            <div class="text-center mt-5" *ngIf="comingSoonTournaments.length > 0">
               <mat-chip color="accent" selected>
                 <a routerLink="/allTournaments/comingsoon/1/15" class="text-black">View more</a>
               </mat-chip>
@@ -58,7 +56,7 @@
               </div>
               <mat-divider></mat-divider>
             </div>
-            <div class="text-center mt-5">
+            <div class="text-center mt-5" *ngIf="ongoingTournaments.length > 0">
               <mat-chip color="accent" selected>
                 <a routerLink="/allTournaments/ongoing/1/15" class="text-black">View more</a>
               </mat-chip>
@@ -85,7 +83,7 @@
               </div>
               <mat-divider></mat-divider>
             </div>
-            <div class="text-center mt-5">
+            <div class="text-center mt-5" *ngIf="finishedTournaments.length > 0">
               <mat-chip color="accent" selected>
                 <a routerLink="/allTournaments/finished/1/15" class="text-black">View more</a>
               </mat-chip>

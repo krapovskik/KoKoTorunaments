@@ -438,4 +438,9 @@ export class TournamentService {
     addTeamToTournament(teamId: number, tournamentId: number): Observable<Response<string>> {
         return this.http.post<Response<string>>('/api/tournament/addTeam', {teamId, tournamentId})
     }
+
+    addPlayerToTournament(appUserId: number, tournamentId: number): Observable<Response<string>> {
+        return this.http.post<Response<string>>('/api/tournament/addPlayer', {appUserId, tournamentId})
+    }
+
 }

@@ -10,7 +10,7 @@ import org.springframework.stereotype.Repository
 @Repository
 interface AppUserTournamentRepository : JpaRepository<AppUserTournament, Long> {
 
-    fun findAllByTournamentId(tournamentId: Long): List<AppUserTournament>
+    fun findAllByTournamentId(tournamentId: Long): MutableList<AppUserTournament>
 
     @Modifying
     @Query(value = "delete from AppUserTournament t where t.tournament.id = :tournamentId")
