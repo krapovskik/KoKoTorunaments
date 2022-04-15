@@ -12,6 +12,11 @@
   overflow: auto;
 }
 
+.team-members {
+  max-height: 150px;
+  overflow: auto;
+}
+
 .container {
   height: 80vh;
   width: 85vw;

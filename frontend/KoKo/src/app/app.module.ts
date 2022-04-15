@@ -55,6 +55,7 @@ import { JoinTournamentDialogComponent } from './components/tournaments/joinTout
 import { SendInviteDialogComponent } from './components/header/send-invite-dialog/send-invite-dialog.component';
 import { TournamentComponent } from './components/tournament/tournament.component';
 import { TournamentSideBarComponent } from './components/tournament/tournament-side-bar/tournament-side-bar.component';
+import { ChangeScoreDialogComponent } from './components/tournament/change-score-dialog/change-score-dialog.component';
 
 @NgModule({
     declarations: [
@@ -81,6 +82,7 @@ import { TournamentSideBarComponent } from './components/tournament/tournament-s
         SendInviteDialogComponent,
         TournamentComponent,
         TournamentSideBarComponent,
+        ChangeScoreDialogComponent,
     ],
     imports: [
         BrowserModule,

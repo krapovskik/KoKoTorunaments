@@ -32,16 +32,16 @@ body {
   border: 2px solid var(--primary-color) !important;
 }
 
-/*.brackets-viewer .match {*/
-/*  width: 200px;*/
-/*}*/
+  /*.brackets-viewer .match {*/
+  /*  width: 200px;*/
+  /*}*/
 
-/*.participant {*/
-/*  height: 50px;*/
-/*  align-items: center;*/
-/*  font-size: 16px;*/
-/*}*/
+  /*.participant {*/
+  /*  height: 50px;*/
+  /*  align-items: center;*/
+  /*  font-size: 16px;*/
+  /*}*/
 
-/*.round {*/
-/*  --round-margin: 90px !important;*/
-/*}*/
+.round {
+  --round-margin: 90px !important;
+}
