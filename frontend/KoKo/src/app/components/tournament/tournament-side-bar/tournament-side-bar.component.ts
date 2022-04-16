@@ -1,4 +1,5 @@
-import {Component, EventEmitter, Output} from '@angular/core';
+import {Component, EventEmitter, Input, Output} from '@angular/core';
+import {Tournament} from "../../../model/Tournament";
 
 @Component({
     selector: 'app-tournament-side-bar',
@@ -6,6 +7,9 @@ import {Component, EventEmitter, Output} from '@angular/core';
     styleUrls: ['./tournament-side-bar.component.css']
 })
 export class TournamentSideBarComponent {
+
+    @Input() tournament!: Tournament;
+    @Input() participants!: string[]
 
     @Output() toggleSideBarEvent: EventEmitter<any> = new EventEmitter();
 

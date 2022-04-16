@@ -57,6 +57,12 @@ import { TournamentComponent } from './components/tournament/tournament.componen
 import { TournamentSideBarComponent } from './components/tournament/tournament-side-bar/tournament-side-bar.component';
 import { ChangeScoreDialogComponent } from './components/tournament/change-score-dialog/change-score-dialog.component';
 
+declare global {
+    interface Window {
+        bracketsViewer?: any | undefined;
+    }
+}
+
 @NgModule({
     declarations: [
         AppComponent,

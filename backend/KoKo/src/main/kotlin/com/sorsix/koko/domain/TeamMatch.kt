@@ -14,12 +14,20 @@ data class TeamMatch(
     @Column(name = "winner")
     val winner: Int? = null,
 
+    @Column(name = "is_finished")
+    val isFinished: Boolean = false,
+
+    @Column(name = "number")
+    val number: Int? = null,
+
+    @Column(name = "round")
+    val round: Int? = null,
+
     @OneToOne
     @JoinColumn(name = "team1_id")
-    val team1: Team,
+    val team1: Team? = null,
 
     @OneToOne
     @JoinColumn(name = "team2_id")
-    val team2: Team,
-
+    val team2: Team? = null,
 )

@@ -56,8 +56,11 @@ create table team_matches
 (
     id       bigserial primary key,
     winner   integer,
-    team1_id bigint not null,
-    team2_id bigint not null,
+    is_finished bool,
+    number   integer,
+    round    integer,
+    team1_id bigint,
+    team2_id bigint,
     constraint fk_team_matches_team1_id foreign key (team1_id) references teams (id),
     constraint fk_team_matches_team2_id foreign key (team2_id) references teams (id)
 );
@@ -66,8 +69,11 @@ create table individual_matches
 (
     id           bigserial primary key,
     winner       integer,
-    app_user1_id bigint not null,
-    app_user2_id bigint not null,
+    is_finished   bool,
+    number       integer,
+    round        integer,
+    app_user1_id bigint,
+    app_user2_id bigint,
     constraint fk_individual_matches_app_user1_id foreign key (app_user1_id) references app_users (id),
     constraint fk_individual_matches_app_user2_id foreign key (app_user2_id) references app_users (id)
 );

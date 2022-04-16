@@ -14,12 +14,20 @@ data class IndividualMatch(
     @Column(name = "winner")
     val winner: Int? = null,
 
+    @Column(name = "is_finished")
+    val isFinished: Boolean = false,
+
+    @Column(name = "number")
+    val number: Int? = null,
+
+    @Column(name = "round")
+    val round: Int? = null,
+
     @OneToOne
     @JoinColumn(name = "app_user1_id")
-    val player1: AppUser,
+    val player1: AppUser? = null,
 
     @OneToOne
     @JoinColumn(name = "app_user2_id")
-    val player2: AppUser
-
+    val player2: AppUser? = null
 )

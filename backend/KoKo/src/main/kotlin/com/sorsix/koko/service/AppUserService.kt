@@ -46,7 +46,8 @@ class AppUserService(
 
         return when (val result = createUser(email)) {
             is SuccessResponse<*> -> {
-                emailService.sendNewAccountMail(email, result.response.toString())
+                val activationToken = result.response as ActivationToken
+                emailService.sendNewAccountMail(email, activationToken.token)
                 SuccessResponse("User registered successfully. Check your email")
             }
             else -> result
@@ -138,11 +139,9 @@ class AppUserService(
 
             this.saveUser(appUser)
             val activationToken = activationTokenService.createTokenForUser(appUser)
-            return SuccessResponse<ActivationToken>(activationToken)
+            return SuccessResponse(activationToken)
         }
 
         return NotFoundResponse("Invalid email format")
     }
 }
-
-//TODO() invite function - send invite, create account, add player to team
