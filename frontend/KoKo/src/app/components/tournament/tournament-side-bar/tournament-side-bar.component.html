@@ -4,7 +4,24 @@
       <mat-icon>close</mat-icon>
     </button>
   </h2>
-  <mat-list-item [disableRipple]="true">
-  <p>Tournament name: <span>KoKo Tournaments</span></p>
-  </mat-list-item>
+  <div *ngIf="tournament">
+    <mat-list-item [disableRipple]="true">
+      <p>Tournament name: {{tournament.tournamentName}}</p>
+    </mat-list-item>
+    <mat-list-item [disableRipple]="true">
+      <p>Tournament category: {{tournament.tournamentCategory}}</p>
+    </mat-list-item>
+    <mat-list-item [disableRipple]="true">
+      <p>Tournament type: {{tournament.tournamentType}}</p>
+    </mat-list-item>
+    <mat-list-item [disableRipple]="true">
+      <p>Tournament status: {{tournament.tournamentTimelineType}}</p>
+    </mat-list-item>
+    <mat-list-item [disableRipple]="true">
+      <p>Tournament participants: {{tournament.tournamentActualParticipants}}</p>
+    </mat-list-item>
+    <ol>
+      <li *ngFor="let participant of participants">{{participant}}</li>
+    </ol>
+  </div>
 </mat-nav-list>

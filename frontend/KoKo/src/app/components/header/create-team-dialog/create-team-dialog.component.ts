@@ -1,7 +1,6 @@
-import {Component, OnInit} from '@angular/core';
+import {Component} from '@angular/core';
 import {MatDialogRef} from "@angular/material/dialog";
 import {FormBuilder} from "@angular/forms";
-import {AuthService} from "../../../service/auth.service";
 import {MessageService} from "../../../service/message.service";
 import {TeamService} from "../../../service/team.service";
 import {finalize} from "rxjs";

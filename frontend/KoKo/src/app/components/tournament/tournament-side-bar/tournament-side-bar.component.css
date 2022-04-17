@@ -1,4 +1,6 @@
-.mat-list-item {
+.header {
+  display: flex;
+  justify-content: space-between;
 }
 
 .mat-list-item:hover {

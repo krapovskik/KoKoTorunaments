@@ -1,0 +1,41 @@
+<h1 mat-dialog-title>Edit match</h1>
+<div mat-dialog-content>
+  <form [formGroup]="editForm" (submit)="onSubmit()">
+    <section>
+      <mat-checkbox class="mb" formControlName="useNumberScore">Use Number Score</mat-checkbox>
+    </section>
+    <div *ngIf="editForm.controls['useNumberScore'].value">
+      <div class="form-control">
+        <p>{{matchData.opponent1.name}}</p>
+        <mat-form-field appearance="outline">
+          <mat-label>Score</mat-label>
+          <input matInput type="number" formControlName="score1" required>
+        </mat-form-field>
+      </div>
+      <div class="form-control">
+        <p>{{matchData.opponent2.name}}</p>
+        <mat-form-field appearance="outline">
+          <mat-label>Score</mat-label>
+          <input matInput type="number" formControlName="score2" required>
+        </mat-form-field>
+      </div>
+    </div>
+    <section>
+      <mat-checkbox class="mb" formControlName="isFinished">Mark finished</mat-checkbox>
+    </section>
+    <div *ngIf="editForm.controls['isFinished'].value">
+      <div class="form-control">
+        <p>Choose winner</p>
+        <mat-form-field appearance="outline">
+          <mat-label>Choose winner</mat-label>
+          <mat-select [disabled]="editForm.controls['useNumberScore'].value" formControlName="winner" required>
+            <mat-option [value]="0">{{matchData.opponent1.name}}</mat-option>
+            <mat-option [value]="1">{{matchData.opponent2.name}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </div>
+    <app-loading-button [loading]="loading" [text]="'Edit'"></app-loading-button>
+    <button mat-button type="reset" (click)="onNoClick()">No Thanks</button>
+  </form>
+</div>

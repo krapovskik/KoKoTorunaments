@@ -28,11 +28,6 @@
   transform: scale(2);
 }
 
-.header {
-  display: flex;
-  justify-content: space-between;
-}
-
 mat-drawer {
   width: 350px;
 }

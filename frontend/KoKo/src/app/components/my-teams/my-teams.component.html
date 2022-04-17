@@ -47,7 +47,9 @@
                 Open for more
               </mat-panel-description>
             </mat-expansion-panel-header>
-            <p *ngFor="let teamMember of myTeam.teamMemberResponse">- {{teamMember.fullNameId}}</p>
+            <div class="team-members">
+              <p *ngFor="let teamMember of myTeam.teamMemberResponse">- {{teamMember.fullNameId}}</p>
+            </div>
           </mat-expansion-panel>
         </mat-expansion-panel>
       </mat-accordion>

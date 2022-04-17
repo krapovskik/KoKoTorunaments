@@ -1,6 +1,7 @@
 package com.sorsix.koko.api
 
 import com.sorsix.koko.domain.enumeration.TimelineTournamentType
+import com.sorsix.koko.dto.request.EditMatchRequest
 import com.sorsix.koko.dto.request.JoinTeamTournamentRequest
 import com.sorsix.koko.dto.request.JoinUserTournamentRequest
 import com.sorsix.koko.dto.response.*
@@ -15,7 +16,7 @@ import org.springframework.web.bind.annotation.*
 class TournamentController(val tournamentService: TournamentService) {
 
     @GetMapping
-    fun findAllGrouped(): Map<String, List<TournamentResponse>> = tournamentService.findAllGroupByTimeLine();
+    fun findAllGrouped(): Map<String, List<TournamentResponse>> = tournamentService.findAllGroupByTimeLine()
 
     @GetMapping("/ongoing")
     fun getOngoingTournaments(pageable: Pageable) =
@@ -31,7 +32,7 @@ class TournamentController(val tournamentService: TournamentService) {
 
     @PostMapping("/addTeam")
     fun addTeamToTournament(@RequestBody request: JoinTeamTournamentRequest): ResponseEntity<Response> =
-        when(val result =this.tournamentService.addTeamToTournament(request.teamId, request.tournamentId)){
+        when (val result = this.tournamentService.addTeamToTournament(request.teamId, request.tournamentId)) {
             is SuccessResponse<*> -> ResponseEntity.ok(result)
             is NotFoundResponse -> ResponseEntity(result, HttpStatus.NOT_FOUND)
             is BadRequestResponse -> ResponseEntity.badRequest().body(result)
@@ -39,10 +40,25 @@ class TournamentController(val tournamentService: TournamentService) {
 
     @PostMapping("/addPlayer")
     fun addPlayerToTournament(@RequestBody request: JoinUserTournamentRequest): ResponseEntity<Response> =
-        when(val result =this.tournamentService.addUserToTournament(request.appUserId, request.tournamentId)){
+        when (val result = this.tournamentService.addUserToTournament(request.appUserId, request.tournamentId)) {
             is SuccessResponse<*> -> ResponseEntity.ok(result)
             is NotFoundResponse -> ResponseEntity(result, HttpStatus.NOT_FOUND)
             is BadRequestResponse -> ResponseEntity.badRequest().body(result)
         }
 
+    @GetMapping("/bracket/{id}")
+    fun getTournamentBracket(@PathVariable id: Long) =
+        when (val result = this.tournamentService.getAllTournamentMatches(id)) {
+            is SuccessResponse<*> -> ResponseEntity.ok(result)
+            is NotFoundResponse -> ResponseEntity(result, HttpStatus.NOT_FOUND)
+            is BadRequestResponse -> ResponseEntity.badRequest().body(result)
+        }
+
+    @PostMapping("/editMatch")
+    fun editMatch(@RequestBody editMatchRequest: EditMatchRequest) =
+        when (val result = this.tournamentService.editMatch(editMatchRequest)) {
+            is SuccessResponse<*> -> ResponseEntity.ok(result)
+            is NotFoundResponse -> ResponseEntity(result, HttpStatus.NOT_FOUND)
+            is BadRequestResponse -> ResponseEntity.badRequest().body(result)
+        }
 }
