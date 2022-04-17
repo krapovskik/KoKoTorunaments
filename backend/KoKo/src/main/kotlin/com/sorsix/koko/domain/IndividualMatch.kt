@@ -18,10 +18,20 @@ data class IndividualMatch(
     val isFinished: Boolean = false,
 
     @Column(name = "number")
-    val number: Int? = null,
+    val number: Int,
 
     @Column(name = "round")
-    val round: Int? = null,
+    val round: Int,
+
+    @Column(name = "score1")
+    val score1: Int? = null,
+
+    @Column(name = "score2")
+    val score2: Int? = null,
+
+    @OneToOne
+    @JoinColumn(name = "next_match")
+    val nextMatch: IndividualMatch? = null,
 
     @OneToOne
     @JoinColumn(name = "app_user1_id")

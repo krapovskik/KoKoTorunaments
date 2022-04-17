@@ -59,10 +59,14 @@ create table team_matches
     is_finished bool,
     number   integer,
     round    integer,
+    score1   integer,
+    score2   integer,
+    next_match bigint,
     team1_id bigint,
     team2_id bigint,
     constraint fk_team_matches_team1_id foreign key (team1_id) references teams (id),
-    constraint fk_team_matches_team2_id foreign key (team2_id) references teams (id)
+    constraint fk_team_matches_team2_id foreign key (team2_id) references teams (id),
+    constraint fk_team_matches_next_match_id foreign key (next_match) references team_matches(id)
 );
 
 create table individual_matches
@@ -72,10 +76,14 @@ create table individual_matches
     is_finished   bool,
     number       integer,
     round        integer,
+    score1   integer,
+    score2   integer,
+    next_match bigint,
     app_user1_id bigint,
     app_user2_id bigint,
     constraint fk_individual_matches_app_user1_id foreign key (app_user1_id) references app_users (id),
-    constraint fk_individual_matches_app_user2_id foreign key (app_user2_id) references app_users (id)
+    constraint fk_individual_matches_app_user2_id foreign key (app_user2_id) references app_users (id),
+    constraint fk_individual_matches_next_match_id foreign key (next_match) references individual_matches(id)
 );
 
 create table team_matches_tournaments

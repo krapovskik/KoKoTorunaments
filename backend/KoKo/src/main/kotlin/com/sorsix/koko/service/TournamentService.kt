@@ -3,6 +3,7 @@ package com.sorsix.koko.service
 import com.sorsix.koko.domain.*
 import com.sorsix.koko.domain.enumeration.TimelineTournamentType
 import com.sorsix.koko.domain.enumeration.TournamentType
+import com.sorsix.koko.dto.request.EditMatchRequest
 import com.sorsix.koko.dto.response.*
 import com.sorsix.koko.repository.*
 import com.sorsix.koko.repository.view.PlayersInIndividualTournamentRepository
@@ -183,7 +184,7 @@ class TournamentService(
         participants.shuffle()
         var tournamentSize = getNearestPowerOfTwo(participants) / 2
         val firstRoundSize = tournamentSize
-        val matches = mutableListOf<TeamMatch>()
+        var matches = mutableListOf<TeamMatch>()
         var round = 0
         while (tournamentSize > 0) {
             for (i in 0 until tournamentSize) {
@@ -191,6 +192,20 @@ class TournamentService(
             }
             tournamentSize /= 2
             round++
+        }
+
+        matches = teamMatchRepository.saveAll(matches)
+
+        tournamentSize = firstRoundSize
+        var start = 0
+        while (tournamentSize > 1) {
+            for (i in start until start + tournamentSize) {
+                val match = i / 2
+                val nextMatchIndex = start/2 + tournamentSize + match
+                matches[i] = matches[i].copy(nextMatch = matches[nextMatchIndex])
+            }
+            start += tournamentSize
+            tournamentSize /= 2
         }
 
         var teamIndex = 0
@@ -221,6 +236,78 @@ class TournamentService(
         return matches
     }
 
+    fun editMatch(editMatchRequest: EditMatchRequest): Response {
+        when (editMatchRequest.tournamentType) {
+            TournamentType.TEAM -> {
+                val match = teamMatchRepository.findByIdOrNull(editMatchRequest.matchId)
+                match?.let {
+                    val newMatch = match.copy(
+                        winner = editMatchRequest.winner,
+                        isFinished = editMatchRequest.isFinished,
+                        score1 = editMatchRequest.score1,
+                        score2 = editMatchRequest.score2,
+                    )
+
+                    newMatch.winner?.let {
+                        val nextMatch = match.nextMatch
+                        nextMatch?.let {
+                            when (newMatch.number % 2) {
+                                0 -> {
+                                    teamMatchRepository.save(
+                                        it.copy(team1 = if (newMatch.winner == 0) newMatch.team1 else newMatch.team2)
+                                    )
+                                }
+                                1 -> {
+                                    teamMatchRepository.save(
+                                        it.copy(team2 = if (newMatch.winner == 0) newMatch.team1 else newMatch.team2)
+                                    )
+                                }
+                                else -> {}
+                            }
+                        }
+                    }
+
+                    teamMatchRepository.save(newMatch)
+
+                } ?: return NotFoundResponse("Match not found")
+            }
+            TournamentType.INDIVIDUAL -> {
+                val match = individualMatchRepository.findByIdOrNull(editMatchRequest.matchId)
+                match?.let {
+                    val newMatch = match.copy(
+                        winner = editMatchRequest.winner,
+                        isFinished = editMatchRequest.isFinished,
+                        score1 = editMatchRequest.score1,
+                        score2 = editMatchRequest.score2,
+                    )
+
+                    newMatch.winner?.let {
+                        val nextMatch = match.nextMatch
+                        nextMatch?.let {
+                            when (newMatch.number % 2) {
+                                0 -> {
+                                    individualMatchRepository.save(
+                                        it.copy(player1 = if (newMatch.winner == 0) newMatch.player1 else newMatch.player2)
+                                    )
+                                }
+                                1 -> {
+                                    individualMatchRepository.save(
+                                        it.copy(player2 = if (newMatch.winner == 0) newMatch.player1 else newMatch.player2)
+                                    )
+                                }
+                                else -> {}
+                            }
+                        }
+                    }
+
+                    individualMatchRepository.save(newMatch)
+                } ?: return NotFoundResponse("Match not found")
+            }
+        }
+
+        return SuccessResponse("Saved match")
+    }
+
     fun getAllTournamentMatches(tournamentId: Long): Response {
         val tournament = tournamentRepository.findByIdOrNull(tournamentId)
 
@@ -239,8 +326,8 @@ class TournamentService(
                                         it.isFinished,
                                         it.number,
                                         it.round,
-                                        it.team1?.let { team -> OpponentResponse(team.id, team.name) },
-                                        it.team2?.let { team -> OpponentResponse(team.id, team.name) }
+                                        it.team1?.let { team -> OpponentResponse(team.id, team.name, it.score1) },
+                                        it.team2?.let { team -> OpponentResponse(team.id, team.name, it.score2) }
                                     )
                                 })
                     )
@@ -261,13 +348,15 @@ class TournamentService(
                                         it.player1?.let { player ->
                                             OpponentResponse(
                                                 player.id,
-                                                "${player.firstName} ${player.lastName}"
+                                                "${player.firstName} ${player.lastName}",
+                                                it.score1
                                             )
                                         },
                                         it.player2?.let { player ->
                                             OpponentResponse(
                                                 player.id,
-                                                "${player.firstName} ${player.lastName}"
+                                                "${player.firstName} ${player.lastName}",
+                                                it.score2
                                             )
                                         },
                                     )
@@ -284,7 +373,7 @@ class TournamentService(
         participants.shuffle()
         var tournamentSize = getNearestPowerOfTwo(participants) / 2
         val firstRoundSize = tournamentSize
-        val matches = mutableListOf<IndividualMatch>()
+        var matches = mutableListOf<IndividualMatch>()
         var round = 0
         while (tournamentSize > 0) {
             for (i in 0 until tournamentSize) {
@@ -292,6 +381,20 @@ class TournamentService(
             }
             tournamentSize /= 2
             round++
+        }
+
+        matches = individualMatchRepository.saveAll(matches)
+
+        tournamentSize = firstRoundSize
+        var start = 0
+        while (tournamentSize > 1) {
+            for (i in start until start + tournamentSize) {
+                val match = i / 2
+                val nextMatchIndex = start/2 + tournamentSize + match
+                matches[i] = matches[i].copy(nextMatch = matches[nextMatchIndex])
+            }
+            start += tournamentSize
+            tournamentSize /= 2
         }
 
         var playerIndex = 0

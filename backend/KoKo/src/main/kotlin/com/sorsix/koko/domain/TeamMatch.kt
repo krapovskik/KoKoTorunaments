@@ -18,10 +18,20 @@ data class TeamMatch(
     val isFinished: Boolean = false,
 
     @Column(name = "number")
-    val number: Int? = null,
+    val number: Int,
 
     @Column(name = "round")
-    val round: Int? = null,
+    val round: Int,
+
+    @Column(name = "score1")
+    val score1: Int? = null,
+
+    @Column(name = "score2")
+    val score2: Int? = null,
+
+    @OneToOne
+    @JoinColumn(name = "next_match")
+    val nextMatch: TeamMatch? = null,
 
     @OneToOne
     @JoinColumn(name = "team1_id")

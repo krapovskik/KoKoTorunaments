@@ -1,3 +1,17 @@
 .mat-form-field {
-  display: block;
+  width: 150px;
+}
+
+.form-control {
+  display: flex;
+  justify-content: space-between;
+  align-items: center
+}
+
+.form-control p {
+  font-size: 1rem;
+}
+
+.mb {
+  margin-bottom: 10px;
 }

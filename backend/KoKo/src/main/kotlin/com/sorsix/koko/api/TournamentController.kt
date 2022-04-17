@@ -1,6 +1,7 @@
 package com.sorsix.koko.api
 
 import com.sorsix.koko.domain.enumeration.TimelineTournamentType
+import com.sorsix.koko.dto.request.EditMatchRequest
 import com.sorsix.koko.dto.request.JoinTeamTournamentRequest
 import com.sorsix.koko.dto.request.JoinUserTournamentRequest
 import com.sorsix.koko.dto.response.*
@@ -48,6 +49,14 @@ class TournamentController(val tournamentService: TournamentService) {
     @GetMapping("/bracket/{id}")
     fun getTournamentBracket(@PathVariable id: Long) =
         when (val result = this.tournamentService.getAllTournamentMatches(id)) {
+            is SuccessResponse<*> -> ResponseEntity.ok(result)
+            is NotFoundResponse -> ResponseEntity(result, HttpStatus.NOT_FOUND)
+            is BadRequestResponse -> ResponseEntity.badRequest().body(result)
+        }
+
+    @PostMapping("/editMatch")
+    fun editMatch(@RequestBody editMatchRequest: EditMatchRequest) =
+        when (val result = this.tournamentService.editMatch(editMatchRequest)) {
             is SuccessResponse<*> -> ResponseEntity.ok(result)
             is NotFoundResponse -> ResponseEntity(result, HttpStatus.NOT_FOUND)
             is BadRequestResponse -> ResponseEntity.badRequest().body(result)

@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {MatDialog} from "@angular/material/dialog";
 import {TournamentService} from "../../service/tournament.service";
-import {ActivatedRoute} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {mergeMap} from "rxjs";
 import {Tournament} from "../../model/Tournament";
 import {ChangeScoreDialogComponent} from "./change-score-dialog/change-score-dialog.component";
@@ -27,8 +27,11 @@ export class TournamentComponent implements OnInit {
     constructor(
         private dialog: MatDialog,
         private tournamentService: TournamentService,
-        private route: ActivatedRoute
+        private route: ActivatedRoute,
+        private router: Router,
     ) {
+        router.onSameUrlNavigation = 'reload'
+        router.routeReuseStrategy.shouldReuseRoute = () => false
     }
 
     ngOnInit(): void {
@@ -45,7 +48,6 @@ export class TournamentComponent implements OnInit {
                                 tournament_id: this.tournament.tournamentId,
                                 name: this.tournament.tournamentName,
                                 type: 'single_elimination',
-                                number: 1,
                                 settings: {},
                             },
                         ],
@@ -56,15 +58,16 @@ export class TournamentComponent implements OnInit {
                                 group_id: 0,
                                 round_id: match.round,
                                 is_finished: match.isFinished,
-                                child_count: 0,
                                 opponent1: match.opponent1?.id ? {
                                     id: match.opponent1.id,
-                                    score: match.winner != null ? (match.winner == 0 ? 'W' : 'L') : '',
+                                    score: match.opponent1.score != null ? match.opponent1.score
+                                        : (match.winner != null ? (match.winner == 0 ? 'Won' : 'Loss') : ''),
                                     result: match.winner != null ? (match.winner == 0 ? 'win' : 'loss') : '',
                                 } : (match.round == 0 ? null : ''),
                                 opponent2: match.opponent2?.id ? {
                                     id: match.opponent2.id,
-                                    score: match.winner != null ? (match.winner == 1 ? 'W' : 'L') : '',
+                                    score: match.opponent2.score != null ? match.opponent2.score
+                                        : (match.winner != null ? (match.winner == 1 ? 'Won' : 'Loss') : ''),
                                     result: match.winner != null ? (match.winner == 1 ? 'win' : 'loss') : '',
                                 } : (match.round == 0 ? null : ''),
                             }
@@ -82,20 +85,36 @@ export class TournamentComponent implements OnInit {
                     }
                     this.participants = [...new Set(result.participants.map(participant => participant.name))]
                     window.bracketsViewer.render(result)
+
+                    window.bracketsViewer.onMatchClicked = (match: any) => {
+                        if (!match.is_finished && match.opponent1 && match.opponent2) {
+                            let dialogRef = this.dialog.open(ChangeScoreDialogComponent, {
+                                width: '500px',
+                                data: {
+                                    tournament: this.tournament,
+                                    match: match,
+                                    opponent1: result.participants.filter(el => el.id == match.opponent1.id)[0],
+                                    opponent2: result.participants.filter(el => el.id == match.opponent2.id)[0]
+                                }
+                            })
+
+                            dialogRef.afterClosed().subscribe({
+                                next: data => {
+                                    if (data == 'success') {
+                                        this.router.navigate(['tournament', this.tournament.tournamentId])
+                                    }
+                                }
+                            })
+                        }
+                    };
+
                 } else {
-                    window.bracketsViewer.render(this.tournamentService.getEmptyBracket(this.tournament.tournamentNumberOfParticipants / 2))
+                    window.bracketsViewer.render(this.tournamentService
+                        .getEmptyBracket(this.tournament.tournamentNumberOfParticipants / 2))
                 }
             }
         })
 
-        window.bracketsViewer.onMatchClicked = (match: any) => {
-            if (!match.is_finished && match.opponent1 && match.opponent2) {
-                this.dialog.open(ChangeScoreDialogComponent, {
-                    width: '500px',
-                    data: match
-                })
-            }
-        };
     }
 
     sideBarToggle() {

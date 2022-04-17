@@ -56,6 +56,7 @@ import { SendInviteDialogComponent } from './components/header/send-invite-dialo
 import { TournamentComponent } from './components/tournament/tournament.component';
 import { TournamentSideBarComponent } from './components/tournament/tournament-side-bar/tournament-side-bar.component';
 import { ChangeScoreDialogComponent } from './components/tournament/change-score-dialog/change-score-dialog.component';
+import {MatCheckboxModule} from "@angular/material/checkbox";
 
 declare global {
     interface Window {
@@ -124,7 +125,8 @@ declare global {
         MatExpansionModule,
         MatProgressBarModule,
         MatAutocompleteModule,
-        MatRippleModule
+        MatRippleModule,
+        MatCheckboxModule
     ],
     providers: [
         {provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true},

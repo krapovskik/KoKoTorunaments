@@ -43,6 +43,24 @@ export class TournamentService {
         return this.http.post<Response<string>>('/api/tournament/addPlayer', {appUserId, tournamentId})
     }
 
+    editMatch(
+        tournamentType: string,
+        matchId: number,
+        score1: number,
+        score2: number,
+        isFinished: boolean,
+        winner: number
+    ): Observable<Response<string>> {
+        return this.http.post<Response<string>>('/api/tournament/editMatch', {
+            tournamentType: tournamentType,
+            matchId: matchId,
+            score1: score1,
+            score2: score2,
+            isFinished: isFinished,
+            winner: winner
+        })
+    }
+
     getEmptyBracket(size: number) {
 
         let matches = []
