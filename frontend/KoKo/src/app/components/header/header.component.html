@@ -19,7 +19,7 @@
         <mat-chip color="accent" selected (click)="openBecomeOrganizerDialog()"
                   *ngIf="tokenService.getRole() == 'PLAYER'">Become an organizer
         </mat-chip>
-        <mat-chip color="accent" selected *ngIf="tokenService.getRole() == 'ORGANIZER'">Create tournament</mat-chip>
+        <mat-chip color="accent" selected *ngIf="tokenService.getRole() == 'ORGANIZER'" (click)="openCreateTournament()">Create tournament</mat-chip>
 
         <button mat-icon-button [matMenuTriggerFor]="menu">
           <mat-icon>more_vert</mat-icon>

@@ -20,6 +20,12 @@ data class Tournament(
     @Column(name = "category")
     val category: String,
 
+    @Column(name = "location")
+    val location: String,
+
+    @Column(name = "description")
+    val descripton: String,
+
     @Column(name = "number_of_participants")
     val numberOfParticipants: Int,
 
@@ -32,6 +38,13 @@ data class Tournament(
     val timelineType: TimelineTournamentType,
 
     @Column(name = "date_created")
-    val dateCreated: LocalDateTime = LocalDateTime.now()
+    val dateCreated: LocalDateTime = LocalDateTime.now(),
+
+    @Column(name = "start_date")
+    val startingDate: LocalDateTime,
+
+    @ManyToOne
+    @JoinColumn(name = "organizer")
+    val organizer: AppUser
 
 )

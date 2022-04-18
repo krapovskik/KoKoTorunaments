@@ -99,4 +99,29 @@ export class TournamentService {
             participants: [],
         };
     }
+
+    getTournamentTypes(): Observable<string[]> {
+        return this.http.get<string[]>('/api/tournament/tournamentTypes')
+    }
+
+    createTournament(tournamentName: string,
+                     tournamentCategory: string,
+                     tournamentLocation: string,
+                     tournamentDescription: string,
+                     numberOfParticipants: number,
+                     tournamentType: string,
+                     tournamentDate: string,
+                     tournamentTime: string): Observable<Response<string>> {
+        return this.http.post<Response<string>>('/api/tournament/createTournament', {
+            tournamentName,
+            tournamentCategory,
+            tournamentLocation,
+            tournamentDescription,
+            numberOfParticipants,
+            tournamentType,
+            tournamentDate,
+            tournamentTime
+        })
+    }
+
 }

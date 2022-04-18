@@ -21,7 +21,7 @@ import {FlexLayoutModule} from "@angular/flex-layout"
 import {MatChipsModule} from "@angular/material/chips";
 import {AuthComponent} from './components/auth/auth.component';
 import {MatFormFieldModule} from "@angular/material/form-field";
-import {MatOptionModule, MatRippleModule} from "@angular/material/core";
+import {MatNativeDateModule, MatOptionModule, MatRippleModule} from "@angular/material/core";
 import {MatInputModule} from "@angular/material/input";
 import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
 import {LoginComponent} from "./components/auth/login/login.component";
@@ -57,6 +57,8 @@ import { TournamentComponent } from './components/tournament/tournament.componen
 import { TournamentSideBarComponent } from './components/tournament/tournament-side-bar/tournament-side-bar.component';
 import { ChangeScoreDialogComponent } from './components/tournament/change-score-dialog/change-score-dialog.component';
 import {MatCheckboxModule} from "@angular/material/checkbox";
+import { CreateTournamentDialogComponent } from './components/header/create-tournament-dialog/create-tournament-dialog.component';
+import {MatDatepickerModule} from "@angular/material/datepicker";
 
 declare global {
     interface Window {
@@ -90,6 +92,7 @@ declare global {
         TournamentComponent,
         TournamentSideBarComponent,
         ChangeScoreDialogComponent,
+        CreateTournamentDialogComponent,
     ],
     imports: [
         BrowserModule,
@@ -126,7 +129,9 @@ declare global {
         MatProgressBarModule,
         MatAutocompleteModule,
         MatRippleModule,
-        MatCheckboxModule
+        MatCheckboxModule,
+        MatDatepickerModule,
+        MatNativeDateModule,
     ],
     providers: [
         {provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true},

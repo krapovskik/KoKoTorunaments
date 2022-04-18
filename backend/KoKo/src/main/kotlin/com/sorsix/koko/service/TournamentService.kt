@@ -3,6 +3,7 @@ package com.sorsix.koko.service
 import com.sorsix.koko.domain.*
 import com.sorsix.koko.domain.enumeration.TimelineTournamentType
 import com.sorsix.koko.domain.enumeration.TournamentType
+import com.sorsix.koko.dto.request.CreateTournamentRequest
 import com.sorsix.koko.dto.request.EditMatchRequest
 import com.sorsix.koko.dto.response.*
 import com.sorsix.koko.repository.*
@@ -12,7 +13,9 @@ import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageImpl
 import org.springframework.data.domain.Pageable
 import org.springframework.data.repository.findByIdOrNull
+import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.stereotype.Service
+import java.time.LocalDateTime
 import javax.transaction.Transactional
 import kotlin.math.ceil
 import kotlin.math.log2
@@ -35,23 +38,24 @@ class TournamentService(
 
     fun findAll(tournamentId: Long): List<Tournament> = tournamentRepository.findAll()
 
-    fun createTournament(
-        tournamentName: String,
-        tournamentCategory: String,
-        numberOfParticipants: Int,
-        tournamentType: TournamentType,
-        tournamentTimelineType: TimelineTournamentType
-    ): Response = SuccessResponse(
+    fun createTournament(request: CreateTournamentRequest): Response {
+        val dateTime = LocalDateTime.of(request.tournamentDate,request.tournamentTime)
         tournamentRepository.save(
             Tournament(
-                name = tournamentName,
-                category = tournamentCategory,
-                numberOfParticipants = numberOfParticipants,
-                type = tournamentType,
-                timelineType = tournamentTimelineType
+                name = request.tournamentName,
+                category = request.tournamentCategory,
+                numberOfParticipants = request.numberOfParticipants,
+                type = request.tournamentType,
+                timelineType = TimelineTournamentType.COMING_SOON,
+                location = request.tournamentLocation,
+                descripton = request.tournamentDescription,
+                startingDate = dateTime,
+                organizer = SecurityContextHolder.getContext().authentication.principal as AppUser
             )
         )
-    )
+        return SuccessResponse("Successfully create tournament.")
+    }
+
 
     @Transactional
     fun updateTournament(
@@ -201,7 +205,7 @@ class TournamentService(
         while (tournamentSize > 1) {
             for (i in start until start + tournamentSize) {
                 val match = i / 2
-                val nextMatchIndex = start/2 + tournamentSize + match
+                val nextMatchIndex = start / 2 + tournamentSize + match
                 matches[i] = matches[i].copy(nextMatch = matches[nextMatchIndex])
             }
             start += tournamentSize
@@ -390,7 +394,7 @@ class TournamentService(
         while (tournamentSize > 1) {
             for (i in start until start + tournamentSize) {
                 val match = i / 2
-                val nextMatchIndex = start/2 + tournamentSize + match
+                val nextMatchIndex = start / 2 + tournamentSize + match
                 matches[i] = matches[i].copy(nextMatch = matches[nextMatchIndex])
             }
             start += tournamentSize

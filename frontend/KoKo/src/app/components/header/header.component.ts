@@ -4,6 +4,7 @@ import {RegisterUserDialog} from "./registerUserDialog/register-user-dialog.comp
 import {TokenService} from "../../service/token.service";
 import {Router} from "@angular/router";
 import {BecomeOrganizerDialogComponent} from "./become-organizer-dialog/become-organizer-dialog.component";
+import {CreateTournamentDialogComponent} from "./create-tournament-dialog/create-tournament-dialog.component";
 
 @Component({
     selector: 'app-header',
@@ -30,6 +31,12 @@ export class HeaderComponent {
 
     openBecomeOrganizerDialog(): void {
         this.dialog.open(BecomeOrganizerDialogComponent, {
+            width: '500px',
+        });
+    }
+
+    openCreateTournament(): void {
+        this.dialog.open(CreateTournamentDialogComponent, {
             width: '500px',
         });
     }

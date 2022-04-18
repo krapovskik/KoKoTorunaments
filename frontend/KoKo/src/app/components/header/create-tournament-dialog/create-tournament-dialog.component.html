@@ -1,0 +1,45 @@
+<h1 mat-dialog-title>Create new tournament</h1>
+<div mat-dialog-content>
+  <form [formGroup]="createTournamentForm" (ngSubmit)="onSubmit()">
+    <mat-form-field appearance="fill">
+      <mat-label>Tournament name</mat-label>
+      <input matInput formControlName="tournamentName" required>
+    </mat-form-field>
+    <mat-form-field appearance="fill">
+      <mat-label>Tournament category</mat-label>
+      <input matInput formControlName="tournamentCategory" required>
+    </mat-form-field>
+    <mat-form-field appearance="fill">
+      <mat-label>Tournament location</mat-label>
+      <input matInput formControlName="tournamentLocation" required>
+    </mat-form-field>
+    <mat-form-field appearance="fill">
+      <mat-label>Tournament description</mat-label>
+      <input matInput formControlName="tournamentDescription" required>
+    </mat-form-field>
+    <mat-form-field appearance="fill">
+      <mat-label>Tournament type</mat-label>
+      <mat-select formControlName="tournamentType" required>
+        <mat-option *ngFor="let type of tournamentTypes" [value]="type">{{type}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field appearance="fill">
+      <mat-label>Choose number of participants</mat-label>
+      <mat-select formControlName="numberOfParticipants" required>
+        <mat-option *ngFor="let number of numberOfParticipants" [value]="number">{{number}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field appearance="fill">
+      <mat-label>Choose a tournament date</mat-label>
+      <input formControlName="tournamentDate" required matInput [min]="minDate" [matDatepicker]="dp3" [disabled]="true">
+      <mat-hint>MM/DD/YYYY</mat-hint>
+      <mat-datepicker-toggle matSuffix [for]="dp3" (change)="test($event)"></mat-datepicker-toggle>
+      <mat-datepicker #dp3 disabled="false"></mat-datepicker>
+    </mat-form-field>
+    <mat-form-field appearance="fill">
+      <input matInput type="time" required formControlName="tournamentTime">
+    </mat-form-field>
+    <app-loading-button [loading]="loading" [text]="'Create tournament'"></app-loading-button>
+    <button mat-button (click)="onNoClick()" type="reset">No Thanks</button>
+  </form>
+</div>

@@ -32,11 +32,11 @@ insert into app_users (first_name, last_name, email, password, is_active, app_us
 values ('Admin', 'Admin', 'admin',
         '$2a$10$pvnUPSWNzseMf4v1MqE7F.F0dOyFSvpXTR7XdJGZff.mLbKOcS4Zm', true, 'ADMIN');
 
-insert into tournaments (name, category, number_of_participants, type, timeline)
-values ('Kosharka', 'Kosharka', 4, 'TEAM', 'ONGOING'),
-       ('Ping pong', 'Ping Pong', 4, 'INDIVIDUAL', 'COMING_SOON'),
-       ('Ping pong1', 'Ping Pong1', 4, 'INDIVIDUAL', 'FINISHED'),
-       ('Kosharka', 'Kosharka', 4, 'TEAM', 'COMING_SOON');
+insert into tournaments (name, category, location, description, number_of_participants, type, timeline, organizer)
+values ('Kosharka', 'Kosharka','Tetovo Goce Sala', 'Timski turnir itn...',  4, 'TEAM', 'ONGOING', 1),
+       ('Ping pong', 'Ping Pong','Skopje Boris Sala', 'Timski turnir itn...', 4, 'INDIVIDUAL', 'COMING_SOON', 1),
+       ('Ping pong1', 'Ping Pong1','Gostivar Goce Sala', 'Timski turnir itn...', 4, 'INDIVIDUAL', 'FINISHED', 1),
+       ('Kosharka', 'Kosharka', 'Kumanovo Goce Sala', 'Timski turnir itn...', 4, 'TEAM', 'COMING_SOON', 1);
 
 insert into teams (name)
 values ('KK Tomas'),
