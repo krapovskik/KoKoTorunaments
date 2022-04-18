@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {MatDialog} from "@angular/material/dialog";
 import {TournamentService} from "../../service/tournament.service";
 import {ActivatedRoute, Router} from "@angular/router";
@@ -11,7 +11,7 @@ import {ChangeScoreDialogComponent} from "./change-score-dialog/change-score-dia
     templateUrl: './tournament.component.html',
     styleUrls: ['./tournament.component.css']
 })
-export class TournamentComponent implements OnInit {
+export class TournamentComponent implements OnInit, OnDestroy {
 
     $tournamentId = this.route.paramMap.pipe(
         mergeMap((params) => {
@@ -24,6 +24,8 @@ export class TournamentComponent implements OnInit {
     participants: string[] = []
     sideBarOpen = true
 
+    routeReuse: any
+
     constructor(
         private dialog: MatDialog,
         private tournamentService: TournamentService,
@@ -31,7 +33,13 @@ export class TournamentComponent implements OnInit {
         private router: Router,
     ) {
         router.onSameUrlNavigation = 'reload'
+        this.routeReuse = router.routeReuseStrategy.shouldReuseRoute
         router.routeReuseStrategy.shouldReuseRoute = () => false
+    }
+
+    ngOnDestroy(): void {
+        this.router.onSameUrlNavigation = 'ignore'
+        this.router.routeReuseStrategy.shouldReuseRoute = this.routeReuse
     }
 
     ngOnInit(): void {
