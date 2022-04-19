@@ -2,10 +2,6 @@ import {Component, OnInit} from '@angular/core';
 import {TournamentService} from "../../service/tournament.service";
 import {Tournament} from "../../model/Tournament";
 import {MessageService} from "../../service/message.service";
-import {MatDialog} from "@angular/material/dialog";
-import {JoinTournamentDialogComponent} from "./joinToutnamentDialog/join-tournament-dialog.component";
-import {TokenService} from "../../service/token.service";
-import {mergeMap, of} from "rxjs";
 
 @Component({
     selector: 'app-tournaments',

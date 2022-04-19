@@ -103,7 +103,7 @@ class TournamentService(
             tournamentRepository
                 .findAllByTimelineTypeOrderByDateCreatedDesc(TimelineTournamentType.COMING_SOON)
                 .take(latest)
-                .map { mapTournamentsWithParticipantsNumberComingSoon(it) }
+                .map { mapTournamentsWithParticipantsNumber(it) }
 
         return mapOf(
             "ONGOING" to ongoing,
@@ -121,7 +121,7 @@ class TournamentService(
 
         val list = if (timelineTournamentType == TimelineTournamentType.COMING_SOON) {
             tournaments.content
-                .map { mapTournamentsWithParticipantsNumberComingSoon(it) }
+                .map { mapTournamentsWithParticipantsNumber(it) }
         } else {
             tournaments.content
                 .map { mapTournamentsWithParticipantsNumber(it) }
@@ -234,6 +234,7 @@ class TournamentService(
 
     }
 
+    @Transactional
     fun editMatch(editMatchRequest: EditMatchRequest): Response {
 
         val tournament = tournamentRepository.findByIdOrNull(editMatchRequest.tournamentId)
@@ -241,7 +242,7 @@ class TournamentService(
         tournament?.let {
 
             val user = SecurityContextHolder.getContext().authentication.principal as AppUser
-            if(it.organizer != user) {
+            if (it.organizer != user) {
                 return BadRequestResponse("No privileges to edit")
             }
 
@@ -327,7 +328,7 @@ class TournamentService(
                     return SuccessResponse(
                         BracketResponse(
                             if (tournament.timelineType == TimelineTournamentType.COMING_SOON) {
-                                mapTournamentsWithParticipantsNumberComingSoon(tournament)
+                                mapTournamentsWithParticipantsNumber(tournament)
                             } else {
                                 mapTournamentsWithParticipantsNumber(tournament)
                             },
@@ -350,7 +351,7 @@ class TournamentService(
                     return SuccessResponse(
                         BracketResponse(
                             if (tournament.timelineType == TimelineTournamentType.COMING_SOON) {
-                                mapTournamentsWithParticipantsNumberComingSoon(tournament)
+                                mapTournamentsWithParticipantsNumber(tournament)
                             } else {
                                 mapTournamentsWithParticipantsNumber(tournament)
                             },
@@ -463,43 +464,21 @@ class TournamentService(
         tournamentRepository.updateTournamentStatus(tournamentTimelineType, tournamentId)
 
 
-    private fun mapTournamentsWithParticipantsNumberComingSoon(tournament: Tournament): TournamentResponse =
-        when (tournament.type) {
-            TournamentType.INDIVIDUAL -> TournamentResponse(
-                tournament.id,
-                tournament.name,
-                tournament.category,
-                appUserTournamentRepository.findAllByTournamentId(tournament.id).size,
-                tournament.numberOfParticipants,
-                tournament.type.name,
-                tournament.timelineType.name,
-                tournament.organizer.id,
-                tournament.description,
-                tournament.location,
-                tournament.startingDate,
-            )
-            TournamentType.TEAM -> TournamentResponse(
-                tournament.id,
-                tournament.name,
-                tournament.category,
-                teamTournamentRepository.findAllByTournamentId(tournament.id).size,
-                tournament.numberOfParticipants,
-                tournament.type.name,
-                tournament.timelineType.name,
-                tournament.organizer.id,
-                tournament.description,
-                tournament.location,
-                tournament.startingDate,
-            )
-        }
-
     private fun mapTournamentsWithParticipantsNumber(tournament: Tournament): TournamentResponse =
         when (tournament.type) {
             TournamentType.INDIVIDUAL -> TournamentResponse(
                 tournament.id,
                 tournament.name,
                 tournament.category,
-                playersInIndividualTournamentRepository.findAllByTournamentId(tournament.id).size,
+                if (tournament.timelineType == TimelineTournamentType.COMING_SOON) {
+                    appUserTournamentRepository.findAllByTournamentId(tournament.id).map {
+                        "${it.appUser.firstName} ${it.appUser.lastName}"
+                    }
+                } else {
+                    playersInIndividualTournamentRepository.findAllByTournamentId(tournament.id).map {
+                        "${it.firstName} ${it.lastName}"
+                    }
+                },
                 tournament.numberOfParticipants,
                 tournament.type.name,
                 tournament.timelineType.name,
@@ -512,7 +491,15 @@ class TournamentService(
                 tournament.id,
                 tournament.name,
                 tournament.category,
-                teamsInTournamentRepository.findAllByTournamentId(tournament.id).size,
+                if (tournament.timelineType == TimelineTournamentType.COMING_SOON) {
+                    teamTournamentRepository.findAllByTournamentId(tournament.id).map {
+                        it.team.name
+                    }
+                } else {
+                    teamsInTournamentRepository.findAllByTournamentId(tournament.id).map {
+                        it.teamName
+                    }
+                },
                 tournament.numberOfParticipants,
                 tournament.type.name,
                 tournament.timelineType.name,

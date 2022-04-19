@@ -1,15 +1,17 @@
 import {Component, OnInit} from '@angular/core';
 import {RegisterUserDialog} from "../header/registerUserDialog/register-user-dialog.component";
 import {MatDialog} from "@angular/material/dialog";
+import {TokenService} from "../../service/token.service";
+import {Router} from "@angular/router";
 
 @Component({
     selector: 'app-home',
     templateUrl: './home.component.html',
     styleUrls: ['./home.component.css']
 })
-export class HomeComponent {
+export class HomeComponent implements OnInit {
 
-    constructor(private dialog: MatDialog) {
+    constructor(private dialog: MatDialog, private tokenService: TokenService, private router: Router) {
     }
 
     openRegisterDialog(): void {
@@ -18,4 +20,10 @@ export class HomeComponent {
         });
     }
 
+    ngOnInit(): void {
+        let user = this.tokenService.getUser()
+        if (user) {
+            this.router.navigate(['/tournaments'])
+        }
+    }
 }

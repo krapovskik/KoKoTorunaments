@@ -6,6 +6,7 @@ import {mergeMap} from "rxjs";
 import {Tournament} from "../../model/Tournament";
 import {ChangeScoreDialogComponent} from "./change-score-dialog/change-score-dialog.component";
 import {TokenService} from "../../service/token.service";
+import fx from "fireworks";
 
 @Component({
     selector: 'app-tournament',
@@ -50,7 +51,13 @@ export class TournamentComponent implements OnInit, OnDestroy {
             next: (data) => {
                 console.log(data.response)
                 this.tournament = data.response.tournament
+                this.tournament.description = this.tournament.description.replace(/\n/g, '<br/>')
                 if (this.tournament.tournamentTimelineType != "COMING_SOON") {
+
+                    if (this.tournament.tournamentTimelineType == 'FINISHED') {
+                        this.startFireworks()
+                    }
+
                     let result = {
                         stages: [
                             {
@@ -126,6 +133,18 @@ export class TournamentComponent implements OnInit, OnDestroy {
             }
         })
 
+    }
+
+    startFireworks() {
+        for (let i = 0; i < 50; i++) {
+            setTimeout(() => {
+                fx({
+                    x: Math.random() * (window.innerWidth - 150 - 150) + 150,
+                    y: Math.random() * (window.innerHeight - 150 - 150) + 150,
+                    colors: ['#673ab7', '#ffd740', '#f44336']
+                })
+            }, 50 * i)
+        }
     }
 
     sideBarToggle() {

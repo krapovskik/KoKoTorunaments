@@ -7,3 +7,13 @@
   background-color: white;
   cursor: auto;
 }
+
+.tournament {
+  padding: 16px;
+  font-size: 1rem;
+}
+
+p {
+  margin-bottom: 20px;
+}
+
