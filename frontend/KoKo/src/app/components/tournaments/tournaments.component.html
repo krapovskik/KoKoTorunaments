@@ -20,12 +20,6 @@
                 <p>Category: {{ tournament.tournamentCategory }}</p>
                 <p>Type: {{ tournament.tournamentType }}</p>
                 <p>{{ tournament.tournamentActualParticipants }}/{{ tournament.tournamentNumberOfParticipants }}</p>
-                <button mat-raised-button color="primary"
-                        *ngIf="isLoggedIn()"
-                        (click) = "joinTournament(tournament.tournamentType, tournament.tournamentId)"
-                        [disabled]="tournament.tournamentActualParticipants == tournament.tournamentNumberOfParticipants">
-                  Join
-                </button>
               </div>
               <mat-divider></mat-divider>
             </div>

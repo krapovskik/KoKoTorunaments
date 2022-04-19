@@ -69,7 +69,8 @@ export class CreateTournamentDialogComponent implements OnInit {
         let original = this.createTournamentForm.controls['tournamentDate'].value
         let tournamentTime = this.createTournamentForm.controls['tournamentTime'].value
 
-        let tournamentDate = new Date(original).toLocaleString()
+        let d = new Date(original)
+        let tournamentDate = new Date(d.getFullYear(), d.getMonth(), d.getDate(), d.getHours(), d.getMinutes() - d.getTimezoneOffset()).toISOString();
 
         this.tournamentService.createTournament(tournamentName,
             tournamentCategory,
@@ -97,11 +98,6 @@ export class CreateTournamentDialogComponent implements OnInit {
             this.numberOfParticipants.push(start)
             start *= 2
         }
-    }
-
-    test(event: any){
-        console.log(event);
-
     }
 
 }

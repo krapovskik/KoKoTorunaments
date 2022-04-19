@@ -24,4 +24,10 @@
       <li *ngFor="let participant of participants">{{participant}}</li>
     </ol>
   </div>
+  <button mat-raised-button color="primary"
+          *ngIf="isLoggedIn() && tournament.tournamentTimelineType == 'COMING_SOON'"
+          (click) = "joinTournament(tournament.tournamentType, tournament.tournamentId)"
+          [disabled]="tournament.tournamentActualParticipants == tournament.tournamentNumberOfParticipants">
+    Join
+  </button>
 </mat-nav-list>
