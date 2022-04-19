@@ -32,11 +32,14 @@
     <ol>
       <li *ngFor="let participant of participants">{{participant}}</li>
     </ol>
+    <mat-list-item>
+      <button mat-raised-button color="primary"
+              *ngIf="isLoggedIn() && tournament.tournamentTimelineType == 'COMING_SOON'"
+              (click)="joinTournament(tournament.tournamentType, tournament.tournamentId)"
+              [disabled]="tournament.tournamentActualParticipants == tournament.tournamentNumberOfParticipants">
+        Join
+      </button>
+    </mat-list-item>
   </div>
-  <button mat-raised-button color="primary"
-          *ngIf="isLoggedIn() && tournament.tournamentTimelineType == 'COMING_SOON'"
-          (click) = "joinTournament(tournament.tournamentType, tournament.tournamentId)"
-          [disabled]="tournament.tournamentActualParticipants == tournament.tournamentNumberOfParticipants">
-    Join
-  </button>
+
 </mat-nav-list>
