@@ -24,7 +24,7 @@ data class Tournament(
     val location: String,
 
     @Column(name = "description")
-    val descripton: String,
+    val description: String,
 
     @Column(name = "number_of_participants")
     val numberOfParticipants: Int,

@@ -5,6 +5,7 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {mergeMap} from "rxjs";
 import {Tournament} from "../../model/Tournament";
 import {ChangeScoreDialogComponent} from "./change-score-dialog/change-score-dialog.component";
+import {TokenService} from "../../service/token.service";
 
 @Component({
     selector: 'app-tournament',
@@ -31,6 +32,7 @@ export class TournamentComponent implements OnInit, OnDestroy {
         private tournamentService: TournamentService,
         private route: ActivatedRoute,
         private router: Router,
+        private tokenService: TokenService,
     ) {
         router.onSameUrlNavigation = 'reload'
         this.routeReuse = router.routeReuseStrategy.shouldReuseRoute
@@ -95,7 +97,8 @@ export class TournamentComponent implements OnInit, OnDestroy {
                     window.bracketsViewer.render(result)
 
                     window.bracketsViewer.onMatchClicked = (match: any) => {
-                        if (!match.is_finished && match.opponent1 && match.opponent2) {
+                        let id = this.tokenService.getUser()?.id
+                        if (id == this.tournament.organizerId && !match.is_finished && match.opponent1 && match.opponent2) {
                             let dialogRef = this.dialog.open(ChangeScoreDialogComponent, {
                                 width: '500px',
                                 data: {

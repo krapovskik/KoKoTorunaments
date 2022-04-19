@@ -3,7 +3,7 @@ package com.sorsix.koko.dto.request
 import com.sorsix.koko.domain.enumeration.TournamentType
 
 data class EditMatchRequest(
-    val tournamentType: TournamentType,
+    val tournamentId: Long,
     val matchId: Long,
     val score1: Int?,
     val score2: Int?,

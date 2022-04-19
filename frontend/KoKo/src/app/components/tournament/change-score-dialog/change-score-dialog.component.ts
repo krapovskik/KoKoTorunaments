@@ -101,7 +101,7 @@ export class ChangeScoreDialogComponent implements OnInit {
 
         this.loading = true;
         this.tournamentService.editMatch(
-            this.matchData.tournament.tournamentType,
+            this.matchData.tournament.tournamentId,
             this.matchData.match.id,
             score1,
             score2,

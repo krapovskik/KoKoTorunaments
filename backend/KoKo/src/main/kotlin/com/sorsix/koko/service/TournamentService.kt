@@ -39,7 +39,7 @@ class TournamentService(
     fun findAll(tournamentId: Long): List<Tournament> = tournamentRepository.findAll()
 
     fun createTournament(request: CreateTournamentRequest): Response {
-        val dateTime = LocalDateTime.of(request.tournamentDate,request.tournamentTime)
+        val dateTime = LocalDateTime.of(request.tournamentDate, request.tournamentTime)
         tournamentRepository.save(
             Tournament(
                 name = request.tournamentName,
@@ -48,7 +48,7 @@ class TournamentService(
                 type = request.tournamentType,
                 timelineType = TimelineTournamentType.COMING_SOON,
                 location = request.tournamentLocation,
-                descripton = request.tournamentDescription,
+                description = request.tournamentDescription,
                 startingDate = dateTime,
                 organizer = SecurityContextHolder.getContext().authentication.principal as AppUser
             )
@@ -119,8 +119,13 @@ class TournamentService(
         val tournaments =
             tournamentRepository.findAllByTimelineTypeOrderByDateCreatedDesc(timelineTournamentType, pageable)
 
-        val list = tournaments.content
-            .map { mapTournamentsWithParticipantsNumber(it) }
+        val list = if (timelineTournamentType == TimelineTournamentType.COMING_SOON) {
+            tournaments.content
+                .map { mapTournamentsWithParticipantsNumberComingSoon(it) }
+        } else {
+            tournaments.content
+                .map { mapTournamentsWithParticipantsNumber(it) }
+        }
 
         return PageImpl(list, pageable, tournaments.totalElements)
     }
@@ -138,13 +143,7 @@ class TournamentService(
                 } else if (participants.size == tournament.numberOfParticipants - 1) {
                     teamTournamentRepository.save(TeamTournament(tournament = tournament, team = team))
                     val actualTeams = teamTournamentRepository.findAllByTournamentId(tournament.id)
-                    val teamMatches = generateTeamMatches(actualTeams)
-                    val dbTeamMatches = teamMatchRepository.saveAll(teamMatches)
-                    val teamMatchesTournament =
-                        dbTeamMatches.map { TeamMatchesTournament(tournament = tournament, teamMatch = it) }
-                    teamMatchesTournamentRepository.saveAll(teamMatchesTournament)
-                    teamTournamentRepository.deleteTeams(tournament.id)
-                    tournamentRepository.updateTournamentStatus(TimelineTournamentType.ONGOING, tournament.id)
+                    generateTeamMatches(tournament, actualTeams)
                     SuccessResponse("Successfully joined.")
                 } else {
                     BadRequestResponse("Tournament is full.")
@@ -165,18 +164,7 @@ class TournamentService(
                 } else if (participants.size == tournament.numberOfParticipants - 1) {
                     appUserTournamentRepository.save(AppUserTournament(tournament = tournament, appUser = appUser))
                     val actualUsers = appUserTournamentRepository.findAllByTournamentId(tournament.id)
-                    val individualMatches = generateIndividualMatches(actualUsers)
-                    val dbAppUserMatches = individualMatchRepository.saveAll(individualMatches)
-                    val individualMatchesTournament =
-                        dbAppUserMatches.map {
-                            IndividualMatchesTournament(
-                                tournament = tournament,
-                                individualMatch = it
-                            )
-                        }
-                    individualMatchesTournamentRepository.saveAll(individualMatchesTournament)
-                    appUserTournamentRepository.deleteAppUsers(tournament.id)
-                    tournamentRepository.updateTournamentStatus(TimelineTournamentType.ONGOING, tournament.id)
+                    generateIndividualMatches(tournament, actualUsers)
                     SuccessResponse("Successfully joined.")
                 } else {
                     BadRequestResponse("Tournament is full.")
@@ -184,7 +172,7 @@ class TournamentService(
             } ?: NotFoundResponse("User with $appUserId was not found.")
         } ?: NotFoundResponse("Tournament with $tournamentId was not found.")
 
-    fun generateTeamMatches(participants: MutableList<TeamTournament>): MutableList<TeamMatch> {
+    fun generateTeamMatches(tournament: Tournament, participants: MutableList<TeamTournament>) {
         participants.shuffle()
         var tournamentSize = getNearestPowerOfTwo(participants) / 2
         val firstRoundSize = tournamentSize
@@ -237,77 +225,94 @@ class TournamentService(
             }
         }
 
-        return matches
+        val dbTeamMatches = teamMatchRepository.saveAll(matches)
+        val teamMatchesTournament =
+            dbTeamMatches.map { TeamMatchesTournament(tournament = tournament, teamMatch = it) }
+        teamMatchesTournamentRepository.saveAll(teamMatchesTournament)
+        teamTournamentRepository.deleteTeams(tournament.id)
+        tournamentRepository.updateTournamentStatus(TimelineTournamentType.ONGOING, tournament.id)
+
     }
 
     fun editMatch(editMatchRequest: EditMatchRequest): Response {
-        when (editMatchRequest.tournamentType) {
-            TournamentType.TEAM -> {
-                val match = teamMatchRepository.findByIdOrNull(editMatchRequest.matchId)
-                match?.let {
-                    val newMatch = match.copy(
-                        winner = editMatchRequest.winner,
-                        isFinished = editMatchRequest.isFinished,
-                        score1 = editMatchRequest.score1,
-                        score2 = editMatchRequest.score2,
-                    )
 
-                    newMatch.winner?.let {
-                        val nextMatch = match.nextMatch
-                        nextMatch?.let {
-                            when (newMatch.number % 2) {
-                                0 -> {
-                                    teamMatchRepository.save(
-                                        it.copy(team1 = if (newMatch.winner == 0) newMatch.team1 else newMatch.team2)
-                                    )
+        val tournament = tournamentRepository.findByIdOrNull(editMatchRequest.tournamentId)
+
+        tournament?.let {
+
+            val user = SecurityContextHolder.getContext().authentication.principal as AppUser
+            if(it.organizer != user) {
+                return BadRequestResponse("No privileges to edit")
+            }
+
+            when (it.type) {
+                TournamentType.TEAM -> {
+                    val match = teamMatchRepository.findByIdOrNull(editMatchRequest.matchId)
+                    match?.let {
+                        val newMatch = match.copy(
+                            winner = editMatchRequest.winner,
+                            isFinished = editMatchRequest.isFinished,
+                            score1 = editMatchRequest.score1,
+                            score2 = editMatchRequest.score2,
+                        )
+
+                        newMatch.winner?.let {
+                            val nextMatch = match.nextMatch
+                            nextMatch?.let { match ->
+                                when (newMatch.number % 2) {
+                                    0 -> {
+                                        teamMatchRepository.save(
+                                            match.copy(team1 = if (newMatch.winner == 0) newMatch.team1 else newMatch.team2)
+                                        )
+                                    }
+                                    1 -> {
+                                        teamMatchRepository.save(
+                                            match.copy(team2 = if (newMatch.winner == 0) newMatch.team1 else newMatch.team2)
+                                        )
+                                    }
+                                    else -> {}
                                 }
-                                1 -> {
-                                    teamMatchRepository.save(
-                                        it.copy(team2 = if (newMatch.winner == 0) newMatch.team1 else newMatch.team2)
-                                    )
-                                }
-                                else -> {}
                             }
                         }
-                    }
 
-                    teamMatchRepository.save(newMatch)
+                        teamMatchRepository.save(newMatch)
 
-                } ?: return NotFoundResponse("Match not found")
-            }
-            TournamentType.INDIVIDUAL -> {
-                val match = individualMatchRepository.findByIdOrNull(editMatchRequest.matchId)
-                match?.let {
-                    val newMatch = match.copy(
-                        winner = editMatchRequest.winner,
-                        isFinished = editMatchRequest.isFinished,
-                        score1 = editMatchRequest.score1,
-                        score2 = editMatchRequest.score2,
-                    )
+                    } ?: return NotFoundResponse("Match not found")
+                }
+                TournamentType.INDIVIDUAL -> {
+                    val match = individualMatchRepository.findByIdOrNull(editMatchRequest.matchId)
+                    match?.let {
+                        val newMatch = match.copy(
+                            winner = editMatchRequest.winner,
+                            isFinished = editMatchRequest.isFinished,
+                            score1 = editMatchRequest.score1,
+                            score2 = editMatchRequest.score2,
+                        )
 
-                    newMatch.winner?.let {
-                        val nextMatch = match.nextMatch
-                        nextMatch?.let {
-                            when (newMatch.number % 2) {
-                                0 -> {
-                                    individualMatchRepository.save(
-                                        it.copy(player1 = if (newMatch.winner == 0) newMatch.player1 else newMatch.player2)
-                                    )
+                        newMatch.winner?.let {
+                            val nextMatch = match.nextMatch
+                            nextMatch?.let {
+                                when (newMatch.number % 2) {
+                                    0 -> {
+                                        individualMatchRepository.save(
+                                            it.copy(player1 = if (newMatch.winner == 0) newMatch.player1 else newMatch.player2)
+                                        )
+                                    }
+                                    1 -> {
+                                        individualMatchRepository.save(
+                                            it.copy(player2 = if (newMatch.winner == 0) newMatch.player1 else newMatch.player2)
+                                        )
+                                    }
+                                    else -> {}
                                 }
-                                1 -> {
-                                    individualMatchRepository.save(
-                                        it.copy(player2 = if (newMatch.winner == 0) newMatch.player1 else newMatch.player2)
-                                    )
-                                }
-                                else -> {}
-                            }
+                            } ?: updateTournamentStatus(TimelineTournamentType.FINISHED, editMatchRequest.tournamentId)
                         }
-                    }
 
-                    individualMatchRepository.save(newMatch)
-                } ?: return NotFoundResponse("Match not found")
+                        individualMatchRepository.save(newMatch)
+                    } ?: return NotFoundResponse("Match not found")
+                }
             }
-        }
+        } ?: return NotFoundResponse("Tournament not found")
 
         return SuccessResponse("Saved match")
     }
@@ -321,7 +326,11 @@ class TournamentService(
                     val matches = teamMatchesTournamentRepository.findAllMatchesByTournament(tournament)
                     return SuccessResponse(
                         BracketResponse(
-                            mapTournamentsWithParticipantsNumber(tournament),
+                            if (tournament.timelineType == TimelineTournamentType.COMING_SOON) {
+                                mapTournamentsWithParticipantsNumberComingSoon(tournament)
+                            } else {
+                                mapTournamentsWithParticipantsNumber(tournament)
+                            },
                             matches.sortedBy { it.number }
                                 .map {
                                     MatchResponse(
@@ -373,7 +382,7 @@ class TournamentService(
         return NotFoundResponse("Team not found")
     }
 
-    fun generateIndividualMatches(participants: MutableList<AppUserTournament>): MutableList<IndividualMatch> {
+    fun generateIndividualMatches(tournament: Tournament, participants: MutableList<AppUserTournament>) {
         participants.shuffle()
         var tournamentSize = getNearestPowerOfTwo(participants) / 2
         val firstRoundSize = tournamentSize
@@ -426,7 +435,17 @@ class TournamentService(
             }
         }
 
-        return matches
+        val dbAppUserMatches = individualMatchRepository.saveAll(matches)
+        val individualMatchesTournament =
+            dbAppUserMatches.map {
+                IndividualMatchesTournament(
+                    tournament = tournament,
+                    individualMatch = it
+                )
+            }
+        individualMatchesTournamentRepository.saveAll(individualMatchesTournament)
+        appUserTournamentRepository.deleteAppUsers(tournament.id)
+        tournamentRepository.updateTournamentStatus(TimelineTournamentType.ONGOING, tournament.id)
     }
 
     private fun getNearestPowerOfTwo(participants: MutableList<*>): Int {
@@ -449,7 +468,11 @@ class TournamentService(
                 appUserTournamentRepository.findAllByTournamentId(tournament.id).size,
                 tournament.numberOfParticipants,
                 tournament.type.name,
-                tournament.timelineType.name
+                tournament.timelineType.name,
+                tournament.organizer.id,
+                tournament.description,
+                tournament.location,
+                tournament.startingDate,
             )
             TournamentType.TEAM -> TournamentResponse(
                 tournament.id,
@@ -458,7 +481,11 @@ class TournamentService(
                 teamTournamentRepository.findAllByTournamentId(tournament.id).size,
                 tournament.numberOfParticipants,
                 tournament.type.name,
-                tournament.timelineType.name
+                tournament.timelineType.name,
+                tournament.organizer.id,
+                tournament.description,
+                tournament.location,
+                tournament.startingDate,
             )
         }
 
@@ -471,7 +498,11 @@ class TournamentService(
                 playersInIndividualTournamentRepository.findAllByTournamentId(tournament.id).size,
                 tournament.numberOfParticipants,
                 tournament.type.name,
-                tournament.timelineType.name
+                tournament.timelineType.name,
+                tournament.organizer.id,
+                tournament.description,
+                tournament.location,
+                tournament.startingDate,
             )
             TournamentType.TEAM -> TournamentResponse(
                 tournament.id,
@@ -480,7 +511,11 @@ class TournamentService(
                 teamsInTournamentRepository.findAllByTournamentId(tournament.id).size,
                 tournament.numberOfParticipants,
                 tournament.type.name,
-                tournament.timelineType.name
+                tournament.timelineType.name,
+                tournament.organizer.id,
+                tournament.description,
+                tournament.location,
+                tournament.startingDate,
             )
         }
 }

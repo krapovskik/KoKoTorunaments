@@ -18,6 +18,15 @@
       <p>Tournament status: {{tournament.tournamentTimelineType}}</p>
     </mat-list-item>
     <mat-list-item [disableRipple]="true">
+      <p>Tournament description: {{tournament.description}}</p>
+    </mat-list-item>
+    <mat-list-item [disableRipple]="true">
+      <p>Tournament location: {{tournament.location}}</p>
+    </mat-list-item>
+    <mat-list-item [disableRipple]="true">
+      <p>Tournament start date: {{tournament.startingDate | date:'short'}}</p>
+    </mat-list-item>
+    <mat-list-item [disableRipple]="true">
       <p>Tournament participants: {{tournament.tournamentActualParticipants}}</p>
     </mat-list-item>
     <ol>
