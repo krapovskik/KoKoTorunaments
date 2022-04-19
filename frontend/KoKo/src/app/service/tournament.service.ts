@@ -44,7 +44,7 @@ export class TournamentService {
     }
 
     editMatch(
-        tournamentType: string,
+        tournamentId: number,
         matchId: number,
         score1: number,
         score2: number,
@@ -52,7 +52,7 @@ export class TournamentService {
         winner: number
     ): Observable<Response<string>> {
         return this.http.post<Response<string>>('/api/tournament/editMatch', {
-            tournamentType: tournamentType,
+            tournamentId: tournamentId,
             matchId: matchId,
             score1: score1,
             score2: score2,
