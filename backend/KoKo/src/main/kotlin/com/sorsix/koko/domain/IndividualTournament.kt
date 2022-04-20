@@ -3,8 +3,8 @@ package com.sorsix.koko.domain
 import javax.persistence.*
 
 @Entity
-@Table(name = "app_user_tournaments")
-data class AppUserTournament(
+@Table(name = "individual_tournaments")
+data class IndividualTournament(
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

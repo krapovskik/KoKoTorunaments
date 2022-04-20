@@ -45,7 +45,7 @@ export class CreateTournamentDialogComponent implements OnInit {
                 next: data => this.tournamentTypes = data
             })
         this.minDate = new Date()
-        // this.minDate.setDate(this.minDate.getDate() + 1)
+        this.minDate.setDate(this.minDate.getDate() + 1)
     }
 
     onNoClick(): void {
@@ -70,7 +70,8 @@ export class CreateTournamentDialogComponent implements OnInit {
         let tournamentTime = this.createTournamentForm.controls['tournamentTime'].value
 
         let d = new Date(original)
-        let tournamentDate = new Date(d.getFullYear(), d.getMonth(), d.getDate(), d.getHours(), d.getMinutes() - d.getTimezoneOffset()).toISOString();
+        let tournamentDate = new Date(d.getFullYear(), d.getMonth(), d.getDate(),
+            d.getHours(), d.getMinutes() - d.getTimezoneOffset()).toISOString();
 
         this.tournamentService.createTournament(tournamentName,
             tournamentCategory,

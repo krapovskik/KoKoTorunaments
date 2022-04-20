@@ -27,7 +27,7 @@ class TournamentService(
     val playersInIndividualTournamentRepository: PlayersInIndividualTournamentRepository,
     val teamsInTournamentRepository: TeamsInTournamentRepository,
     val teamTournamentRepository: TeamTournamentRepository,
-    val appUserTournamentRepository: AppUserTournamentRepository,
+    val individualTournamentRepository: IndividualTournamentRepository,
     val teamService: TeamService,
     val appUserService: AppUserService,
     val teamMatchRepository: TeamMatchRepository,
@@ -155,15 +155,15 @@ class TournamentService(
     fun addUserToTournament(appUserId: Long, tournamentId: Long): Response =
         tournamentRepository.findByIdOrNull(tournamentId)?.let { tournament ->
             appUserService.findAppUserByIdOrNull(appUserId)?.let { appUser ->
-                val participants = appUserTournamentRepository.findAllByTournamentId(tournament.id)
+                val participants = individualTournamentRepository.findAllByTournamentId(tournament.id)
                 if (participants.any { it.appUser.id == appUser.id }) {
                     BadRequestResponse("Already in tournament.")
                 } else if (participants.size < tournament.numberOfParticipants - 1) {
-                    appUserTournamentRepository.save(AppUserTournament(tournament = tournament, appUser = appUser))
+                    individualTournamentRepository.save(IndividualTournament(tournament = tournament, appUser = appUser))
                     SuccessResponse("Successfully added.")
                 } else if (participants.size == tournament.numberOfParticipants - 1) {
-                    appUserTournamentRepository.save(AppUserTournament(tournament = tournament, appUser = appUser))
-                    val actualUsers = appUserTournamentRepository.findAllByTournamentId(tournament.id)
+                    individualTournamentRepository.save(IndividualTournament(tournament = tournament, appUser = appUser))
+                    val actualUsers = individualTournamentRepository.findAllByTournamentId(tournament.id)
                     generateIndividualMatches(tournament, actualUsers)
                     SuccessResponse("Successfully joined.")
                 } else {
@@ -386,7 +386,7 @@ class TournamentService(
         return NotFoundResponse("Team not found")
     }
 
-    fun generateIndividualMatches(tournament: Tournament, participants: MutableList<AppUserTournament>) {
+    fun generateIndividualMatches(tournament: Tournament, participants: MutableList<IndividualTournament>) {
         participants.shuffle()
         var tournamentSize = getNearestPowerOfTwo(participants) / 2
         val firstRoundSize = tournamentSize
@@ -448,7 +448,7 @@ class TournamentService(
                 )
             }
         individualMatchesTournamentRepository.saveAll(individualMatchesTournament)
-        appUserTournamentRepository.deleteAppUsers(tournament.id)
+        individualTournamentRepository.deleteAppUsers(tournament.id)
         tournamentRepository.updateTournamentStatus(TimelineTournamentType.ONGOING, tournament.id)
     }
 
@@ -469,7 +469,7 @@ class TournamentService(
                 tournament.id,
                 tournament.name,
                 tournament.category,
-                appUserTournamentRepository.findAllByTournamentId(tournament.id).size,
+                individualTournamentRepository.findAllByTournamentId(tournament.id).size,
                 tournament.numberOfParticipants,
                 tournament.type.name,
                 tournament.timelineType.name,
