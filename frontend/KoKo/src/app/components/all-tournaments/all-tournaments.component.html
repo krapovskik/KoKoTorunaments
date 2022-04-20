@@ -14,7 +14,7 @@
       </div>
       <div class="tournaments">
         <mat-card *ngFor="let tournament of tournaments">
-          <mat-card-content fxFlex fxLayout="row" fxLayoutAlign="space-between center" class="fs-20">
+          <mat-card-content fxFlex fxLayout="row" fxLayout.xs="column" fxLayoutAlign.xs="start start"  fxLayoutAlign="space-between center" class="fs-20">
             <p>Name: {{ tournament.tournamentName | uppercase }}</p>
             <p>Category: {{ tournament.tournamentCategory }}</p>
             <p>Type: {{ tournament.tournamentType }}</p>

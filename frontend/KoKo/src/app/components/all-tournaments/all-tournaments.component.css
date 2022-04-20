@@ -23,7 +23,7 @@
 mat-card {
   margin-bottom: 10px;
   border: 2px solid var(--primary-color);
-  max-height: 60px;
+  /*max-height: 60px;*/
   background-color: darkgray;
 }
 

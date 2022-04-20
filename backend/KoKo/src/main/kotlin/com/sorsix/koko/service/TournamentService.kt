@@ -33,7 +33,9 @@ class TournamentService(
     val teamMatchRepository: TeamMatchRepository,
     val teamMatchesTournamentRepository: TeamMatchesTournamentRepository,
     val individualMatchRepository: IndividualMatchRepository,
-    val individualMatchesTournamentRepository: IndividualMatchesTournamentRepository
+    val individualMatchesTournamentRepository: IndividualMatchesTournamentRepository,
+    val individualWinnerRepository: IndividualWinnerRepository,
+    val teamWinnerRepository: TeamWinnerRepository,
 ) {
 
     fun findAll(tournamentId: Long): List<Tournament> = tournamentRepository.findAll()
@@ -273,6 +275,9 @@ class TournamentService(
                                     }
                                     else -> {}
                                 }
+                            } ?: run{
+                                updateTournamentStatus(TimelineTournamentType.FINISHED, tournament.id)
+                                teamWinnerRepository.save(TeamWinner(tournament = tournament, team = (if(newMatch.winner == 0) newMatch.team1 else newMatch.team2)!!))
                             }
                         }
 
@@ -292,21 +297,24 @@ class TournamentService(
 
                         newMatch.winner?.let {
                             val nextMatch = match.nextMatch
-                            nextMatch?.let {
+                            nextMatch?.let { match ->
                                 when (newMatch.number % 2) {
                                     0 -> {
                                         individualMatchRepository.save(
-                                            it.copy(player1 = if (newMatch.winner == 0) newMatch.player1 else newMatch.player2)
+                                            match.copy(player1 = if (newMatch.winner == 0) newMatch.player1 else newMatch.player2)
                                         )
                                     }
                                     1 -> {
                                         individualMatchRepository.save(
-                                            it.copy(player2 = if (newMatch.winner == 0) newMatch.player1 else newMatch.player2)
+                                            match.copy(player2 = if (newMatch.winner == 0) newMatch.player1 else newMatch.player2)
                                         )
                                     }
                                     else -> {}
                                 }
-                            } ?: updateTournamentStatus(TimelineTournamentType.FINISHED, editMatchRequest.tournamentId)
+                            } ?: run{
+                                updateTournamentStatus(TimelineTournamentType.FINISHED, editMatchRequest.tournamentId)
+                                individualWinnerRepository.save(IndividualWinner(tournament = tournament, appUser = (if(newMatch.winner == 0) newMatch.player1 else newMatch.player2)!!))
+                            }
                         }
 
                         individualMatchRepository.save(newMatch)
@@ -471,7 +479,7 @@ class TournamentService(
                 tournament.name,
                 tournament.category,
                 if (tournament.timelineType == TimelineTournamentType.COMING_SOON) {
-                    appUserTournamentRepository.findAllByTournamentId(tournament.id).map {
+                    individualTournamentRepository.findAllByTournamentId(tournament.id).map {
                         "${it.appUser.firstName} ${it.appUser.lastName}"
                     }
                 } else {

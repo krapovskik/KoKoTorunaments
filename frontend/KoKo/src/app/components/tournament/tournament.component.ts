@@ -7,6 +7,7 @@ import {Tournament} from "../../model/Tournament";
 import {ChangeScoreDialogComponent} from "./change-score-dialog/change-score-dialog.component";
 import {TokenService} from "../../service/token.service";
 import fx from "fireworks";
+import {WinnerDialogComponent} from "./winner-dialog/winner-dialog.component";
 
 @Component({
     selector: 'app-tournament',
@@ -55,7 +56,16 @@ export class TournamentComponent implements OnInit, OnDestroy {
                 if (this.tournament.tournamentTimelineType != "COMING_SOON") {
 
                     if (this.tournament.tournamentTimelineType == 'FINISHED') {
-                        this.startFireworks()
+                        let finalMatch = data.response.matches.reduce((m1, m2) => {
+                            return (m1.round > m2.round) ? m1 : m2
+                        })
+
+                        let winner = finalMatch.winner == 0 ? finalMatch.opponent1 : finalMatch.opponent2
+
+                        this.dialog.open(WinnerDialogComponent, {
+                            hasBackdrop: false,
+                            data: winner.name,
+                        })
                     }
 
                     let result = {
@@ -133,18 +143,6 @@ export class TournamentComponent implements OnInit, OnDestroy {
             }
         })
 
-    }
-
-    startFireworks() {
-        for (let i = 0; i < 50; i++) {
-            setTimeout(() => {
-                fx({
-                    x: Math.random() * (window.innerWidth - 150 - 150) + 150,
-                    y: Math.random() * (window.innerHeight - 150 - 150) + 150,
-                    colors: ['#673ab7', '#ffd740', '#f44336']
-                })
-            }, 50 * i)
-        }
     }
 
     sideBarToggle() {

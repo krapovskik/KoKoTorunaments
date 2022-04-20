@@ -59,6 +59,9 @@ import { ChangeScoreDialogComponent } from './components/tournament/change-score
 import {MatCheckboxModule} from "@angular/material/checkbox";
 import { CreateTournamentDialogComponent } from './components/header/create-tournament-dialog/create-tournament-dialog.component';
 import {MatDatepickerModule} from "@angular/material/datepicker";
+import { WinnerDialogComponent } from './components/tournament/winner-dialog/winner-dialog.component';
+import { MyProfileComponent } from './components/my-profile/my-profile.component';
+import {MatGridListModule} from "@angular/material/grid-list";
 
 declare global {
     interface Window {
@@ -93,6 +96,8 @@ declare global {
         TournamentSideBarComponent,
         ChangeScoreDialogComponent,
         CreateTournamentDialogComponent,
+        WinnerDialogComponent,
+        MyProfileComponent,
     ],
     imports: [
         BrowserModule,
@@ -132,6 +137,7 @@ declare global {
         MatCheckboxModule,
         MatDatepickerModule,
         MatNativeDateModule,
+        MatGridListModule,
     ],
     providers: [
         {provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true},
