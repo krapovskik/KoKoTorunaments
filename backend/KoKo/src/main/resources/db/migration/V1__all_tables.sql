@@ -34,12 +34,30 @@ create table tournaments
     type                   text      not null,
     timeline               text      not null,
     date_created           timestamp not null default now(),
-    start_date             timestamp not null default now(),
+    start_date             timestamp not null,
     organizer              bigint    not null,
     constraint fk_tournaments_organizer foreign key (organizer) references app_users (id)
 );
 
-create table app_user_tournaments
+create table team_winners
+(
+    id            bigserial primary key,
+    tournament_id bigint not null,
+    team_id       bigint not null,
+    constraint fk_team_winners_tournament_id foreign key (tournament_id) references tournaments (id),
+    constraint fk_team_winners_team_id foreign key (team_id) references teams (id)
+);
+
+create table individual_winners
+(
+    id            bigserial primary key,
+    tournament_id bigint not null,
+    app_user_id bigint not null,
+    constraint fk_individual_winners_tournament_id foreign key (tournament_id) references tournaments(id),
+    constraint fk_individual_winners_app_user_id foreign key (app_user_id) references app_users(id)
+);
+
+create table individual_tournaments
 (
     id            bigserial primary key,
     tournament_id bigint not null,
