@@ -4,42 +4,27 @@
       <mat-icon>close</mat-icon>
     </button>
   </h2>
-  <div *ngIf="tournament">
-    <mat-list-item [disableRipple]="true">
-      <p>Tournament name: {{tournament.tournamentName}}</p>
-    </mat-list-item>
-    <mat-list-item [disableRipple]="true">
-      <p>Tournament category: {{tournament.tournamentCategory}}</p>
-    </mat-list-item>
-    <mat-list-item [disableRipple]="true">
-      <p>Tournament type: {{tournament.tournamentType}}</p>
-    </mat-list-item>
-    <mat-list-item [disableRipple]="true">
-      <p>Tournament status: {{tournament.tournamentTimelineType}}</p>
-    </mat-list-item>
-    <mat-list-item [disableRipple]="true">
-      <p>Tournament description: {{tournament.description}}</p>
-    </mat-list-item>
-    <mat-list-item [disableRipple]="true">
-      <p>Tournament location: {{tournament.location}}</p>
-    </mat-list-item>
-    <mat-list-item [disableRipple]="true">
-      <p>Tournament start date: {{tournament.startingDate | date:'short'}}</p>
-    </mat-list-item>
-    <mat-list-item [disableRipple]="true">
-      <p>Tournament participants: {{tournament.tournamentActualParticipants}}</p>
-    </mat-list-item>
+  <div *ngIf="tournament" class="tournament">
+    <p>Tournament name: {{tournament.tournamentName}}</p>
+    <p>Tournament category: {{tournament.tournamentCategory}}</p>
+    <p>Tournament type: {{tournament.tournamentType}}</p>
+    <p>Tournament status: {{tournament.tournamentTimelineType}}</p>
+    <p>Tournament description: </p>
+    <p [innerHTML]="tournament.description">
+      {{tournament.description}}
+    </p>
+    <p>Tournament location: {{tournament.location}}</p>
+    <p>Tournament start date: {{tournament.startingDate | date:'short'}}</p>
+    <p>Tournament participants: {{tournament.tournamentActualParticipants.length}}</p>
     <ol>
-      <li *ngFor="let participant of participants">{{participant}}</li>
+      <li *ngFor="let participant of tournament.tournamentActualParticipants">{{participant}}</li>
     </ol>
-    <mat-list-item>
-      <button mat-raised-button color="primary"
-              *ngIf="isLoggedIn() && tournament.tournamentTimelineType == 'COMING_SOON'"
-              (click)="joinTournament(tournament.tournamentType, tournament.tournamentId)"
-              [disabled]="tournament.tournamentActualParticipants == tournament.tournamentNumberOfParticipants">
-        Join
-      </button>
-    </mat-list-item>
+    <button mat-raised-button color="primary"
+            *ngIf="isLoggedIn() && tournament.tournamentTimelineType == 'COMING_SOON'"
+            (click)="joinTournament(tournament.tournamentType, tournament.tournamentId)"
+            [disabled]="tournament.tournamentActualParticipants.length == tournament.tournamentNumberOfParticipants">
+      Join
+    </button>
   </div>
 
 </mat-nav-list>

@@ -60,22 +60,26 @@ values (1, 1),
        (4, 13),
        (4, 14);
 
-insert into team_matches (team1_id, team2_id)
-values (1, 3),
-       (2, 4);
+insert into team_matches (team1_id, team2_id, is_finished, number, round, next_match)
+values (null, null, false, 0, 1, null),
+       (1, 3, false, 0, 0, 1),
+       (2, 4, false, 1, 0, 1);
 
-insert into individual_matches (app_user1_id, app_user2_id)
-values (1, 2),
-       (3, 4);
+insert into individual_matches (app_user1_id, app_user2_id, is_finished, number, round, next_match)
+values (null, null, false, 0, 1, null),
+       (1, 2, false, 0, 0, 1),
+       (3, 4, false, 1, 0, 1);
 
 insert into team_matches_tournaments (tournament_id, team_match_id)
 values (1, 1),
-       (1, 2);
+       (1, 2),
+       (1, 3);
 
 
 insert into individual_matches_tournaments (tournament_id, individual_match_id)
 values (3, 1),
-       (3, 2);
+       (3, 2),
+       (3, 3);
 
 insert into individual_tournaments (tournament_id, app_user_id)
 values (2, 2),

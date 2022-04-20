@@ -1,9 +1,8 @@
 import {Component, Inject, OnInit} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
-import {FormBuilder, FormControl} from "@angular/forms";
-import {AuthService} from "../../../service/auth.service";
+import {FormControl} from "@angular/forms";
 import {MessageService} from "../../../service/message.service";
-import {debounceTime, distinctUntilChanged, filter, map, of, startWith, switchMap, tap} from "rxjs";
+import {map} from "rxjs";
 import {TeamService} from "../../../service/team.service";
 import {Team} from "../../../model/Team";
 import {TournamentService} from "../../../service/tournament.service";
@@ -35,7 +34,6 @@ export class JoinTournamentDialogComponent implements OnInit {
         })
 
         this.teamFormControl.valueChanges.pipe(
-            tap(text => console.log(text)),
             map(text => (text ? this._filter(text) : this.teams.slice())),
         ).subscribe({
             next: data => {
@@ -57,6 +55,7 @@ export class JoinTournamentDialogComponent implements OnInit {
 
         if (team.length == 0) {
             this.messageService.showErrorMessage("Please select given teams.")
+            this.loading = false
         } else {
             this.tournamentService.addTeamToTournament(team[0].teamId, this.tournamentId)
                 .subscribe({

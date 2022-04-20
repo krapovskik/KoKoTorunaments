@@ -1,12 +1,13 @@
 create table app_users
 (
-    id            bigserial primary key,
-    first_name    text not null,
-    last_name     text not null,
-    email         text not null,
-    password      text not null,
-    is_active     boolean default false,
-    app_user_role text    default 'PLAYER'
+    id                bigserial primary key,
+    first_name        text not null,
+    last_name         text not null,
+    email             text not null,
+    password          text not null,
+    is_active         boolean default false,
+    app_user_role     text    default 'PLAYER',
+    profile_photo_url text
 );
 
 create table activation_tokens
@@ -52,9 +53,9 @@ create table individual_winners
 (
     id            bigserial primary key,
     tournament_id bigint not null,
-    app_user_id bigint not null,
-    constraint fk_individual_winners_tournament_id foreign key (tournament_id) references tournaments(id),
-    constraint fk_individual_winners_app_user_id foreign key (app_user_id) references app_users(id)
+    app_user_id   bigint not null,
+    constraint fk_individual_winners_tournament_id foreign key (tournament_id) references tournaments (id),
+    constraint fk_individual_winners_app_user_id foreign key (app_user_id) references app_users (id)
 );
 
 create table individual_tournaments

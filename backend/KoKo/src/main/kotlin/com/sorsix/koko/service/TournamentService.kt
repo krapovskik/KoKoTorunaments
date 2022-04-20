@@ -33,7 +33,9 @@ class TournamentService(
     val teamMatchRepository: TeamMatchRepository,
     val teamMatchesTournamentRepository: TeamMatchesTournamentRepository,
     val individualMatchRepository: IndividualMatchRepository,
-    val individualMatchesTournamentRepository: IndividualMatchesTournamentRepository
+    val individualMatchesTournamentRepository: IndividualMatchesTournamentRepository,
+    val individualWinnerRepository: IndividualWinnerRepository,
+    val teamWinnerRepository: TeamWinnerRepository,
 ) {
 
     fun findAll(tournamentId: Long): List<Tournament> = tournamentRepository.findAll()
@@ -103,7 +105,7 @@ class TournamentService(
             tournamentRepository
                 .findAllByTimelineTypeOrderByDateCreatedDesc(TimelineTournamentType.COMING_SOON)
                 .take(latest)
-                .map { mapTournamentsWithParticipantsNumberComingSoon(it) }
+                .map { mapTournamentsWithParticipantsNumber(it) }
 
         return mapOf(
             "ONGOING" to ongoing,
@@ -121,7 +123,7 @@ class TournamentService(
 
         val list = if (timelineTournamentType == TimelineTournamentType.COMING_SOON) {
             tournaments.content
-                .map { mapTournamentsWithParticipantsNumberComingSoon(it) }
+                .map { mapTournamentsWithParticipantsNumber(it) }
         } else {
             tournaments.content
                 .map { mapTournamentsWithParticipantsNumber(it) }
@@ -234,6 +236,7 @@ class TournamentService(
 
     }
 
+    @Transactional
     fun editMatch(editMatchRequest: EditMatchRequest): Response {
 
         val tournament = tournamentRepository.findByIdOrNull(editMatchRequest.tournamentId)
@@ -241,7 +244,7 @@ class TournamentService(
         tournament?.let {
 
             val user = SecurityContextHolder.getContext().authentication.principal as AppUser
-            if(it.organizer != user) {
+            if (it.organizer != user) {
                 return BadRequestResponse("No privileges to edit")
             }
 
@@ -272,6 +275,9 @@ class TournamentService(
                                     }
                                     else -> {}
                                 }
+                            } ?: run{
+                                updateTournamentStatus(TimelineTournamentType.FINISHED, tournament.id)
+                                teamWinnerRepository.save(TeamWinner(tournament = tournament, team = (if(newMatch.winner == 0) newMatch.team1 else newMatch.team2)!!))
                             }
                         }
 
@@ -291,21 +297,24 @@ class TournamentService(
 
                         newMatch.winner?.let {
                             val nextMatch = match.nextMatch
-                            nextMatch?.let {
+                            nextMatch?.let { match ->
                                 when (newMatch.number % 2) {
                                     0 -> {
                                         individualMatchRepository.save(
-                                            it.copy(player1 = if (newMatch.winner == 0) newMatch.player1 else newMatch.player2)
+                                            match.copy(player1 = if (newMatch.winner == 0) newMatch.player1 else newMatch.player2)
                                         )
                                     }
                                     1 -> {
                                         individualMatchRepository.save(
-                                            it.copy(player2 = if (newMatch.winner == 0) newMatch.player1 else newMatch.player2)
+                                            match.copy(player2 = if (newMatch.winner == 0) newMatch.player1 else newMatch.player2)
                                         )
                                     }
                                     else -> {}
                                 }
-                            } ?: updateTournamentStatus(TimelineTournamentType.FINISHED, editMatchRequest.tournamentId)
+                            } ?: run{
+                                updateTournamentStatus(TimelineTournamentType.FINISHED, editMatchRequest.tournamentId)
+                                individualWinnerRepository.save(IndividualWinner(tournament = tournament, appUser = (if(newMatch.winner == 0) newMatch.player1 else newMatch.player2)!!))
+                            }
                         }
 
                         individualMatchRepository.save(newMatch)
@@ -327,7 +336,7 @@ class TournamentService(
                     return SuccessResponse(
                         BracketResponse(
                             if (tournament.timelineType == TimelineTournamentType.COMING_SOON) {
-                                mapTournamentsWithParticipantsNumberComingSoon(tournament)
+                                mapTournamentsWithParticipantsNumber(tournament)
                             } else {
                                 mapTournamentsWithParticipantsNumber(tournament)
                             },
@@ -350,7 +359,7 @@ class TournamentService(
                     return SuccessResponse(
                         BracketResponse(
                             if (tournament.timelineType == TimelineTournamentType.COMING_SOON) {
-                                mapTournamentsWithParticipantsNumberComingSoon(tournament)
+                                mapTournamentsWithParticipantsNumber(tournament)
                             } else {
                                 mapTournamentsWithParticipantsNumber(tournament)
                             },
@@ -463,43 +472,21 @@ class TournamentService(
         tournamentRepository.updateTournamentStatus(tournamentTimelineType, tournamentId)
 
 
-    private fun mapTournamentsWithParticipantsNumberComingSoon(tournament: Tournament): TournamentResponse =
-        when (tournament.type) {
-            TournamentType.INDIVIDUAL -> TournamentResponse(
-                tournament.id,
-                tournament.name,
-                tournament.category,
-                individualTournamentRepository.findAllByTournamentId(tournament.id).size,
-                tournament.numberOfParticipants,
-                tournament.type.name,
-                tournament.timelineType.name,
-                tournament.organizer.id,
-                tournament.description,
-                tournament.location,
-                tournament.startingDate,
-            )
-            TournamentType.TEAM -> TournamentResponse(
-                tournament.id,
-                tournament.name,
-                tournament.category,
-                teamTournamentRepository.findAllByTournamentId(tournament.id).size,
-                tournament.numberOfParticipants,
-                tournament.type.name,
-                tournament.timelineType.name,
-                tournament.organizer.id,
-                tournament.description,
-                tournament.location,
-                tournament.startingDate,
-            )
-        }
-
     private fun mapTournamentsWithParticipantsNumber(tournament: Tournament): TournamentResponse =
         when (tournament.type) {
             TournamentType.INDIVIDUAL -> TournamentResponse(
                 tournament.id,
                 tournament.name,
                 tournament.category,
-                playersInIndividualTournamentRepository.findAllByTournamentId(tournament.id).size,
+                if (tournament.timelineType == TimelineTournamentType.COMING_SOON) {
+                    individualTournamentRepository.findAllByTournamentId(tournament.id).map {
+                        "${it.appUser.firstName} ${it.appUser.lastName}"
+                    }
+                } else {
+                    playersInIndividualTournamentRepository.findAllByTournamentId(tournament.id).map {
+                        "${it.firstName} ${it.lastName}"
+                    }
+                },
                 tournament.numberOfParticipants,
                 tournament.type.name,
                 tournament.timelineType.name,
@@ -512,7 +499,15 @@ class TournamentService(
                 tournament.id,
                 tournament.name,
                 tournament.category,
-                teamsInTournamentRepository.findAllByTournamentId(tournament.id).size,
+                if (tournament.timelineType == TimelineTournamentType.COMING_SOON) {
+                    teamTournamentRepository.findAllByTournamentId(tournament.id).map {
+                        it.team.name
+                    }
+                } else {
+                    teamsInTournamentRepository.findAllByTournamentId(tournament.id).map {
+                        it.teamName
+                    }
+                },
                 tournament.numberOfParticipants,
                 tournament.type.name,
                 tournament.timelineType.name,

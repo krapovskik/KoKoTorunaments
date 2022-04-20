@@ -19,7 +19,8 @@
                 <p>Name: {{ tournament.tournamentName | uppercase }}</p>
                 <p>Category: {{ tournament.tournamentCategory }}</p>
                 <p>Type: {{ tournament.tournamentType }}</p>
-                <p>{{ tournament.tournamentActualParticipants }}/{{ tournament.tournamentNumberOfParticipants }}</p>
+                <p>{{ tournament.tournamentActualParticipants.length }}
+                  /{{ tournament.tournamentNumberOfParticipants }}</p>
               </div>
               <mat-divider></mat-divider>
             </div>
@@ -44,9 +45,8 @@
                 <p>Name: {{ tournament.tournamentName | uppercase }}</p>
                 <p>Category: {{ tournament.tournamentCategory }}</p>
                 <p>Type: {{ tournament.tournamentType }}</p>
-                <p>{{ tournament.tournamentActualParticipants }}/{{ tournament.tournamentNumberOfParticipants }}</p>
-                <a mat-raised-button color="primary" routerLink="/tournament/{{tournament.tournamentId}}">Open
-                  tournament</a>
+                <p>{{ tournament.tournamentActualParticipants.length }}
+                  /{{ tournament.tournamentNumberOfParticipants }}</p>
               </div>
               <mat-divider></mat-divider>
             </div>
@@ -71,9 +71,8 @@
                 <p>Name: {{ tournament.tournamentName | uppercase }}</p>
                 <p>Category: {{ tournament.tournamentCategory }}</p>
                 <p>Type: {{ tournament.tournamentType }}</p>
-                <p>{{ tournament.tournamentActualParticipants }}/{{ tournament.tournamentNumberOfParticipants }}</p>
-                <a mat-raised-button color="primary" routerLink="/tournament/{{tournament.tournamentId}}">Open
-                  tournament</a>
+                <p>{{ tournament.tournamentActualParticipants.length }}
+                  /{{ tournament.tournamentNumberOfParticipants }}</p>
               </div>
               <mat-divider></mat-divider>
             </div>

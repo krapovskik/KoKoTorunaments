@@ -5,7 +5,7 @@
       <span><img src="assets/logo.png" class="logo"></span>
     </a>
 
-    <a *ngIf="router.url!='/'" routerLink="allTournaments/comingsoon/1/15" style="color: white">All Tournaments</a>
+<!--    <a *ngIf="router.url!='/'" routerLink="/allTournaments/comingsoon/1/15" style="color: white">All Tournaments</a>-->
 
     <div fxFlex fxLayout="row" fxLayoutAlign="flex-end" fxLayoutGap="10px">
       <mat-chip-list *ngIf="!isLoggedIn()">
@@ -21,7 +21,9 @@
         <mat-chip color="accent" selected (click)="openBecomeOrganizerDialog()"
                   *ngIf="tokenService.getRole() == 'PLAYER'">Become an organizer
         </mat-chip>
-        <mat-chip color="accent" selected *ngIf="tokenService.getRole() == 'ORGANIZER'" (click)="openCreateTournament()">Create tournament</mat-chip>
+        <mat-chip color="accent" selected *ngIf="tokenService.getRole() == 'ORGANIZER'"
+                  (click)="openCreateTournament()">Create tournament
+        </mat-chip>
 
         <button mat-icon-button [matMenuTriggerFor]="menu">
           <mat-icon>more_vert</mat-icon>

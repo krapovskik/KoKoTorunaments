@@ -12,6 +12,7 @@ import {TournamentsComponent} from "./components/tournaments/tournaments.compone
 import {AllTournamentsComponent} from "./components/all-tournaments/all-tournaments.component";
 import {MyTeamsComponent} from "./components/my-teams/my-teams.component";
 import {TournamentComponent} from "./components/tournament/tournament.component";
+import {MyProfileComponent} from "./components/my-profile/my-profile.component";
 
 const routes: Routes = [
     {
@@ -63,6 +64,10 @@ const routes: Routes = [
     {
         path: 'myTeams',
         component: MyTeamsComponent
+    },
+    {
+        path: 'profile/:id',
+        component: MyProfileComponent
     },
     {
         path: '**',
