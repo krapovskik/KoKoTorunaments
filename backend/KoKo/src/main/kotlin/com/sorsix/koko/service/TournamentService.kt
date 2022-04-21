@@ -335,11 +335,7 @@ class TournamentService(
                     val matches = teamMatchesTournamentRepository.findAllMatchesByTournament(tournament)
                     return SuccessResponse(
                         BracketResponse(
-                            if (tournament.timelineType == TimelineTournamentType.COMING_SOON) {
-                                mapTournamentsWithParticipantsNumber(tournament)
-                            } else {
-                                mapTournamentsWithParticipantsNumber(tournament)
-                            },
+                            mapTournamentsWithParticipantsNumber(tournament),
                             matches.sortedBy { it.number }
                                 .map {
                                     MatchResponse(
@@ -358,11 +354,7 @@ class TournamentService(
                     val matches = individualMatchesTournamentRepository.findAllMatchesByTournament(tournament)
                     return SuccessResponse(
                         BracketResponse(
-                            if (tournament.timelineType == TimelineTournamentType.COMING_SOON) {
-                                mapTournamentsWithParticipantsNumber(tournament)
-                            } else {
-                                mapTournamentsWithParticipantsNumber(tournament)
-                            },
+                            mapTournamentsWithParticipantsNumber(tournament),
                             matches.sortedBy { it.number }
                                 .map {
                                     MatchResponse(

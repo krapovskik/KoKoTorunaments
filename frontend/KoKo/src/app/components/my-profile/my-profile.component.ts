@@ -10,11 +10,13 @@ import {BecomeOrganizerDialogComponent} from "../header/become-organizer-dialog/
 export class MyProfileComponent implements OnInit {
 
     image = 0
+    breakpoint!: any
 
     constructor(private dialog: MatDialog) {
     }
 
     ngOnInit(): void {
+        this.breakpoint = (window.innerWidth <= 600) ? 1 : 3;
     }
 
     changeImg() {
@@ -23,5 +25,9 @@ export class MyProfileComponent implements OnInit {
 
     openDialog() {
         this.dialog.open(BecomeOrganizerDialogComponent)
+    }
+
+    onResize(event: any) {
+        this.breakpoint = (event.target.innerWidth <= 400) ? 1 : 3;
     }
 }

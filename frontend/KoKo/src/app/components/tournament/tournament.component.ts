@@ -1,12 +1,11 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, ElementRef, OnInit, Renderer2, ViewChild} from '@angular/core';
 import {MatDialog} from "@angular/material/dialog";
 import {TournamentService} from "../../service/tournament.service";
-import {ActivatedRoute, Router} from "@angular/router";
-import {mergeMap} from "rxjs";
+import {ActivatedRoute} from "@angular/router";
+import {mergeMap, Subject} from "rxjs";
 import {Tournament} from "../../model/Tournament";
 import {ChangeScoreDialogComponent} from "./change-score-dialog/change-score-dialog.component";
 import {TokenService} from "../../service/token.service";
-import fx from "fireworks";
 import {WinnerDialogComponent} from "./winner-dialog/winner-dialog.component";
 
 @Component({
@@ -14,41 +13,31 @@ import {WinnerDialogComponent} from "./winner-dialog/winner-dialog.component";
     templateUrl: './tournament.component.html',
     styleUrls: ['./tournament.component.css']
 })
-export class TournamentComponent implements OnInit, OnDestroy {
+export class TournamentComponent implements OnInit {
 
-    $tournamentId = this.route.paramMap.pipe(
-        mergeMap((params) => {
-            let id = +params.get("id")!
-            return this.tournamentService.getTournamentBracket(id)
-        })
-    )
+    $tournamentBracket = new Subject()
+    @ViewChild("brackets") bracketDiv!: ElementRef
 
     tournament!: Tournament
-    participants: string[] = []
     sideBarOpen = true
-
-    routeReuse: any
 
     constructor(
         private dialog: MatDialog,
         private tournamentService: TournamentService,
         private route: ActivatedRoute,
-        private router: Router,
         private tokenService: TokenService,
+        private renderer: Renderer2
     ) {
-        router.onSameUrlNavigation = 'reload'
-        this.routeReuse = router.routeReuseStrategy.shouldReuseRoute
-        router.routeReuseStrategy.shouldReuseRoute = () => false
-    }
-
-    ngOnDestroy(): void {
-        this.router.onSameUrlNavigation = 'ignore'
-        this.router.routeReuseStrategy.shouldReuseRoute = this.routeReuse
     }
 
     ngOnInit(): void {
-
-        this.$tournamentId.subscribe({
+        this.$tournamentBracket.pipe(
+            mergeMap(() => this.route.paramMap),
+            mergeMap((params) => {
+                let id = +params.get("id")!
+                return this.tournamentService.getTournamentBracket(id)
+            })
+        ).subscribe({
             next: (data) => {
                 console.log(data.response)
                 this.tournament = data.response.tournament
@@ -110,7 +99,9 @@ export class TournamentComponent implements OnInit, OnDestroy {
                                 }
                             })
                     }
-                    this.participants = [...new Set(result.participants.map(participant => participant.name))]
+                    for (let child of this.bracketDiv.nativeElement.childNodes) {
+                        this.renderer.setProperty(child, 'innerHTML', '')
+                    }
                     window.bracketsViewer.render(result)
 
                     window.bracketsViewer.onMatchClicked = (match: any) => {
@@ -129,23 +120,26 @@ export class TournamentComponent implements OnInit, OnDestroy {
                             dialogRef.afterClosed().subscribe({
                                 next: data => {
                                     if (data == 'success') {
-                                        this.router.navigate(['tournament', this.tournament.tournamentId])
+                                        this.$tournamentBracket.next('')
                                     }
                                 }
                             })
                         }
                     };
-
                 } else {
                     window.bracketsViewer.render(this.tournamentService
                         .getEmptyBracket(this.tournament.tournamentNumberOfParticipants / 2))
                 }
             }
         })
-
+        this.$tournamentBracket.next('')
     }
 
     sideBarToggle() {
         this.sideBarOpen = !this.sideBarOpen
+    }
+
+    onJoin() {
+        this.$tournamentBracket.next('')
     }
 }

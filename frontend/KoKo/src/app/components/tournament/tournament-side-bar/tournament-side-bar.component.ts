@@ -18,12 +18,12 @@ export class TournamentSideBarComponent implements OnInit {
     @Input() participants!: string[]
 
     @Output() toggleSideBarEvent: EventEmitter<any> = new EventEmitter();
+    @Output() joinEvent: EventEmitter<any> = new EventEmitter();
 
     constructor(private dialog: MatDialog,
                 private tokenService: TokenService,
                 private messageService: MessageService,
                 private tournamentService: TournamentService,
-                private router: Router
     ) {
     }
 
@@ -48,7 +48,7 @@ export class TournamentSideBarComponent implements OnInit {
             dialogRef.afterClosed().subscribe({
                 next: data => {
                     if (data == 'success') {
-                        this.router.navigate(['tournament', tournamentId])
+                        this.joinEvent.emit()
                     }
                 }
             })
@@ -58,7 +58,7 @@ export class TournamentSideBarComponent implements OnInit {
                 .subscribe({
                     next: data => {
                         this.messageService.showSuccessMessage(data.response)
-                        this.router.navigate(['tournament', tournamentId])
+                        this.joinEvent.emit()
                     },
                     error: data => this.messageService.showErrorMessage(data.error.message)
                 })

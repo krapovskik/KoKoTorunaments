@@ -1,3 +1,7 @@
 img:hover {
   cursor: pointer;
 }
+
+mat-grid-list {
+  z-index: -1;
+}
