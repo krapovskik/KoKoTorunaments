@@ -8,6 +8,7 @@ import com.sorsix.koko.dto.request.EditMatchRequest
 import com.sorsix.koko.dto.response.*
 import com.sorsix.koko.repository.*
 import com.sorsix.koko.repository.view.PlayersInIndividualTournamentRepository
+import com.sorsix.koko.repository.view.PlayersInTeamTournamentRepository
 import com.sorsix.koko.repository.view.TeamsInTournamentRepository
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageImpl
@@ -36,6 +37,8 @@ class TournamentService(
     val individualMatchesTournamentRepository: IndividualMatchesTournamentRepository,
     val individualWinnerRepository: IndividualWinnerRepository,
     val teamWinnerRepository: TeamWinnerRepository,
+    val appUserTeamsRepository: AppUserTeamsRepository,
+    val playersInTeamTournamentRepository: PlayersInTeamTournamentRepository
 ) {
 
     fun findAll(tournamentId: Long): List<Tournament> = tournamentRepository.findAll()
@@ -161,10 +164,20 @@ class TournamentService(
                 if (participants.any { it.appUser.id == appUser.id }) {
                     BadRequestResponse("Already in tournament.")
                 } else if (participants.size < tournament.numberOfParticipants - 1) {
-                    individualTournamentRepository.save(IndividualTournament(tournament = tournament, appUser = appUser))
+                    individualTournamentRepository.save(
+                        IndividualTournament(
+                            tournament = tournament,
+                            appUser = appUser
+                        )
+                    )
                     SuccessResponse("Successfully added.")
                 } else if (participants.size == tournament.numberOfParticipants - 1) {
-                    individualTournamentRepository.save(IndividualTournament(tournament = tournament, appUser = appUser))
+                    individualTournamentRepository.save(
+                        IndividualTournament(
+                            tournament = tournament,
+                            appUser = appUser
+                        )
+                    )
                     val actualUsers = individualTournamentRepository.findAllByTournamentId(tournament.id)
                     generateIndividualMatches(tournament, actualUsers)
                     SuccessResponse("Successfully joined.")
@@ -275,9 +288,14 @@ class TournamentService(
                                     }
                                     else -> {}
                                 }
-                            } ?: run{
+                            } ?: run {
                                 updateTournamentStatus(TimelineTournamentType.FINISHED, tournament.id)
-                                teamWinnerRepository.save(TeamWinner(tournament = tournament, team = (if(newMatch.winner == 0) newMatch.team1 else newMatch.team2)!!))
+                                teamWinnerRepository.save(
+                                    TeamWinner(
+                                        tournament = tournament,
+                                        team = (if (newMatch.winner == 0) newMatch.team1 else newMatch.team2)!!
+                                    )
+                                )
                             }
                         }
 
@@ -311,9 +329,14 @@ class TournamentService(
                                     }
                                     else -> {}
                                 }
-                            } ?: run{
+                            } ?: run {
                                 updateTournamentStatus(TimelineTournamentType.FINISHED, editMatchRequest.tournamentId)
-                                individualWinnerRepository.save(IndividualWinner(tournament = tournament, appUser = (if(newMatch.winner == 0) newMatch.player1 else newMatch.player2)!!))
+                                individualWinnerRepository.save(
+                                    IndividualWinner(
+                                        tournament = tournament,
+                                        appUser = (if (newMatch.winner == 0) newMatch.player1 else newMatch.player2)!!
+                                    )
+                                )
                             }
                         }
 
@@ -509,4 +532,83 @@ class TournamentService(
                 tournament.startingDate,
             )
         }
+
+    private fun mapToProfileTournamentResponse(tournament: Tournament) = ProfileTournamentResponse(
+        tournament.id,
+        tournament.name,
+        tournament.type
+    )
+
+    fun getWonTournamentsByUser(id: Long, pageable: Pageable): Page<ProfileTournamentResponse> {
+        val user = appUserService.findAppUserByIdOrNull(id)
+        user?.let {
+            val tournaments = getWonTournamentsByUser(it)
+            return createProfilePagination(tournaments, pageable)
+        }
+
+        return PageImpl(listOf())
+    }
+
+    fun getAllTournamentsByUser(id: Long, pageable: Pageable): Page<ProfileTournamentResponse> {
+        val user = appUserService.findAppUserByIdOrNull(id)
+        user?.let {
+            val tournaments = getAllTournamentsByUser(id)
+            return createProfilePagination(tournaments, pageable)
+        }
+        return PageImpl(listOf())
+    }
+
+    fun getProfileStatistics(id: Long) = appUserService.findAppUserByIdOrNull(id)?.let {
+        val all = getAllTournamentsByUser(id)
+        val won = getWonTournamentsByUser(it)
+
+        SuccessResponse(ProfileStatisticsResponse("${it.firstName} ${it.lastName}", won.size, all.size))
+    } ?: NotFoundResponse("User not found")
+
+
+    private fun getAllTournamentsByUser(id: Long): List<ProfileTournamentResponse> {
+        val tournamentIds = playersInIndividualTournamentRepository.findAllByPlayerId(id) +
+                playersInTeamTournamentRepository.findAllByPlayerId(id)
+
+        return tournamentRepository.findAllByIdIn(tournamentIds)
+            .sortedByDescending {
+                it.dateCreated
+            }.map {
+                mapToProfileTournamentResponse(it)
+            }
+    }
+
+    private fun getWonTournamentsByUser(user: AppUser): List<ProfileTournamentResponse> {
+
+        val individualWins = individualWinnerRepository.findAllByAppUser(user).map {
+            it.tournament
+        }
+        val teams = appUserTeamsRepository.findTeamsForUser(user).map {
+            it.team
+        }
+        val teamsWins = teamWinnerRepository.findAllByTeamIn(teams).map {
+            it.tournament
+        }
+
+        return (individualWins + teamsWins)
+            .sortedBy {
+                it.dateCreated
+            }
+            .map {
+                mapToProfileTournamentResponse(it)
+            }
+    }
+
+    private fun createProfilePagination(
+        list: List<ProfileTournamentResponse>,
+        pageable: Pageable
+    ): Page<ProfileTournamentResponse> {
+        val start = pageable.pageNumber * pageable.pageSize
+        val end = if (start + pageable.pageSize > list.size) list.size else start + pageable.pageSize
+        if (start < end) {
+            return PageImpl(list.subList(start, end), pageable, list.size.toLong())
+        }
+
+        return PageImpl(listOf(), pageable, list.size.toLong())
+    }
 }

@@ -63,6 +63,7 @@ import { WinnerDialogComponent } from './components/tournament/winner-dialog/win
 import { MyProfileComponent } from './components/my-profile/my-profile.component';
 import {MatGridListModule} from "@angular/material/grid-list";
 import {MatTabsModule} from "@angular/material/tabs";
+import {HighchartsChartModule} from "highcharts-angular";
 
 declare global {
     interface Window {
@@ -140,6 +141,7 @@ declare global {
         MatNativeDateModule,
         MatGridListModule,
         MatTabsModule,
+        HighchartsChartModule,
     ],
     providers: [
         {provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true},

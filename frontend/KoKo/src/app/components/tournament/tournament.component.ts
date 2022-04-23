@@ -1,5 +1,5 @@
-import {Component, ElementRef, OnInit, Renderer2, ViewChild} from '@angular/core';
-import {MatDialog} from "@angular/material/dialog";
+import {Component, ElementRef, OnDestroy, OnInit, Renderer2, ViewChild} from '@angular/core';
+import {MatDialog, MatDialogRef} from "@angular/material/dialog";
 import {TournamentService} from "../../service/tournament.service";
 import {ActivatedRoute} from "@angular/router";
 import {mergeMap, Subject} from "rxjs";
@@ -13,10 +13,11 @@ import {WinnerDialogComponent} from "./winner-dialog/winner-dialog.component";
     templateUrl: './tournament.component.html',
     styleUrls: ['./tournament.component.css']
 })
-export class TournamentComponent implements OnInit {
+export class TournamentComponent implements OnInit, OnDestroy {
 
     $tournamentBracket = new Subject()
     @ViewChild("brackets") bracketDiv!: ElementRef
+    winnerDialog!: MatDialogRef<WinnerDialogComponent>;
 
     tournament!: Tournament
     sideBarOpen = true
@@ -54,7 +55,7 @@ export class TournamentComponent implements OnInit {
 
                         let winner = finalMatch.winner == 0 ? finalMatch.opponent1 : finalMatch.opponent2
 
-                        this.dialog.open(WinnerDialogComponent, {
+                        this.winnerDialog = this.dialog.open(WinnerDialogComponent, {
                             hasBackdrop: false,
                             data: winner.name,
                         })
@@ -142,5 +143,9 @@ export class TournamentComponent implements OnInit {
     onJoin() {
         // if(this.tournament.tournamentTimelineType != "COMING_SOON")
         this.$tournamentBracket.next('')
+    }
+
+    ngOnDestroy() {
+        this.winnerDialog.close()
     }
 }

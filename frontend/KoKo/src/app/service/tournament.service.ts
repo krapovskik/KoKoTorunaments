@@ -6,6 +6,7 @@ import {Page} from "../model/Page";
 import {Tournament} from "../model/Tournament";
 import {Response} from "../model/Response";
 import {Bracket} from "../model/Bracket";
+import {ProfileStatistics} from "../model/ProfileStatistics";
 
 @Injectable({
     providedIn: 'root'
@@ -41,6 +42,22 @@ export class TournamentService {
 
     addPlayerToTournament(appUserId: number, tournamentId: number): Observable<Response<string>> {
         return this.http.post<Response<string>>('/api/tournament/addPlayer', {appUserId, tournamentId})
+    }
+
+    getAllTournamentsByUser(appUserId: number): ((page: number, size: number) => Observable<Page<Tournament>>) {
+        return (page, size) => {
+            return this.http.get<Page<Tournament>>(`/api/tournament/profile/${appUserId}/all?page=${page}&size=${size}`)
+        }
+    }
+
+    getWonTournamentsByUser(appUserId: number): ((page: number, size: number) => Observable<Page<Tournament>>) {
+        return (page, size) => {
+            return this.http.get<Page<Tournament>>(`/api/tournament/profile/${appUserId}/won?page=${page}&size=${size}`)
+        }
+    }
+
+    getProfileStatistics(appUserId: number): Observable<Response<ProfileStatistics>> {
+        return this.http.get<Response<ProfileStatistics>>(`/api/tournament/profile/${appUserId}/statistics`)
     }
 
     editMatch(
