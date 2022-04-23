@@ -1,4 +1,4 @@
-import {Component, Inject, OnInit} from '@angular/core';
+import {Component, Inject, OnDestroy, OnInit} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 import fx from "fireworks";
 
@@ -7,7 +7,7 @@ import fx from "fireworks";
     templateUrl: './winner-dialog.component.html',
     styleUrls: ['./winner-dialog.component.css']
 })
-export class WinnerDialogComponent implements OnInit{
+export class WinnerDialogComponent implements OnInit, OnDestroy {
 
     constructor(
         private dialogRef: MatDialogRef<WinnerDialogComponent>,
@@ -19,12 +19,16 @@ export class WinnerDialogComponent implements OnInit{
         this.startFireworks()
     }
 
+    ngOnDestroy() {
+
+    }
+
     close() {
         this.dialogRef.close()
     }
 
     startFireworks() {
-        for (let i = 0; i < 50; i++) {
+        for (let i = 0; i < 20; i++) {
             setTimeout(() => {
                 fx({
                     x: Math.random() * (window.innerWidth - 150 - 150) + 150,

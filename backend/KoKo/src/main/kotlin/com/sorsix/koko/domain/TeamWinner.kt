@@ -6,6 +6,7 @@ import javax.persistence.*
 @Table(name = "team_winners")
 data class TeamWinner(
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     val id: Long = 0,
 

@@ -44,4 +44,5 @@ interface TournamentRepository : JpaRepository<Tournament, Long> {
     @Query(value = "delete from Tournament t where t.id = :tournamentId")
     fun deleteTournament(tournamentId: Long): Int
 
+    fun findAllByIdIn(ids: List<Long>): List<Tournament>
 }

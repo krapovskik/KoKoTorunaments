@@ -15,6 +15,9 @@ data class PlayersInTeamTournament(
     @Column(name = "app_user_id")
     val playerId: Long,
 
+    @Column(name = "team_id")
+    val teamId: Long,
+
     @Column(name = "tournament_id")
     val tournamentId: Long,
 

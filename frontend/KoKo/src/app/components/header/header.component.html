@@ -29,10 +29,10 @@
           <mat-icon>more_vert</mat-icon>
         </button>
         <mat-menu #menu="matMenu">
-          <button mat-menu-item>
+          <a mat-menu-item routerLink="/profile/{{tokenService.getUser()?.id}}/1/15">
             <mat-icon>person</mat-icon>
             <span>My profile</span>
-          </button>
+          </a>
           <a mat-menu-item routerLink="/myTeams">
             <mat-icon>group</mat-icon>
             <span>My teams</span>

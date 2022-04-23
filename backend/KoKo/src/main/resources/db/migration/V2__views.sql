@@ -7,7 +7,7 @@ FROM individual_matches_tournaments imt
 
 
 create view players_in_team_tournament as
-SELECT distinct au.id as app_user_id, t.id as tournament_id, au.first_name as first_name, au.last_name as last_name
+SELECT distinct au.id as app_user_id, t2.id as team_id, t.id as tournament_id, au.first_name as first_name, au.last_name as last_name
 FROM team_matches_tournaments tmt
          JOIN tournaments t on t.id = tmt.tournament_id
          JOIN team_matches tm ON tmt.team_match_id = tm.id

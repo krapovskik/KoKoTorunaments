@@ -5,11 +5,10 @@
   </button>
   <mat-drawer-container>
     <mat-drawer mode="side" position="end" [opened]="sideBarOpen">
-      <app-tournament-side-bar (toggleSideBarEvent)="sideBarToggle()" [tournament]="tournament"
-                               [participants]="participants"></app-tournament-side-bar>
+      <app-tournament-side-bar (joinEvent)="onJoin()" (toggleSideBarEvent)="sideBarToggle()" [tournament]="tournament"></app-tournament-side-bar>
     </mat-drawer>
     <mat-drawer-content>
-      <div class="brackets-viewer"></div>
+      <div #brackets class="brackets-viewer"></div>
     </mat-drawer-content>
   </mat-drawer-container>
 </div>

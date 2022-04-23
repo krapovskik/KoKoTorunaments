@@ -34,8 +34,14 @@ export class PaginationComponent implements OnInit, OnChanges {
     }
 
     ngOnChanges(changes: any) {
-        this.navigationPath = changes.navigationPath.currentValue
-        this.functionToCall = changes.functionToCall.currentValue
+        if(changes.navigationPath) {
+            this.navigationPath = changes.navigationPath.currentValue
+        }
+
+        if(changes.functionToCall) {
+            this.functionToCall = changes.functionToCall?.currentValue
+        }
+
         this.newPageEvent();
     }
 
