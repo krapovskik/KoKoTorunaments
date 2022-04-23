@@ -38,7 +38,7 @@ img.profile-img {
 
 .chart-container {
   width: 500px;
-  height: 400px;
+  height: 300px;
   display: flex;
   justify-content: center;
   align-items: center
@@ -64,7 +64,7 @@ img.profile-img {
 }
 
 .tournaments {
-  height: 600px;
+  height: 450px;
   overflow: auto
 }
 
