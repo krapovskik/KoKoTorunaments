@@ -66,7 +66,7 @@ const routes: Routes = [
         component: MyTeamsComponent
     },
     {
-        path: 'profile/:id',
+        path: 'profile/:id/:currentPage/:size',
         component: MyProfileComponent
     },
     {

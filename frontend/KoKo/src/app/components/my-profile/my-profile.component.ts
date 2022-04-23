@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {MatDialog} from "@angular/material/dialog";
 import {BecomeOrganizerDialogComponent} from "../header/become-organizer-dialog/become-organizer-dialog.component";
+import {TournamentService} from "../../service/tournament.service";
 
 @Component({
     selector: 'app-my-profile',
@@ -11,8 +12,10 @@ export class MyProfileComponent implements OnInit {
 
     image = 0
     breakpoint!: any
+    navigation = '/profile/1'
+    functionToCall = this.tournamentService.getComingSoonTournaments
 
-    constructor(private dialog: MatDialog) {
+    constructor(private dialog: MatDialog, private tournamentService: TournamentService) {
     }
 
     ngOnInit(): void {
@@ -21,6 +24,10 @@ export class MyProfileComponent implements OnInit {
 
     changeImg() {
         this.image++
+    }
+
+    test() {
+        console.log('test')
     }
 
     openDialog() {

@@ -62,6 +62,7 @@ import {MatDatepickerModule} from "@angular/material/datepicker";
 import { WinnerDialogComponent } from './components/tournament/winner-dialog/winner-dialog.component';
 import { MyProfileComponent } from './components/my-profile/my-profile.component';
 import {MatGridListModule} from "@angular/material/grid-list";
+import {MatTabsModule} from "@angular/material/tabs";
 
 declare global {
     interface Window {
@@ -138,6 +139,7 @@ declare global {
         MatDatepickerModule,
         MatNativeDateModule,
         MatGridListModule,
+        MatTabsModule,
     ],
     providers: [
         {provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true},

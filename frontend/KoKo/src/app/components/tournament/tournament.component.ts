@@ -40,6 +40,9 @@ export class TournamentComponent implements OnInit {
         ).subscribe({
             next: (data) => {
                 console.log(data.response)
+                for (let child of this.bracketDiv.nativeElement.childNodes) {
+                    this.renderer.setProperty(child, 'innerHTML', '')
+                }
                 this.tournament = data.response.tournament
                 this.tournament.description = this.tournament.description.replace(/\n/g, '<br/>')
                 if (this.tournament.tournamentTimelineType != "COMING_SOON") {
@@ -99,9 +102,6 @@ export class TournamentComponent implements OnInit {
                                 }
                             })
                     }
-                    for (let child of this.bracketDiv.nativeElement.childNodes) {
-                        this.renderer.setProperty(child, 'innerHTML', '')
-                    }
                     window.bracketsViewer.render(result)
 
                     window.bracketsViewer.onMatchClicked = (match: any) => {
@@ -140,6 +140,7 @@ export class TournamentComponent implements OnInit {
     }
 
     onJoin() {
+        // if(this.tournament.tournamentTimelineType != "COMING_SOON")
         this.$tournamentBracket.next('')
     }
 }
