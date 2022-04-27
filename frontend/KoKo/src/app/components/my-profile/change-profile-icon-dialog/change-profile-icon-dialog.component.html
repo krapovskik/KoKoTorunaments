@@ -1,0 +1,14 @@
+<h1 mat-dialog-title>Change profile icon</h1>
+<div mat-dialog-content class="outer-container">
+  <div class="inner-container">
+    <img *ngFor="let obj of imagesWithSelectProperty"
+         [src]="'assets/'+obj.image"
+         (click)="changeSelected(obj.image)"
+         [class.selected-border]="obj.selected"
+         class="profile-img">
+  </div>
+</div>
+<div class="center">
+  <button mat-raised-button color="primary" (click)="onChange()" type="reset">Change</button>
+  <button mat-button (click)="onNoClick()" type="reset">Cancel</button>
+</div>

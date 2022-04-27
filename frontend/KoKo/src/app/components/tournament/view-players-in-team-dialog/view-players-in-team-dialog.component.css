@@ -1,0 +1,13 @@
+.participant-select:hover{
+  margin-bottom: 3px;
+  color: var(--primary-color);
+}
+
+li a {
+  text-decoration: none;
+}
+
+.center {
+  display: flex;
+  justify-content: center;
+}

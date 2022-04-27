@@ -16,8 +16,19 @@
     <p>Tournament location: {{tournament.location}}</p>
     <p>Tournament start date: {{tournament.startingDate | date:'short'}}</p>
     <p>Tournament participants: {{tournament.tournamentActualParticipants.length}}</p>
-    <ol>
-      <li *ngFor="let participant of tournament.tournamentActualParticipants">{{participant}}</li>
+    <ol *ngIf="tournament.tournamentType == 'TEAM'">
+      <li *ngFor="let participant of tournament.tournamentActualParticipants"
+          class="participant-select"
+          (click)="onClicked(participant)"
+      >
+        {{participant.participantName}}
+      </li>
+    </ol>
+    <ol *ngIf="tournament.tournamentType == 'INDIVIDUAL'">
+      <li *ngFor="let participant of tournament.tournamentActualParticipants"
+          class="participant-select">
+        <a class="participant-select" [routerLink]="['/profile',participant.participantId,1,15]">{{participant.participantName}}</a>
+      </li>
     </ol>
     <button mat-raised-button color="primary"
             *ngIf="isLoggedIn() && tournament.tournamentTimelineType == 'COMING_SOON'"

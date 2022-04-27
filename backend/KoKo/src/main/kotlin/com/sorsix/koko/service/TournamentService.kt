@@ -495,11 +495,11 @@ class TournamentService(
                 tournament.category,
                 if (tournament.timelineType == TimelineTournamentType.COMING_SOON) {
                     individualTournamentRepository.findAllByTournamentId(tournament.id).map {
-                        "${it.appUser.firstName} ${it.appUser.lastName}"
+                            ParticipantResponse(it.id,"${it.appUser.firstName} ${it.appUser.lastName}")
                     }
                 } else {
                     playersInIndividualTournamentRepository.findAllByTournamentId(tournament.id).map {
-                        "${it.firstName} ${it.lastName}"
+                        ParticipantResponse(it.playerId,"${it.firstName} ${it.lastName}")
                     }
                 },
                 tournament.numberOfParticipants,
@@ -516,11 +516,11 @@ class TournamentService(
                 tournament.category,
                 if (tournament.timelineType == TimelineTournamentType.COMING_SOON) {
                     teamTournamentRepository.findAllByTournamentId(tournament.id).map {
-                        it.team.name
+                        ParticipantResponse(it.id,it.team.name)
                     }
                 } else {
                     teamsInTournamentRepository.findAllByTournamentId(tournament.id).map {
-                        it.teamName
+                        ParticipantResponse(it.teamId,it.teamName)
                     }
                 },
                 tournament.numberOfParticipants,
@@ -536,7 +536,8 @@ class TournamentService(
     private fun mapToProfileTournamentResponse(tournament: Tournament) = ProfileTournamentResponse(
         tournament.id,
         tournament.name,
-        tournament.type
+        tournament.type,
+        tournament.timelineType
     )
 
     fun getWonTournamentsByUser(id: Long, pageable: Pageable): Page<ProfileTournamentResponse> {
@@ -560,9 +561,19 @@ class TournamentService(
 
     fun getProfileStatistics(id: Long) = appUserService.findAppUserByIdOrNull(id)?.let {
         val all = getAllTournamentsByUser(id)
-        val won = getWonTournamentsByUser(it)
+        val won = getWonTournamentsByUser(it).size
+        val loss = all.filter { it.timelineTournamentType == TimelineTournamentType.FINISHED }.size - won
+        val others = all.size - won - loss
 
-        SuccessResponse(ProfileStatisticsResponse("${it.firstName} ${it.lastName}", won.size, all.size))
+        SuccessResponse(
+            ProfileStatisticsResponse(
+                "${it.firstName} ${it.lastName}",
+                won,
+                loss,
+                others,
+                it.profilePhoto
+            )
+        )
     } ?: NotFoundResponse("User not found")
 
 

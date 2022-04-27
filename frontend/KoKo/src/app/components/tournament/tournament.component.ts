@@ -146,6 +146,8 @@ export class TournamentComponent implements OnInit, OnDestroy {
     }
 
     ngOnDestroy() {
-        this.winnerDialog.close()
+        if(this.winnerDialog) {
+            this.winnerDialog.close()
+        }
     }
 }

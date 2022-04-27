@@ -1,7 +1,7 @@
 <div class="container">
   <div class="row1">
     <mat-card class="profile-card">
-      <img src="assets/profile1.jpg" (click)="changeImage()" class="profile-img">
+      <img [src]="'assets/'+profilePhoto" (click)="changeImage()" class="profile-img">
       <mat-card-title>{{fullName}}</mat-card-title>
       <mat-card-content>
         <mat-card-subtitle>Won {{win}}/{{total}} tournaments</mat-card-subtitle>
@@ -12,16 +12,32 @@
       </highcharts-chart>
     </div>
   </div>
-  <div class="row2"
-       style="">
-    <div class="tournament-container" style="">
-      <mat-form-field appearance="fill">
-        <mat-label>Show</mat-label>
-        <mat-select [formControl]="type">
-          <mat-option value="all">All</mat-option>
-          <mat-option value="won">Won</mat-option>
-        </mat-select>
-      </mat-form-field>
+  <div class="row2">
+    <div class="tournament-container">
+      <div class="fields">
+        <mat-form-field appearance="fill">
+          <mat-label>Show</mat-label>
+          <mat-select [formControl]="type">
+            <mat-option value="all">All</mat-option>
+            <mat-option value="won">Won</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field appearance="fill">
+          <mat-label>Search other players</mat-label>
+          <input type="text"
+                 placeholder="Search..."
+                 matInput
+                 [formControl]="searchFormControl"
+                 [matAutocomplete]="auto"
+                 (keydown)="onEnter($event)"
+          >
+          <mat-autocomplete #auto="matAutocomplete">
+            <mat-option *ngFor="let option of options" [value]="option.fullNameId">
+              <a [routerLink]="['/profile',option.fullNameId.split('-')[1],1,15]" class="style-none">{{option.fullNameId}}</a>
+            </mat-option>
+          </mat-autocomplete>
+        </mat-form-field>
+      </div>
       <div class="tournaments">
         <mat-card *ngFor="let tournament of tournaments">
           <mat-card-title>{{tournament.tournamentName}} - {{tournament.tournamentType}}</mat-card-title>

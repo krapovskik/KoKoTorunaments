@@ -33,6 +33,9 @@ data class AppUser(
     @Column(name = "is_active")
     val isActive: Boolean = false,
 
+    @Column(name = "profile_photo_url")
+    val profilePhoto: String = "profile0.jpg"
+
     ) : UserDetails {
 
     override fun getAuthorities() = mutableListOf(SimpleGrantedAuthority(appUserRole.name))

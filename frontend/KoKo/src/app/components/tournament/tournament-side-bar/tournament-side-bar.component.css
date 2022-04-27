@@ -17,3 +17,9 @@ p {
   margin-bottom: 20px;
 }
 
+.participant-select:hover{
+  margin-bottom: 3px;
+  color: var(--primary-color);
+  cursor: pointer;
+}
+

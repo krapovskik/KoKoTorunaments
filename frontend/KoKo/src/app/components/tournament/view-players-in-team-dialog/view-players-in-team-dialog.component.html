@@ -1,0 +1,10 @@
+<h1 mat-dialog-title>Players in team</h1>
+<ol>
+  <li *ngFor="let participant of participants" class="participant-select">
+    <a [routerLink]="['/profile',participant.participantId,1,15]"
+       >{{participant.participantName}}</a>
+  </li>
+</ol>
+<div class="center">
+  <button mat-raised-button color="primary" (click)="onClose()">Close</button>
+</div>

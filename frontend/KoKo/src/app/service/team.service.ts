@@ -3,7 +3,7 @@ import {HttpClient} from "@angular/common/http";
 import {Observable} from "rxjs";
 import {Response} from "../model/Response";
 import {MyTeams} from "../model/MyTeams";
-import {TeamMember} from "../model/TeamMember";
+import {Player} from "../model/Player";
 import {Team} from "../model/Team";
 
 @Injectable({
@@ -35,7 +35,7 @@ export class TeamService {
         })
     }
 
-    findAllPlayersByTeam(teamId: number): Observable<Response<TeamMember[]>> {
-        return this.http.get<Response<TeamMember[]>>(`/api/team/${teamId}/players`)
+    findAllPlayersByTeam(teamId: number): Observable<Response<Player[]>> {
+        return this.http.get<Response<Player[]>>(`/api/team/${teamId}/players`)
     }
 }

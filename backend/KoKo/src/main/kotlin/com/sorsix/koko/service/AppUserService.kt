@@ -119,6 +119,13 @@ class AppUserService(
         }
     }
 
+    @Transactional
+    fun updateProfilePhoto(image: String): Response {
+        val user = SecurityContextHolder.getContext().authentication.principal as AppUser
+        this.appUserRepository.updateProfilePhoto(user.id, image)
+        return SuccessResponse("Profile photo updated.")
+    }
+
     private fun createUser(email: String): Response {
 
         if (EmailValidator.getInstance().isValid(email)) {

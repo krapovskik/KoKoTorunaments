@@ -35,4 +35,8 @@ class UserController(val appUserService: AppUserService) {
             is BadRequestResponse -> ResponseEntity.badRequest().body(result)
         }
     }
+
+    @PutMapping("/changeProfilePhoto")
+    fun updateProfilePhoto(@RequestBody image: String): ResponseEntity<Response> =
+        ResponseEntity.ok(this.appUserService.updateProfilePhoto(image))
 }

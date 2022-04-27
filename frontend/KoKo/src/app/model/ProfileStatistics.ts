@@ -1,5 +1,7 @@
 export interface ProfileStatistics {
     fullName: string,
     won: number,
-    total: number,
+    loss: number,
+    others:number,
+    profilePhoto: string
 }

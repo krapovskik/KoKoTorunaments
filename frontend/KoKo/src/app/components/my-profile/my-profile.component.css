@@ -75,3 +75,13 @@ img.profile-img {
   justify-content: space-between;
   align-items: center
 }
+
+.fields{
+  display: flex;
+  justify-content: space-between;
+}
+
+.style-none{
+  text-decoration: none;
+  color: black;
+}

@@ -26,4 +26,10 @@ interface AppUserRepository : JpaRepository<AppUser, Long> {
         value = "select au from AppUser au where lower(concat(au.firstName, ' ', au.lastName, '-', au.id)) like %:query%"
     )
     fun searchAppUserByFirstNameOrLastName(query: String): List<AppUser>
+
+    @Modifying
+    @Query(value = "update AppUser a set a.profilePhoto = :profilePhoto where a.id = :userId")
+    fun updateProfilePhoto(userId: Long, profilePhoto: String): Int
+
+
 }

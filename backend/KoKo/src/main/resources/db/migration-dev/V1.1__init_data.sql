@@ -1,101 +1,39 @@
-insert into app_users (first_name, last_name, email, password)
+insert into app_users (first_name, last_name, email, password,is_active)
 values ('Kosta', 'Krapovski', 'kosta.krapovski@sorsix.com',
-        '$2a$10$xDmfApNkwR4cbXXR2VzDNO9sjQsQmbVMPfWk8CahJJO4.PTu8hQqK'),
+        '$2a$10$xDmfApNkwR4cbXXR2VzDNO9sjQsQmbVMPfWk8CahJJO4.PTu8hQqK',true),
        ('Kosta', 'Fortumanov', 'kosta.fortumanov@sorsix.com',
-        '$2a$10$xDmfApNkwR4cbXXR2VzDNO9sjQsQmbVMPfWk8CahJJO4.PTu8hQqK'),
+        '$2a$10$xDmfApNkwR4cbXXR2VzDNO9sjQsQmbVMPfWk8CahJJO4.PTu8hQqK',true),
        ('Dragan', 'Bozhinoski', 'dragan.bozhinoski@sorsix.com',
-        '$2a$10$xDmfApNkwR4cbXXR2VzDNO9sjQsQmbVMPfWk8CahJJO4.PTu8hQqK'),
+        '$2a$10$xDmfApNkwR4cbXXR2VzDNO9sjQsQmbVMPfWk8CahJJO4.PTu8hQqK',true),
        ('Jovan', 'Kitanov', 'jovan.kitanov@sorsix.com',
-        '$2a$10$xDmfApNkwR4cbXXR2VzDNO9sjQsQmbVMPfWk8CahJJO4.PTu8hQqK'),
+        '$2a$10$xDmfApNkwR4cbXXR2VzDNO9sjQsQmbVMPfWk8CahJJO4.PTu8hQqK',true),
        ('Gorjan', 'Micevski', 'gorjan.micevski',
-        '$2a$10$xDmfApNkwR4cbXXR2VzDNO9sjQsQmbVMPfWk8CahJJO4.PTu8hQqK'),
+        '$2a$10$xDmfApNkwR4cbXXR2VzDNO9sjQsQmbVMPfWk8CahJJO4.PTu8hQqK',true),
        ('Stojance', 'Krstevski', 'stojance.krstevski@sorsix.com',
-        '$2a$10$xDmfApNkwR4cbXXR2VzDNO9sjQsQmbVMPfWk8CahJJO4.PTu8hQqK'),
+        '$2a$10$xDmfApNkwR4cbXXR2VzDNO9sjQsQmbVMPfWk8CahJJO4.PTu8hQqK',true),
        ('Emil', 'Stankov', 'emil.stanok@sorsix.com',
-        '$2a$10$xDmfApNkwR4cbXXR2VzDNO9sjQsQmbVMPfWk8CahJJO4.PTu8hQqK'),
+        '$2a$10$xDmfApNkwR4cbXXR2VzDNO9sjQsQmbVMPfWk8CahJJO4.PTu8hQqK',true),
        ('Andrej', 'Skendereski', 'andrej.skenderski@sorsix.com',
-        '$2a$10$xDmfApNkwR4cbXXR2VzDNO9sjQsQmbVMPfWk8CahJJO4.PTu8hQqK'),
+        '$2a$10$xDmfApNkwR4cbXXR2VzDNO9sjQsQmbVMPfWk8CahJJO4.PTu8hQqK',true),
        ('David', 'Trajkovski', 'david.trajkovski@sorsix.com',
-        '$2a$10$xDmfApNkwR4cbXXR2VzDNO9sjQsQmbVMPfWk8CahJJO4.PTu8hQqK'),
+        '$2a$10$xDmfApNkwR4cbXXR2VzDNO9sjQsQmbVMPfWk8CahJJO4.PTu8hQqK',true),
        ('Gjorgji', 'Dimeski', 'gjorgji.dimeski@sorsix.com',
-        '$2a$10$xDmfApNkwR4cbXXR2VzDNO9sjQsQmbVMPfWk8CahJJO4.PTu8hQqK'),
+        '$2a$10$xDmfApNkwR4cbXXR2VzDNO9sjQsQmbVMPfWk8CahJJO4.PTu8hQqK',true),
        ('Dimitar', 'Mitrovski', 'dimitar.mitrovski@sorsix.com',
-        '$2a$10$xDmfApNkwR4cbXXR2VzDNO9sjQsQmbVMPfWk8CahJJO4.PTu8hQqK'),
+        '$2a$10$xDmfApNkwR4cbXXR2VzDNO9sjQsQmbVMPfWk8CahJJO4.PTu8hQqK',true),
        ('Oliver', 'Aleksovski', 'oliver.aleksovski@sorsix.com',
-        '$2a$10$xDmfApNkwR4cbXXR2VzDNO9sjQsQmbVMPfWk8CahJJO4.PTu8hQqK'),
+        '$2a$10$xDmfApNkwR4cbXXR2VzDNO9sjQsQmbVMPfWk8CahJJO4.PTu8hQqK',true),
        ('Stefan', 'Dimitrovski', 'stefan.dimitrovski@sorsix.com',
-        '$2a$10$xDmfApNkwR4cbXXR2VzDNO9sjQsQmbVMPfWk8CahJJO4.PTu8hQqK'),
+        '$2a$10$xDmfApNkwR4cbXXR2VzDNO9sjQsQmbVMPfWk8CahJJO4.PTu8hQqK',true),
        ('Nikola', 'Lazarevski', 'nikola.lazarevski@sorsix.com',
-        '$2a$10$xDmfApNkwR4cbXXR2VzDNO9sjQsQmbVMPfWk8CahJJO4.PTu8hQqK');
+        '$2a$10$xDmfApNkwR4cbXXR2VzDNO9sjQsQmbVMPfWk8CahJJO4.PTu8hQqK',true);
 
 insert into app_users (first_name, last_name, email, password, is_active, app_user_role)
 values ('Admin', 'Admin', 'admin',
         '$2a$10$pvnUPSWNzseMf4v1MqE7F.F0dOyFSvpXTR7XdJGZff.mLbKOcS4Zm', true, 'ADMIN');
 
-insert into tournaments (name, category, location, description, number_of_participants, type, timeline, organizer,start_date)
-values ('Kosharka', 'Kosharka','Tetovo Goce Sala', 'Timski turnir itn...',  4, 'TEAM', 'ONGOING', 1, '2022-04-20 03:00:00.000000'),
-       ('Ping pong', 'Ping Pong','Skopje Boris Sala', 'Timski turnir itn...', 4, 'INDIVIDUAL', 'COMING_SOON', 1, '2022-04-22 03:00:00.000000'),
-       ('Ping pong1', 'Ping Pong1','Gostivar Goce Sala', 'Timski turnir itn...', 4, 'INDIVIDUAL', 'FINISHED', 1, '2022-04-10 03:00:00.000000'),
-       ('Kosharka', 'Kosharka', 'Kumanovo Goce Sala', 'Timski turnir itn...', 4, 'TEAM', 'COMING_SOON', 1, '2022-04-22 03:00:00.000000');
-
-insert into teams (name)
-values ('KK Tomas'),
-       ('KK Feniks'),
-       ('KK MZT'),
-       ('KK Rabotnichki');
-
-insert into app_user_teams (team_id, app_user_id)
-values (1, 1),
-       (1, 2),
-       (1, 3),
-       (1, 4),
-       (2, 5),
-       (2, 6),
-       (2, 7),
-       (3, 8),
-       (3, 9),
-       (3, 10),
-       (3, 11),
-       (4, 12),
-       (4, 13),
-       (4, 14);
-
-insert into team_matches (team1_id, team2_id, is_finished, number, round, next_match)
-values (null, null, false, 0, 1, null),
-       (1, 3, false, 0, 0, 1),
-       (2, 4, false, 1, 0, 1);
-
-insert into individual_matches (app_user1_id, app_user2_id, is_finished, number, round, next_match)
-values (null, null, false, 0, 1, null),
-       (1, 2, false, 0, 0, 1),
-       (3, 4, false, 1, 0, 1);
-
-insert into team_matches_tournaments (tournament_id, team_match_id)
-values (1, 1),
-       (1, 2),
-       (1, 3);
-
-
-insert into individual_matches_tournaments (tournament_id, individual_match_id)
-values (3, 1),
-       (3, 2),
-       (3, 3);
-
-insert into individual_tournaments (tournament_id, app_user_id)
-values (2, 2),
-       (2, 3),
-       (2, 4);
-
-insert into team_tournaments (tournament_id, team_id)
-values (4, 2),
-       (4, 3),
-       (4, 4);
-
-
 insert into organizer_requests (title, description, app_user_id)
-values ('Tournaments title', 'Tournaments description', 1),
-       ('Tournaments title', 'Tournaments description', 2),
-       ('Tournaments title', 'Tournaments description', 3),
+values ('Tournaments title', 'Tournaments description', 3),
        ('Tournaments title', 'Tournaments description', 4),
        ('Tournaments title', 'Tournaments description', 5),
        ('Tournaments title', 'Tournaments description', 6),

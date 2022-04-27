@@ -7,7 +7,7 @@ create table app_users
     password          text not null,
     is_active         boolean default false,
     app_user_role     text    default 'PLAYER',
-    profile_photo_url text
+    profile_photo_url text    default 'profile0.jpg'
 );
 
 create table activation_tokens

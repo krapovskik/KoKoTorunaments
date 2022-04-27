@@ -1,10 +1,12 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
 import {Tournament} from "../../../model/Tournament";
+import {Participant} from "../../../model/Participant";
 import {JoinTournamentDialogComponent} from "../../tournaments/joinToutnamentDialog/join-tournament-dialog.component";
-import {MatDialog} from "@angular/material/dialog";
+import {MatDialog, MatDialogRef} from "@angular/material/dialog";
 import {TokenService} from "../../../service/token.service";
 import {MessageService} from "../../../service/message.service";
 import {TournamentService} from "../../../service/tournament.service";
+import {ViewPlayersInTeamDialogComponent} from "../view-players-in-team-dialog/view-players-in-team-dialog.component";
 import {Router} from "@angular/router";
 
 @Component({
@@ -12,7 +14,7 @@ import {Router} from "@angular/router";
     templateUrl: './tournament-side-bar.component.html',
     styleUrls: ['./tournament-side-bar.component.css']
 })
-export class TournamentSideBarComponent implements OnInit {
+export class TournamentSideBarComponent implements OnInit, OnDestroy {
 
     @Input() tournament!: Tournament;
     @Input() participants!: string[]
@@ -20,11 +22,20 @@ export class TournamentSideBarComponent implements OnInit {
     @Output() toggleSideBarEvent: EventEmitter<any> = new EventEmitter();
     @Output() joinEvent: EventEmitter<any> = new EventEmitter();
 
+    dialogRef!: MatDialogRef<ViewPlayersInTeamDialogComponent>
+
     constructor(private dialog: MatDialog,
                 private tokenService: TokenService,
                 private messageService: MessageService,
                 private tournamentService: TournamentService,
+                private router: Router
     ) {
+    }
+
+    ngOnDestroy(): void {
+        if(this.dialogRef) {
+            this.dialogRef.close()
+        }
     }
 
     ngOnInit() {
@@ -64,4 +75,12 @@ export class TournamentSideBarComponent implements OnInit {
                 })
         }
     }
+
+    onClicked(participant: Participant) {
+        this.dialogRef = this.dialog.open(ViewPlayersInTeamDialogComponent, {
+            width: '500px',
+            data: participant.participantId
+        })
+    }
+
 }

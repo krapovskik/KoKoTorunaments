@@ -64,6 +64,8 @@ import { MyProfileComponent } from './components/my-profile/my-profile.component
 import {MatGridListModule} from "@angular/material/grid-list";
 import {MatTabsModule} from "@angular/material/tabs";
 import {HighchartsChartModule} from "highcharts-angular";
+import { ChangeProfileIconDialogComponent } from './components/my-profile/change-profile-icon-dialog/change-profile-icon-dialog.component';
+import { ViewPlayersInTeamDialogComponent } from './components/tournament/view-players-in-team-dialog/view-players-in-team-dialog.component';
 
 declare global {
     interface Window {
@@ -100,6 +102,8 @@ declare global {
         CreateTournamentDialogComponent,
         WinnerDialogComponent,
         MyProfileComponent,
+        ChangeProfileIconDialogComponent,
+        ViewPlayersInTeamDialogComponent,
     ],
     imports: [
         BrowserModule,

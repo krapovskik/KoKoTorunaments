@@ -6,7 +6,7 @@ import {MyTeams} from "../../model/MyTeams";
 import {debounceTime, distinctUntilChanged, filter, mergeMap, of, switchMap} from "rxjs";
 import {FormControl} from "@angular/forms";
 import {UserService} from "../../service/user.service";
-import {TeamMember} from "../../model/TeamMember";
+import {Player} from "../../model/Player";
 import {MessageService} from "../../service/message.service";
 import {MatAccordion} from "@angular/material/expansion";
 import {SendInviteDialogComponent} from "../header/send-invite-dialog/send-invite-dialog.component";
@@ -22,7 +22,7 @@ export class MyTeamsComponent implements OnInit {
 
     searchFormControl = new FormControl('');
     myTeams: MyTeams[] = []
-    options: TeamMember[] = []
+    options: Player[] = []
 
     constructor(
         private dialog: MatDialog,

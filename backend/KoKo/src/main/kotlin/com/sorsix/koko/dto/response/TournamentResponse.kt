@@ -6,7 +6,7 @@ data class TournamentResponse(
     val tournamentId: Long,
     val tournamentName: String,
     val tournamentCategory: String,
-    val tournamentActualParticipants: List<String>,
+    val tournamentActualParticipants: List<ParticipantResponse>,
     val tournamentNumberOfParticipants: Int,
     val tournamentType: String,
     val tournamentTimelineType: String,

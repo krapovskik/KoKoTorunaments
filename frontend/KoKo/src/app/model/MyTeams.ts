@@ -1,7 +1,7 @@
-import {TeamMember} from "./TeamMember";
+import {Player} from "./Player";
 
 export interface MyTeams {
     teamId: number,
     teamName: string,
-    teamMemberResponse: TeamMember[],
+    teamMemberResponse: Player[],
 }

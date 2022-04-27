@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {Observable} from "rxjs";
 import {Response} from "../model/Response";
-import {TeamMember} from "../model/TeamMember";
+import {Player} from "../model/Player";
 
 @Injectable({
     providedIn: 'root'
@@ -19,8 +19,8 @@ export class UserService {
         });
     }
 
-    searchUser(query: string): Observable<TeamMember[]> {
-        return this.http.get<TeamMember[]>(`/api/user/searchUser?query=${query}`)
+    searchUser(query: string): Observable<Player[]> {
+        return this.http.get<Player[]>(`/api/user/searchUser?query=${query}`)
     }
 
     sendInvite(email: string, teamId: number): Observable<Response<string>> {
@@ -28,5 +28,9 @@ export class UserService {
             email: email,
             teamId: teamId
         })
+    }
+
+    updateProfilePhoto(image: string): Observable<Response<string>> {
+        return this.http.put<Response<string>>("/api/user/changeProfilePhoto", image)
     }
 }
