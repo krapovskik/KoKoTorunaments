@@ -7,7 +7,6 @@ import javax.persistence.*
 data class ActivationToken(
 
     @Id
-    @Column(name = "token")
     val token: String,
 
     @OneToOne

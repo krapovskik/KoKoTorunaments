@@ -8,7 +8,6 @@ data class IndividualMatchesTournament(
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
     val id: Long = 0L,
 
     @ManyToOne
@@ -18,5 +17,4 @@ data class IndividualMatchesTournament(
     @ManyToOne
     @JoinColumn(name = "individual_match_id")
     val individualMatch: IndividualMatch
-
 )

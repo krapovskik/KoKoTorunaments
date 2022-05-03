@@ -22,13 +22,6 @@ class AppUserTeamsService
             SuccessResponse(players)
         } ?: NotFoundResponse("Team with $teamId not found.")
 
-    fun findAllTeamsByPlayer(playerId: Long): Response =
-        appUserService.findAppUserByIdOrNull(playerId)?.let {
-            val teams = appUserTeamsRepository.findAppUserTeamsByAppUser(it)
-                .map { AppUserTeams::team }
-            SuccessResponse(teams)
-        } ?: NotFoundResponse("Player with $playerId not found.")
-
     fun addPlayerToTeam(addUserToTeamRequest: AddUserToTeamRequest): Response {
         val (userId, teamId) = addUserToTeamRequest
         return teamService.findTeamByIdOrNull(teamId)?.let { team ->

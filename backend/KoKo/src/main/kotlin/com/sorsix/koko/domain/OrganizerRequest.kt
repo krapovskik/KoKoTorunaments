@@ -8,9 +8,7 @@ data class OrganizerRequest(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long,
-
     val title: String,
-
     val description: String,
 
     @OneToOne

@@ -5,39 +5,38 @@ import javax.persistence.*
 @Entity
 @Table(name = "team_matches")
 data class TeamMatch(
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    val id: Long = 0L,
-
-    @Column(name = "winner")
-    val winner: Int? = null,
-
-    @Column(name = "is_finished")
-    val isFinished: Boolean = false,
-
-    @Column(name = "number")
-    val number: Int,
-
-    @Column(name = "round")
-    val round: Int,
-
-    @Column(name = "score1")
-    val score1: Int? = null,
-
-    @Column(name = "score2")
-    val score2: Int? = null,
+    override val id: Long = 0L,
+    override val winner: Int? = null,
+    override val isFinished: Boolean = false,
+    override val number: Int,
+    override val round: Int,
+    override val score1: Int? = null,
+    override val score2: Int? = null,
 
     @OneToOne
     @JoinColumn(name = "next_match")
-    val nextMatch: TeamMatch? = null,
+    override val nextMatch: TeamMatch? = null,
 
     @OneToOne
     @JoinColumn(name = "team1_id")
-    val team1: Team? = null,
+    override val player1: Team? = null,
 
     @OneToOne
     @JoinColumn(name = "team2_id")
-    val team2: Team? = null,
-)
+    override val player2: Team? = null,
+) : Match<TeamMatch> {
+
+    override fun copy(
+        nextMatch: Match<TeamMatch>?,
+        isFinished: Boolean,
+        player1: Any?,
+        player2: Any?
+    ): TeamMatch = copy(
+        nextMatch = nextMatch as TeamMatch?,
+        isFinished = isFinished,
+        player1 = player1 as Team?,
+        player2 = player2 as Team?
+    )
+}

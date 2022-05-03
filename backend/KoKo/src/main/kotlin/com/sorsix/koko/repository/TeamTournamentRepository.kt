@@ -12,5 +12,4 @@ interface TeamTournamentRepository : JpaRepository<TeamTournament, Long>{
     @Modifying
     @Query(value = "delete from TeamTournament t where t.tournament.id = :tournamentId")
     fun deleteTeams(tournamentId: Long): Int
-
 }

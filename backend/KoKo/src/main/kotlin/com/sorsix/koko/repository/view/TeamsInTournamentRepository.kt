@@ -8,5 +8,4 @@ import org.springframework.stereotype.Repository
 interface TeamsInTournamentRepository : JpaRepository<TeamsInTournament, Long>{
 
     fun findAllByTournamentId(id: Long): List<TeamsInTournament>
-
 }

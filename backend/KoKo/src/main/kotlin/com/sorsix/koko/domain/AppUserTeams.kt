@@ -8,7 +8,6 @@ data class AppUserTeams(
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
     val id: Long = 0L,
 
     @ManyToOne
@@ -18,6 +17,4 @@ data class AppUserTeams(
     @ManyToOne
     @JoinColumn(name = "app_user_id")
     val appUser: AppUser
-
-
 )

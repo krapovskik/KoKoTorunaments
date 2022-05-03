@@ -14,8 +14,6 @@ interface AppUserRepository : JpaRepository<AppUser, Long> {
 
     fun findAppUserByEmail(email: String): AppUser?
 
-    fun findTopByAppUserRole(userRole: AppUserRole)
-
     fun findAllByAppUserRole(pageable: Pageable, appUserRole: AppUserRole): Page<AppUser>
 
     @Modifying
@@ -30,6 +28,4 @@ interface AppUserRepository : JpaRepository<AppUser, Long> {
     @Modifying
     @Query(value = "update AppUser a set a.profilePhoto = :profilePhoto where a.id = :userId")
     fun updateProfilePhoto(userId: Long, profilePhoto: String): Int
-
-
 }

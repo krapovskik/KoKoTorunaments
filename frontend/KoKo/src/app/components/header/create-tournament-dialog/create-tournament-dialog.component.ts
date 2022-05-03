@@ -1,7 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {MatDialogRef} from "@angular/material/dialog";
 import {FormBuilder} from "@angular/forms";
-import {finalize} from "rxjs";
 import {TournamentService} from "../../../service/tournament.service";
 import {MessageService} from "../../../service/message.service";
 

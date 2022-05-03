@@ -1,7 +1,5 @@
 package com.sorsix.koko.dto.request
 
-import com.sorsix.koko.domain.enumeration.TournamentType
-
 data class EditMatchRequest(
     val tournamentId: Long,
     val matchId: Long,

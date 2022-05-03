@@ -11,32 +11,19 @@ data class AppUser(
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
     val id: Long,
-
-    @Column(name = "first_name")
     val firstName: String,
-
-    @Column(name = "last_name")
     val lastName: String,
-
-    @Column(name = "email")
     val email: String,
-
-    @Column(name = "password")
     private val password: String,
 
-    @Column(name = "app_user_role")
     @Enumerated(value = EnumType.STRING)
     val appUserRole: AppUserRole,
-
-    @Column(name = "is_active")
     val isActive: Boolean = false,
 
     @Column(name = "profile_photo_url")
     val profilePhoto: String = "profile0.jpg"
-
-    ) : UserDetails {
+) : UserDetails {
 
     override fun getAuthorities() = mutableListOf(SimpleGrantedAuthority(appUserRole.name))
 

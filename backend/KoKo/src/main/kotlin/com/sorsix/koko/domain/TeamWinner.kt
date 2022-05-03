@@ -7,7 +7,6 @@ import javax.persistence.*
 data class TeamWinner(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
     val id: Long = 0,
 
     @OneToOne

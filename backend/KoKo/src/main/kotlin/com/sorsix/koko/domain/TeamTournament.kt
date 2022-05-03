@@ -5,10 +5,8 @@ import javax.persistence.*
 @Entity
 @Table(name = "team_tournaments")
 data class TeamTournament(
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
     val id: Long = 0L,
 
     @ManyToOne
@@ -17,6 +15,5 @@ data class TeamTournament(
 
     @ManyToOne
     @JoinColumn(name = "team_id")
-    val team: Team
-
-)
+    override val player: Team
+): TypedTournament

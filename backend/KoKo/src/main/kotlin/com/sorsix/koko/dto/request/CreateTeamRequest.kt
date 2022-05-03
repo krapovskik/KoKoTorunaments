@@ -1,5 +1,3 @@
 package com.sorsix.koko.dto.request
 
-data class CreateTeamRequest(
-    val teamName: String,
-)
+data class CreateTeamRequest(val teamName: String)
