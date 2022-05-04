@@ -9,7 +9,9 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {debounceTime, distinctUntilChanged, filter, map, mergeMap, Observable, switchMap} from "rxjs";
 import {Page} from "../../model/Page";
 import {MessageService} from "../../service/message.service";
-import {ChangeProfileIconDialogComponent} from "./change-profile-icon-dialog/change-profile-icon-dialog.component";
+import {
+    ChangeProfileIconDialogComponent
+} from "../dialogs/change-profile-icon-dialog/change-profile-icon-dialog.component";
 import {TokenService} from "../../service/token.service";
 import {UserService} from "../../service/user.service";
 import {Player} from 'src/app/model/Player';
@@ -121,12 +123,10 @@ export class MyProfileComponent implements OnInit {
                 this.options = data
             }
         })
-
-
     }
 
-    onResult(event: ProfileTournament[]) {
-        this.tournaments = event
+    onResult(tournaments: ProfileTournament[]) {
+        this.tournaments = tournaments
     }
 
     changeImage() {
@@ -137,17 +137,19 @@ export class MyProfileComponent implements OnInit {
                 {
                     width: '500px',
                     data: this.profilePhoto
-                }
-            )
-            dialogRef.afterClosed().subscribe({
-                next: data => {
-                    if (data == "success") {
-                        this.getProfileStatistics()
-                    }
+                })
+
+            dialogRef.afterClosed().pipe(
+                filter((data) => data == 'success'),
+                mergeMap(() => {
+                    return this.tournamentService.getProfileStatistics(this.id)
+                })
+            ).subscribe({
+                next: (data) => {
+                    this.setData(data)
                 }
             })
         }
-
     }
 
     getProfileStatistics() {

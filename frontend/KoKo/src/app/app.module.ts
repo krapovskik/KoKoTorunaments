@@ -29,7 +29,7 @@ import {HTTP_INTERCEPTORS, HttpClientModule} from "@angular/common/http";
 import {MatSnackBarModule} from "@angular/material/snack-bar";
 import {ActivateAccountComponent} from './components/auth/activate-account/activate-account.component';
 import {MatDialogModule} from "@angular/material/dialog";
-import {RegisterUserDialog} from "./components/header/registerUserDialog/register-user-dialog.component";
+import {RegisterUserDialog} from "./components/dialogs/registerUserDialog/register-user-dialog.component";
 import {HomeComponent} from './components/home/home.component';
 import {AdminComponent} from './components/admin/admin.component';
 import {SidebarComponent} from './components/admin/sidebar/sidebar.component';
@@ -41,31 +41,40 @@ import {MatPaginatorModule} from "@angular/material/paginator";
 import {MatExpansionModule} from "@angular/material/expansion";
 import {
     BecomeOrganizerDialogComponent
-} from './components/header/become-organizer-dialog/become-organizer-dialog.component';
+} from './components/dialogs/become-organizer-dialog/become-organizer-dialog.component';
 import {JwtInterceptor} from "./helper/jwt.interceptor";
 import {MatProgressBarModule} from "@angular/material/progress-bar";
 import {PaginationComponent} from './components/pagination/pagination.component';
 import {TournamentsComponent} from './components/tournaments/tournaments.component';
 import {LoadingButtonComponent} from "./components/loading-button/loading-button.component";
-import { AllTournamentsComponent } from './components/all-tournaments/all-tournaments.component';
-import { CreateTeamDialogComponent } from './components/header/create-team-dialog/create-team-dialog.component';
-import { MyTeamsComponent } from './components/my-teams/my-teams.component';
+import {AllTournamentsComponent} from './components/all-tournaments/all-tournaments.component';
+import {CreateTeamDialogComponent} from './components/dialogs/create-team-dialog/create-team-dialog.component';
+import {MyTeamsComponent} from './components/my-teams/my-teams.component';
 import {MatAutocompleteModule} from "@angular/material/autocomplete";
-import { JoinTournamentDialogComponent } from './components/tournaments/joinToutnamentDialog/join-tournament-dialog.component';
-import { SendInviteDialogComponent } from './components/header/send-invite-dialog/send-invite-dialog.component';
-import { TournamentComponent } from './components/tournament/tournament.component';
-import { TournamentSideBarComponent } from './components/tournament/tournament-side-bar/tournament-side-bar.component';
-import { ChangeScoreDialogComponent } from './components/tournament/change-score-dialog/change-score-dialog.component';
+import {
+    JoinTournamentDialogComponent
+} from './components/dialogs/joinToutnamentDialog/join-tournament-dialog.component';
+import {SendInviteDialogComponent} from './components/dialogs/send-invite-dialog/send-invite-dialog.component';
+import {TournamentComponent} from './components/tournament/tournament.component';
+import {TournamentSideBarComponent} from './components/tournament/tournament-side-bar/tournament-side-bar.component';
+import {ChangeScoreDialogComponent} from './components/dialogs/change-score-dialog/change-score-dialog.component';
 import {MatCheckboxModule} from "@angular/material/checkbox";
-import { CreateTournamentDialogComponent } from './components/header/create-tournament-dialog/create-tournament-dialog.component';
+import {
+    CreateTournamentDialogComponent
+} from './components/dialogs/create-tournament-dialog/create-tournament-dialog.component';
 import {MatDatepickerModule} from "@angular/material/datepicker";
-import { WinnerDialogComponent } from './components/tournament/winner-dialog/winner-dialog.component';
-import { MyProfileComponent } from './components/my-profile/my-profile.component';
+import {WinnerDialogComponent} from './components/dialogs/winner-dialog/winner-dialog.component';
+import {MyProfileComponent} from './components/my-profile/my-profile.component';
 import {MatGridListModule} from "@angular/material/grid-list";
 import {MatTabsModule} from "@angular/material/tabs";
 import {HighchartsChartModule} from "highcharts-angular";
-import { ChangeProfileIconDialogComponent } from './components/my-profile/change-profile-icon-dialog/change-profile-icon-dialog.component';
-import { ViewPlayersInTeamDialogComponent } from './components/tournament/view-players-in-team-dialog/view-players-in-team-dialog.component';
+import {
+    ChangeProfileIconDialogComponent
+} from './components/dialogs/change-profile-icon-dialog/change-profile-icon-dialog.component';
+import {
+    ViewPlayersInTeamDialogComponent
+} from './components/dialogs/view-players-in-team-dialog/view-players-in-team-dialog.component';
+import { BackgroundComponent } from './components/background/background.component';
 
 declare global {
     interface Window {
@@ -104,6 +113,7 @@ declare global {
         MyProfileComponent,
         ChangeProfileIconDialogComponent,
         ViewPlayersInTeamDialogComponent,
+        BackgroundComponent,
     ],
     imports: [
         BrowserModule,

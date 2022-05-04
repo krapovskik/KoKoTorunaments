@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {RegisterUserDialog} from "../header/registerUserDialog/register-user-dialog.component";
+import {RegisterUserDialog} from "../dialogs/registerUserDialog/register-user-dialog.component";
 import {MatDialog} from "@angular/material/dialog";
 import {TokenService} from "../../service/token.service";
 import {Router} from "@angular/router";
@@ -11,7 +11,10 @@ import {Router} from "@angular/router";
 })
 export class HomeComponent implements OnInit {
 
-    constructor(private dialog: MatDialog, private tokenService: TokenService, private router: Router) {
+    constructor(
+        private dialog: MatDialog,
+        private tokenService: TokenService,
+        private router: Router) {
     }
 
     openRegisterDialog(): void {

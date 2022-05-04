@@ -4,6 +4,7 @@ import com.sorsix.koko.domain.AppUser
 import com.sorsix.koko.domain.AppUserTeams
 import com.sorsix.koko.domain.Team
 import org.springframework.data.jpa.repository.JpaRepository
+import org.springframework.data.jpa.repository.Modifying
 import org.springframework.data.jpa.repository.Query
 import org.springframework.stereotype.Repository
 
@@ -21,4 +22,8 @@ interface AppUserTeamsRepository : JpaRepository<AppUserTeams, Long> {
                         (select t2.team.id from AppUserTeams t2 where t2.appUser = :appUser)"""
     )
     fun findTeamsForUser(appUser: AppUser): List<AppUserTeams>
+
+    @Modifying
+    @Query(value = "delete from AppUserTeams a where a.appUser.id in :userIds")
+    fun deleteAllByAppUserIn(userIds: List<Long>)
 }

@@ -2,10 +2,8 @@
   <mat-toolbar-row>
 
     <a [routerLink]="isLoggedIn() ? '/tournaments': '/'">
-      <span><img src="assets/logo.png" class="logo"></span>
+      <span><img src="assets/logo.png" class="logo" alt="logo"></span>
     </a>
-
-<!--    <a *ngIf="router.url!='/'" routerLink="/allTournaments/comingsoon/1/15" style="color: white">All Tournaments</a>-->
 
     <div fxFlex fxLayout="row" fxLayoutAlign="flex-end" fxLayoutGap="10px">
       <mat-chip-list *ngIf="!isLoggedIn()">

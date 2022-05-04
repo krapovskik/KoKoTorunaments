@@ -23,8 +23,5 @@ export class AdminHeaderComponent {
 
     toggleSideBar() {
         this.toggleSideBarEvent.emit();
-        setTimeout(() => {
-            window.dispatchEvent(new Event('resize'));
-        }, 200);
     }
 }

@@ -14,8 +14,9 @@ export class TournamentsComponent implements OnInit {
     finishedTournaments: Tournament[] = []
     comingSoonTournaments: Tournament[] = []
 
-    constructor(private tournamentService: TournamentService,
-                private messageService: MessageService,
+    constructor(
+        private tournamentService: TournamentService,
+        private messageService: MessageService,
     ) {
     }
 
@@ -26,10 +27,9 @@ export class TournamentsComponent implements OnInit {
                 this.finishedTournaments = data['FINISHED']
                 this.comingSoonTournaments = data['COMING_SOON']
             },
-            error: data => {
-                this.messageService.showErrorMessage(data.error.message)
+            error: err => {
+                this.messageService.showErrorMessage(err.error.message)
             }
         })
     }
-
 }

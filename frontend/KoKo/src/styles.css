@@ -34,7 +34,7 @@ body {
 }
 
 .brackets-viewer {
-  height: 87vh;
+  height: calc(100vh - 84px);
   background-image: url("/./assets/bg.jpg");
   background-attachment: fixed;
   background-size: cover;

@@ -16,7 +16,7 @@ spring:
   mail:
     host: smtp.office365.com
     port: 587
-    username: "${EMAIL_USERNAME}"
+    username: "kokotournaments@outlook.com"
     password: "${EMAIL_PASSWORD}"
 
     properties:
@@ -27,4 +27,4 @@ spring:
 
 
 jwtSecret: "${JWT_SECRET}"
-jwtExpirationMs: "${JWT_EXPIRATION}"
+jwtExpirationMs: "86400000"

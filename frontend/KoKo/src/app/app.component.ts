@@ -17,7 +17,6 @@ export class AppComponent implements OnInit {
     }
 
     ngOnInit(): void {
-
         this.messageService.$successMessages.subscribe({
             next: message => {
                 this.openMessage(message, 'success')

@@ -2,13 +2,6 @@ a {
   text-decoration: none;
 }
 
-.backgorund {
-  background-image: url("/./assets/bg.jpg");
-  background-size: cover;
-  background-attachment: fixed;
-  height: calc(90vh + 8px);
-}
-
 .container {
   height: 70vh;
   line-height: 50px;

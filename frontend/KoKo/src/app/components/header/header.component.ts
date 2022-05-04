@@ -1,10 +1,10 @@
 import {Component} from '@angular/core';
 import {MatDialog} from "@angular/material/dialog";
-import {RegisterUserDialog} from "./registerUserDialog/register-user-dialog.component";
+import {RegisterUserDialog} from "../dialogs/registerUserDialog/register-user-dialog.component";
 import {TokenService} from "../../service/token.service";
 import {Router} from "@angular/router";
-import {BecomeOrganizerDialogComponent} from "./become-organizer-dialog/become-organizer-dialog.component";
-import {CreateTournamentDialogComponent} from "./create-tournament-dialog/create-tournament-dialog.component";
+import {BecomeOrganizerDialogComponent} from "../dialogs/become-organizer-dialog/become-organizer-dialog.component";
+import {CreateTournamentDialogComponent} from "../dialogs/create-tournament-dialog/create-tournament-dialog.component";
 
 @Component({
     selector: 'app-header',

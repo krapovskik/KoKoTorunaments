@@ -3,7 +3,6 @@ import {MatDialogRef} from "@angular/material/dialog";
 import {FormBuilder} from "@angular/forms";
 import {MessageService} from "../../../service/message.service";
 import {UserService} from "../../../service/user.service";
-import {finalize} from "rxjs";
 
 @Component({
     selector: 'app-become-organizer-dialog',
@@ -39,17 +38,14 @@ export class BecomeOrganizerDialogComponent {
         let title = this.becomeOrganizerForm.controls['title'].value
         let description = this.becomeOrganizerForm.controls['description'].value
 
-        this.userService.sendOrganizerRequest(title, description).pipe(
-            finalize(() => {
-                this.loading = false;
-            })
-        ).subscribe({
+        this.userService.sendOrganizerRequest(title, description).subscribe({
             next: data => {
                 this.messageService.showSuccessMessage(data.response)
                 this.dialogRef.close()
             },
             error: err => {
                 this.messageService.showErrorMessage(err.error.message)
+                this.loading = false;
             }
         })
     }

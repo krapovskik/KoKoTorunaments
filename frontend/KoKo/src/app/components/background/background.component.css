@@ -1,0 +1,6 @@
+.background {
+  background-image: url("/./assets/bg.jpg");
+  background-size: cover;
+  background-attachment: fixed;
+  height: calc(100vh - 64px);
+}

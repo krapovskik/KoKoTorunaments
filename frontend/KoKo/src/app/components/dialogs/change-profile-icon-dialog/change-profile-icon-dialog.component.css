@@ -6,7 +6,7 @@ img.profile-img {
   border: 2px solid transparent;
 }
 
-img.selected-border{
+img.selected-border {
   border: 2px solid var(--primary-color);
 }
 
@@ -15,11 +15,11 @@ img.selected-border{
   justify-content: center;
 }
 
-.inner-container{
+.inner-container {
   width: 80%;
 }
 
-.center{
+.center {
   display: flex;
   justify-content: center;
   align-items: center;

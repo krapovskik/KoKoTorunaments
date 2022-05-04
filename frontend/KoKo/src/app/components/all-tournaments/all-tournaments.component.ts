@@ -1,13 +1,9 @@
 import {Component, OnInit} from '@angular/core';
 import {TournamentService} from "../../service/tournament.service";
 import {ActivatedRoute} from "@angular/router";
-import {map, mergeMap, Observable, of} from "rxjs";
+import {map, Observable} from "rxjs";
 import {Page} from "../../model/Page";
 import {Tournament} from "../../model/Tournament";
-import {JoinTournamentDialogComponent} from "../tournaments/joinToutnamentDialog/join-tournament-dialog.component";
-import {MatDialog} from "@angular/material/dialog";
-import {TokenService} from "../../service/token.service";
-import {MessageService} from "../../service/message.service";
 
 @Component({
     selector: 'app-all-tournaments',
@@ -29,8 +25,9 @@ export class AllTournamentsComponent implements OnInit {
 
     tournaments: Tournament[] = [];
 
-    constructor(private tournamentService: TournamentService,
-                private route: ActivatedRoute) {
+    constructor(
+        private tournamentService: TournamentService,
+        private route: ActivatedRoute) {
     }
 
     ngOnInit(): void {
@@ -58,7 +55,7 @@ export class AllTournamentsComponent implements OnInit {
         })
     }
 
-    onResult(event: Tournament[]) {
-        this.tournaments = event;
+    onResult(tournaments: Tournament[]) {
+        this.tournaments = tournaments;
     }
 }

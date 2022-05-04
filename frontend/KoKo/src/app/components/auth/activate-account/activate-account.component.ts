@@ -3,7 +3,6 @@ import {FormBuilder, FormGroup} from "@angular/forms";
 import {ActivatedRoute, Router} from "@angular/router";
 import {AuthService} from "../../../service/auth.service";
 import {MessageService} from "../../../service/message.service";
-import {finalize} from "rxjs";
 
 @Component({
     selector: 'app-activate-account',
@@ -46,17 +45,14 @@ export class ActivateAccountComponent implements OnInit {
         let lastName = this.activationForm.controls['lastName'].value
         let password = this.activationForm.controls['password'].value
 
-        this.authService.activateAccount(this.token, firstName, lastName, password).pipe(
-            finalize(() => {
-                this.loading = false;
-            })
-        ).subscribe({
+        this.authService.activateAccount(this.token, firstName, lastName, password).subscribe({
             next: data => {
                 this.messageService.showSuccessMessage(data.response)
                 this.router.navigate(["/login"])
             },
             error: err => {
                 this.messageService.showErrorMessage(err.error.message)
+                this.loading = false;
             }
         })
     }

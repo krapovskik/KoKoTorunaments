@@ -1,5 +1,6 @@
 package com.sorsix.koko.util
 
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.mail.SimpleMailMessage
 import org.springframework.mail.javamail.JavaMailSender
 import org.springframework.stereotype.Service
@@ -7,7 +8,8 @@ import org.springframework.stereotype.Service
 @Service
 class EmailService(val mailSender: JavaMailSender) {
 
-    private val fromMail = "kokotournaments@outlook.com"
+    @Value("\${EMAIL_USERNAME}")
+    private val fromMail: String = ""
 
     fun sendNewAccountMail(to: String, token: String) {
         val subject = "KoKo Tournaments account activation"

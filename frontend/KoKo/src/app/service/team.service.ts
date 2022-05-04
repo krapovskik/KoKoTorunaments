@@ -24,7 +24,7 @@ export class TeamService {
         return this.http.get<MyTeams[]>("/api/team/myTeams");
     }
 
-    getTeamsForUser(): Observable<Team[]>{
+    getTeamsForUser(): Observable<Team[]> {
         return this.http.get<Team[]>("/api/team/userTeams");
     }
 

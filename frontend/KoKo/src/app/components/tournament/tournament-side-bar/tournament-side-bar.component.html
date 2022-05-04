@@ -27,7 +27,8 @@
     <ol *ngIf="tournament.tournamentType == 'INDIVIDUAL'">
       <li *ngFor="let participant of tournament.tournamentActualParticipants"
           class="participant-select">
-        <a class="participant-select" [routerLink]="['/profile',participant.participantId,1,15]">{{participant.participantName}}</a>
+        <a class="participant-select"
+           [routerLink]="['/profile',participant.participantId,1,15]">{{participant.participantName}}</a>
       </li>
     </ol>
     <button mat-raised-button color="primary"

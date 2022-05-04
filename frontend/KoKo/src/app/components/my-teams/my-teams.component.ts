@@ -1,15 +1,15 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
-import {CreateTeamDialogComponent} from "../header/create-team-dialog/create-team-dialog.component";
+import {CreateTeamDialogComponent} from "../dialogs/create-team-dialog/create-team-dialog.component";
 import {MatDialog} from "@angular/material/dialog";
 import {TeamService} from "../../service/team.service";
 import {MyTeams} from "../../model/MyTeams";
-import {debounceTime, distinctUntilChanged, filter, mergeMap, of, switchMap} from "rxjs";
+import {debounceTime, distinctUntilChanged, filter, mergeMap, switchMap} from "rxjs";
 import {FormControl} from "@angular/forms";
 import {UserService} from "../../service/user.service";
 import {Player} from "../../model/Player";
 import {MessageService} from "../../service/message.service";
 import {MatAccordion} from "@angular/material/expansion";
-import {SendInviteDialogComponent} from "../header/send-invite-dialog/send-invite-dialog.component";
+import {SendInviteDialogComponent} from "../dialogs/send-invite-dialog/send-invite-dialog.component";
 
 @Component({
     selector: 'app-my-teams',
@@ -51,7 +51,6 @@ export class MyTeamsComponent implements OnInit {
     }
 
     addUserToTeam(teamId: number) {
-
         if (this.searchFormControl.value !== '') {
             let userId = +this.searchFormControl.value?.split('-')[1];
 
@@ -87,12 +86,9 @@ export class MyTeamsComponent implements OnInit {
         })
 
         dialogRef.afterClosed().pipe(
-            mergeMap((result) => {
-                if (result == 'success') {
-                    return this.teamService.getMyTeams()
-                }
-
-                return of(this.myTeams)
+            filter((result) => result == 'success'),
+            mergeMap(() => {
+                return this.teamService.getMyTeams()
             })
         ).subscribe({
             next: data => {

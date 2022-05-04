@@ -39,7 +39,7 @@ export class RegisterUserDialog {
         this.authService.register(email).subscribe({
             next: data => {
                 this.messageService.showSuccessMessage(data.response)
-                this.onNoClick()
+                this.dialogRef.close()
             },
             error: err => {
                 this.messageService.showErrorMessage(err.error.message)

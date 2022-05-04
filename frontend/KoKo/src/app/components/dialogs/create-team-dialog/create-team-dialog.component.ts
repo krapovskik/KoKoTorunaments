@@ -3,7 +3,6 @@ import {MatDialogRef} from "@angular/material/dialog";
 import {FormBuilder} from "@angular/forms";
 import {MessageService} from "../../../service/message.service";
 import {TeamService} from "../../../service/team.service";
-import {finalize} from "rxjs";
 
 @Component({
     selector: 'app-create-team-dialog',
@@ -36,16 +35,14 @@ export class CreateTeamDialogComponent {
         this.loading = true;
         let teamName = this.createTeamForm.controls['teamName'].value
 
-        this.teamService.createTeam(teamName)
-            .pipe(finalize(() => {
-                this.loading = false
-            })).subscribe({
+        this.teamService.createTeam(teamName).subscribe({
             next: (data) => {
                 this.messageService.showSuccessMessage(data.response)
                 this.dialogRef.close('success')
             },
             error: err => {
                 this.messageService.showErrorMessage(err.error.message)
+                this.loading = false;
             }
         })
     }

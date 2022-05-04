@@ -1,7 +1,6 @@
 import {Component, Inject, OnInit} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 import {FormBuilder} from "@angular/forms";
-import {filter} from "rxjs";
 import {Tournament} from "../../../model/Tournament";
 import {TournamentService} from "../../../service/tournament.service";
 import {MessageService} from "../../../service/message.service";
@@ -17,7 +16,7 @@ export class ChangeScoreDialogComponent implements OnInit {
     loading = false;
 
     editForm = this.formBuilder.group({
-        useNumberScore: false,
+        useNumberScore: this.matchData.match.opponent1.score > 0 || this.matchData.match.opponent2.score > 0,
         score1: this.matchData.match.opponent1.score || 0,
         score2: this.matchData.match.opponent2.score || 0,
         isFinished: false,
@@ -39,7 +38,6 @@ export class ChangeScoreDialogComponent implements OnInit {
     }
 
     ngOnInit(): void {
-
         this.setWinner()
 
         this.editForm.controls['useNumberScore'].valueChanges.subscribe({
@@ -48,9 +46,7 @@ export class ChangeScoreDialogComponent implements OnInit {
             }
         })
 
-        this.editForm.controls['score1'].valueChanges.pipe(
-            filter((value) => !!value)
-        ).subscribe({
+        this.editForm.controls['score1'].valueChanges.subscribe({
             next: () => {
                 this.setWinner()
             }

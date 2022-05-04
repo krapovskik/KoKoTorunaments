@@ -16,7 +16,7 @@ export class CreateTournamentDialogComponent implements OnInit {
         tournamentCategory: '',
         tournamentLocation: '',
         tournamentDescription: '',
-        numberOfParticipants: 0,
+        numberOfParticipants: '',
         tournamentType: '',
         tournamentDate: '',
         tournamentTime: ''
@@ -85,9 +85,9 @@ export class CreateTournamentDialogComponent implements OnInit {
                     this.messageService.showSuccessMessage(data.response)
                     this.dialogRef.close()
                 },
-                error: data => {
+                error: err => {
                     this.loading = false
-                    this.messageService.showErrorMessage(data.error.message)
+                    this.messageService.showErrorMessage(err.error.message)
                 }
             })
     }

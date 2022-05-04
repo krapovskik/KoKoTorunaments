@@ -2,11 +2,11 @@ import {Component, ElementRef, OnDestroy, OnInit, Renderer2, ViewChild} from '@a
 import {MatDialog, MatDialogRef} from "@angular/material/dialog";
 import {TournamentService} from "../../service/tournament.service";
 import {ActivatedRoute} from "@angular/router";
-import {mergeMap, Subject} from "rxjs";
+import {filter, mergeMap, Subject} from "rxjs";
 import {Tournament} from "../../model/Tournament";
-import {ChangeScoreDialogComponent} from "./change-score-dialog/change-score-dialog.component";
+import {ChangeScoreDialogComponent} from "../dialogs/change-score-dialog/change-score-dialog.component";
 import {TokenService} from "../../service/token.service";
-import {WinnerDialogComponent} from "./winner-dialog/winner-dialog.component";
+import {WinnerDialogComponent} from "../dialogs/winner-dialog/winner-dialog.component";
 
 @Component({
     selector: 'app-tournament',
@@ -40,7 +40,6 @@ export class TournamentComponent implements OnInit, OnDestroy {
             })
         ).subscribe({
             next: (data) => {
-                console.log(data.response)
                 for (let child of this.bracketDiv.nativeElement.childNodes) {
                     this.renderer.setProperty(child, 'innerHTML', '')
                 }
@@ -118,11 +117,11 @@ export class TournamentComponent implements OnInit, OnDestroy {
                                 }
                             })
 
-                            dialogRef.afterClosed().subscribe({
-                                next: data => {
-                                    if (data == 'success') {
-                                        this.$tournamentBracket.next('')
-                                    }
+                            dialogRef.afterClosed().pipe(
+                                filter((data) => data == 'success')
+                            ).subscribe({
+                                next: () => {
+                                    this.$tournamentBracket.next('')
                                 }
                             })
                         }
@@ -141,12 +140,11 @@ export class TournamentComponent implements OnInit, OnDestroy {
     }
 
     onJoin() {
-        // if(this.tournament.tournamentTimelineType != "COMING_SOON")
         this.$tournamentBracket.next('')
     }
 
     ngOnDestroy() {
-        if(this.winnerDialog) {
+        if (this.winnerDialog) {
             this.winnerDialog.close()
         }
     }

@@ -28,9 +28,13 @@ values ('Kosta', 'Krapovski', 'kosta.krapovski@sorsix.com',
        ('Nikola', 'Lazarevski', 'nikola.lazarevski@sorsix.com',
         '$2a$10$xDmfApNkwR4cbXXR2VzDNO9sjQsQmbVMPfWk8CahJJO4.PTu8hQqK', true);
 
+-- password: kosta123
+
 insert into app_users (first_name, last_name, email, password, is_active, app_user_role)
 values ('Admin', 'Admin', 'admin',
         '$2a$10$pvnUPSWNzseMf4v1MqE7F.F0dOyFSvpXTR7XdJGZff.mLbKOcS4Zm', true, 'ADMIN');
+
+-- password: admin
 
 insert into organizer_requests (title, description, app_user_id)
 values ('Tournaments title', 'Tournaments description', 3),

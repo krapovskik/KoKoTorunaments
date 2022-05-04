@@ -13,11 +13,31 @@ import {AllTournamentsComponent} from "./components/all-tournaments/all-tourname
 import {MyTeamsComponent} from "./components/my-teams/my-teams.component";
 import {TournamentComponent} from "./components/tournament/tournament.component";
 import {MyProfileComponent} from "./components/my-profile/my-profile.component";
+import {BackgroundComponent} from "./components/background/background.component";
 
 const routes: Routes = [
     {
         path: '',
-        component: HomeComponent
+        component: BackgroundComponent,
+        children: [
+            {
+                path: '',
+                component: HomeComponent
+            },
+            {
+                path: 'tournaments',
+                component: TournamentsComponent
+            },
+            {
+                path: 'allTournaments/:type/:currentPage/:size',
+                component: AllTournamentsComponent
+            },
+            {
+                path: 'myTeams',
+                component: MyTeamsComponent,
+                canActivate: [AuthGuard],
+            },
+        ]
     },
     {
         path: '',
@@ -54,24 +74,12 @@ const routes: Routes = [
         component: TournamentComponent
     },
     {
-        path: 'tournaments',
-        component: TournamentsComponent
-    },
-    {
-        path: 'allTournaments/:type/:currentPage/:size',
-        component: AllTournamentsComponent
-    },
-    {
-        path: 'myTeams',
-        component: MyTeamsComponent
-    },
-    {
         path: 'profile/:id/:currentPage/:size',
         component: MyProfileComponent
     },
     {
         path: '**',
-        component: HomeComponent
+        redirectTo: ''
     }
 ];
 

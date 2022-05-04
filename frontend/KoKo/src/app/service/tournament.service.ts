@@ -40,8 +40,8 @@ export class TournamentService {
         return this.http.post<Response<string>>('/api/tournament/addTeam', {teamId, tournamentId})
     }
 
-    addPlayerToTournament(appUserId: number, tournamentId: number): Observable<Response<string>> {
-        return this.http.post<Response<string>>('/api/tournament/addPlayer', {appUserId, tournamentId})
+    addPlayerToTournament(tournamentId: number): Observable<Response<string>> {
+        return this.http.post<Response<string>>('/api/tournament/addPlayer', {tournamentId})
     }
 
     getAllTournamentsByUser(appUserId: number): ((page: number, size: number) => Observable<Page<Tournament>>) {

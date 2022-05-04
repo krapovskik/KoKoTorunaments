@@ -3,7 +3,6 @@ import {FormBuilder, FormGroup} from "@angular/forms";
 import {Router} from "@angular/router";
 import {AuthService} from "../../../service/auth.service";
 import {MessageService} from "../../../service/message.service";
-import {finalize} from "rxjs";
 import {TokenService} from "../../../service/token.service";
 
 @Component({
@@ -40,11 +39,7 @@ export class LoginComponent implements OnInit {
         let username = this.loginForm.controls['username'].value;
         let password = this.loginForm.controls['password'].value;
 
-        this.authService.login(username, password).pipe(
-            finalize(() => {
-                this.loading = false
-            })
-        ).subscribe({
+        this.authService.login(username, password).subscribe({
             next: user => {
                 this.tokenService.saveUser(user)
                 this.tokenService.saveToken(user.token)
@@ -56,6 +51,7 @@ export class LoginComponent implements OnInit {
             },
             error: () => {
                 this.messageService.showErrorMessage("Incorrect username or password")
+                this.loading = false;
             }
         })
     }

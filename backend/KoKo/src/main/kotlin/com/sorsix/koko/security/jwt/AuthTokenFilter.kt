@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletResponse
 
 @Component
 class AuthTokenFilter(val jwtUtils: JwtUtils, val appUserService: AppUserService) : OncePerRequestFilter() {
+
     override fun doFilterInternal(
         request: HttpServletRequest,
         response: HttpServletResponse,

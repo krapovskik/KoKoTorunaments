@@ -38,7 +38,6 @@ export class JoinTournamentDialogComponent implements OnInit {
         ).subscribe({
             next: data => {
                 this.filteredTeams = data
-                console.log(data)
             }
         })
     }
@@ -63,9 +62,9 @@ export class JoinTournamentDialogComponent implements OnInit {
                         this.messageService.showSuccessMessage(data.response)
                         this.dialogRef.close("success");
                     },
-                    error: data => {
+                    error: err => {
+                        this.messageService.showErrorMessage(err.error.message)
                         this.loading = false
-                        this.messageService.showErrorMessage(data.error.message)
                     }
                 })
         }
@@ -77,6 +76,4 @@ export class JoinTournamentDialogComponent implements OnInit {
         const filterValue = text.toLowerCase();
         return this.teams.filter(team => team.teamName.toLowerCase().includes(filterValue));
     }
-
-
 }

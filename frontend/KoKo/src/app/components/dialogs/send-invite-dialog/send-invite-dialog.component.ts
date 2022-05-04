@@ -3,12 +3,11 @@ import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 import {FormBuilder} from "@angular/forms";
 import {MessageService} from "../../../service/message.service";
 import {UserService} from "../../../service/user.service";
-import {finalize} from "rxjs";
 
 @Component({
-  selector: 'app-send-invite-dialog',
-  templateUrl: './send-invite-dialog.component.html',
-  styleUrls: ['./send-invite-dialog.component.css']
+    selector: 'app-send-invite-dialog',
+    templateUrl: './send-invite-dialog.component.html',
+    styleUrls: ['./send-invite-dialog.component.css']
 })
 export class SendInviteDialogComponent {
     inviteForm = this.formBuilder.group({
@@ -36,17 +35,14 @@ export class SendInviteDialogComponent {
 
         this.loading = true;
         let email = this.inviteForm.controls['email'].value
-        this.userService.sendInvite(email, this.teamId).pipe(
-            finalize(() => {
-                this.loading = false
-            })
-        ).subscribe({
+        this.userService.sendInvite(email, this.teamId).subscribe({
             next: data => {
                 this.messageService.showSuccessMessage(data.response)
                 this.dialogRef.close()
             },
             error: err => {
                 this.messageService.showErrorMessage(err.error.message)
+                this.loading = false;
             }
         })
     }

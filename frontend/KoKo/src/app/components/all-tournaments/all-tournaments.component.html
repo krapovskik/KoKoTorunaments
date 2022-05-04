@@ -1,33 +1,32 @@
-<div class="background">
-  <div class="container">
-    <div fxFlex fxLayout="column" fxLayoutAlign="center center">
-      <div class="fs-30 f-chango text-center">
-        <div fxFlex fxLayout="row" fxLayoutAlign="center center">
-          <a routerLink="/allTournaments/{{titles[prevIndex]}}/1/15" class="arrow">
-            <mat-icon>chevron_left</mat-icon>
-          </a>
-          <p class="title">{{ titles[currentIndex] | titlecase }} Tournaments</p>
-          <a routerLink="/allTournaments/{{titles[nextIndex]}}/1/15" class="arrow">
-            <mat-icon>chevron_right</mat-icon>
-          </a>
-        </div>
+<div class="container">
+  <div fxFlex fxLayout="column" fxLayoutAlign="center center">
+    <div class="fs-30 f-chango text-center">
+      <div fxFlex fxLayout="row" fxLayoutAlign="center center">
+        <a routerLink="/allTournaments/{{titles[prevIndex]}}/1/15" class="arrow">
+          <mat-icon>chevron_left</mat-icon>
+        </a>
+        <p class="title">{{ titles[currentIndex] | titlecase }} Tournaments</p>
+        <a routerLink="/allTournaments/{{titles[nextIndex]}}/1/15" class="arrow">
+          <mat-icon>chevron_right</mat-icon>
+        </a>
       </div>
-      <div class="tournaments">
-        <mat-card *ngFor="let tournament of tournaments">
-          <mat-card-content fxFlex fxLayout="row" fxLayout.xs="column" fxLayoutAlign.xs="start start"  fxLayoutAlign="space-between center" class="fs-20">
-            <p>Name: {{ tournament.tournamentName | uppercase }}</p>
-            <p>Category: {{ tournament.tournamentCategory }}</p>
-            <p>Type: {{ tournament.tournamentType }}</p>
-            <p>{{ tournament.tournamentActualParticipants.length }}/{{ tournament.tournamentNumberOfParticipants }}</p>
-            <a mat-raised-button color="primary" routerLink="/tournament/{{tournament.tournamentId}}">Open</a>
-          </mat-card-content>
-        </mat-card>
-      </div>
-      <app-pagination [navigationPath]="navigationPath"
-                      [functionToCall]="functionToCall"
-                      (result)="onResult($event)"
-                      style="margin-top: 10px"
-      ></app-pagination>
     </div>
+    <div class="tournaments">
+      <mat-card *ngFor="let tournament of tournaments">
+        <mat-card-content fxFlex fxLayout="row" fxLayout.xs="column" fxLayoutAlign.xs="start start"
+                          fxLayoutAlign="space-between center" class="fs-20">
+          <p>Name: {{ tournament.tournamentName | uppercase }}</p>
+          <p>Category: {{ tournament.tournamentCategory }}</p>
+          <p>Type: {{ tournament.tournamentType }}</p>
+          <p>{{ tournament.tournamentActualParticipants.length }}/{{ tournament.tournamentNumberOfParticipants }}</p>
+          <a mat-raised-button color="primary" routerLink="/tournament/{{tournament.tournamentId}}">Open</a>
+        </mat-card-content>
+      </mat-card>
+    </div>
+    <app-pagination [navigationPath]="navigationPath"
+                    [functionToCall]="functionToCall"
+                    (result)="onResult($event)"
+                    style="margin-top: 10px"
+    ></app-pagination>
   </div>
 </div>

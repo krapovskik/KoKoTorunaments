@@ -101,6 +101,7 @@ class TournamentService(
         return PageImpl(list, pageable, tournaments.totalElements)
     }
 
+    @Transactional
     fun generateTeamMatches(tournament: Tournament, participants: MutableList<TeamTournament>) {
         participants.shuffle()
         var tournamentSize = getNearestPowerOfTwo(participants) / 2
@@ -127,6 +128,7 @@ class TournamentService(
         tournamentRepository.updateTournamentStatus(TimelineTournamentType.ONGOING, tournament.id)
     }
 
+    @Transactional
     fun generateIndividualMatches(tournament: Tournament, participants: MutableList<IndividualTournament>) {
         participants.shuffle()
         var tournamentSize = getNearestPowerOfTwo(participants) / 2
@@ -226,39 +228,38 @@ class TournamentService(
                 } else {
                     BadRequestResponse("Tournament is full.")
                 }
-            } ?: NotFoundResponse("Team with $teamId was not found.")
-        } ?: NotFoundResponse("Tournament with $tournamentId was not found.")
+            } ?: NotFoundResponse("Team not found.")
+        } ?: NotFoundResponse("Tournament not found.")
 
     @Transactional
-    fun addUserToTournament(appUserId: Long, tournamentId: Long): Response =
+    fun addUserToTournament(tournamentId: Long): Response =
         tournamentRepository.findByIdOrNull(tournamentId)?.let { tournament ->
-            appUserService.findAppUserByIdOrNull(appUserId)?.let { appUser ->
-                val participants = individualTournamentRepository.findAllByTournamentId(tournament.id)
-                if (participants.any { it.player.id == appUser.id }) {
-                    BadRequestResponse("Already in tournament.")
-                } else if (participants.size < tournament.numberOfParticipants - 1) {
-                    individualTournamentRepository.save(
-                        IndividualTournament(
-                            tournament = tournament,
-                            player = appUser
-                        )
+            val appUser = SecurityContextHolder.getContext().authentication.principal as AppUser
+            val participants = individualTournamentRepository.findAllByTournamentId(tournament.id)
+            if (participants.any { it.player.id == appUser.id }) {
+                BadRequestResponse("Already in tournament.")
+            } else if (participants.size < tournament.numberOfParticipants - 1) {
+                individualTournamentRepository.save(
+                    IndividualTournament(
+                        tournament = tournament,
+                        player = appUser
                     )
-                    SuccessResponse("Successfully added.")
-                } else if (participants.size == tournament.numberOfParticipants - 1) {
-                    individualTournamentRepository.save(
-                        IndividualTournament(
-                            tournament = tournament,
-                            player = appUser
-                        )
+                )
+                SuccessResponse("Successfully added.")
+            } else if (participants.size == tournament.numberOfParticipants - 1) {
+                individualTournamentRepository.save(
+                    IndividualTournament(
+                        tournament = tournament,
+                        player = appUser
                     )
-                    val actualUsers = individualTournamentRepository.findAllByTournamentId(tournament.id)
-                    generateIndividualMatches(tournament, actualUsers)
-                    SuccessResponse("Successfully joined.")
-                } else {
-                    BadRequestResponse("Tournament is full.")
-                }
-            } ?: NotFoundResponse("User with $appUserId was not found.")
-        } ?: NotFoundResponse("Tournament with $tournamentId was not found.")
+                )
+                val actualUsers = individualTournamentRepository.findAllByTournamentId(tournament.id)
+                generateIndividualMatches(tournament, actualUsers)
+                SuccessResponse("Successfully joined.")
+            } else {
+                BadRequestResponse("Tournament is full.")
+            }
+        } ?: NotFoundResponse("Tournament not found.")
 
     @Transactional
     fun editMatch(editMatchRequest: EditMatchRequest): Response {

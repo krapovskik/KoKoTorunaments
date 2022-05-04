@@ -2,7 +2,6 @@ import {Component, Inject, OnInit} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 import {MessageService} from "../../../service/message.service";
 import {UserService} from "../../../service/user.service";
-import {TokenService} from "../../../service/token.service";
 
 @Component({
     selector: 'app-change-profile-icon-dialog',
@@ -17,10 +16,11 @@ export class ChangeProfileIconDialogComponent implements OnInit {
 
     imagesWithSelectProperty: { image: string, selected: boolean }[] = []
 
-    constructor(private dialogRef: MatDialogRef<ChangeProfileIconDialogComponent>,
-                private messageService: MessageService,
-                private userService: UserService,
-                @Inject(MAT_DIALOG_DATA) public profilePhoto: string,
+    constructor(
+        private dialogRef: MatDialogRef<ChangeProfileIconDialogComponent>,
+        private messageService: MessageService,
+        private userService: UserService,
+        @Inject(MAT_DIALOG_DATA) public profilePhoto: string,
     ) {
     }
 
@@ -49,9 +49,6 @@ export class ChangeProfileIconDialogComponent implements OnInit {
     }
 
     changeSelected(image: string) {
-        this.imagesWithSelectProperty.forEach(obj =>
-            obj.selected = obj.image == image)
-
+        this.imagesWithSelectProperty.forEach(obj => obj.selected = obj.image == image)
     }
-
 }

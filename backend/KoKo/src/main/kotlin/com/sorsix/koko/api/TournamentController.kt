@@ -40,7 +40,7 @@ class TournamentController(val tournamentService: TournamentService, val mapperS
 
     @PostMapping("/addPlayer")
     fun addPlayerToTournament(@RequestBody request: JoinUserTournamentRequest): ResponseEntity<out Response> {
-        val result = this.tournamentService.addUserToTournament(request.appUserId, request.tournamentId)
+        val result = this.tournamentService.addUserToTournament(request.tournamentId)
         return mapperService.mapResponseToResponseEntity(result)
     }
 

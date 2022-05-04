@@ -1,6 +1,5 @@
 import {Component, EventEmitter, Input, OnChanges, OnInit, Output} from '@angular/core';
 import {Observable, Subject, switchMap} from "rxjs";
-import {Organizer} from "../../model/Organizer";
 import {ActivatedRoute, Router} from "@angular/router";
 import {PageEvent} from "@angular/material/paginator";
 import {HttpClient} from "@angular/common/http";
@@ -25,7 +24,7 @@ export class PaginationComponent implements OnInit, OnChanges {
     length!: number;
     pageSize = 15;
     pageSizeOptions: number[] = [15, 50, 100];
-    organizers: Organizer[] = [];
+    content: any[] = [];
 
     constructor(
         private http: HttpClient,
@@ -34,11 +33,11 @@ export class PaginationComponent implements OnInit, OnChanges {
     }
 
     ngOnChanges(changes: any) {
-        if(changes.navigationPath) {
+        if (changes.navigationPath) {
             this.navigationPath = changes.navigationPath.currentValue
         }
 
-        if(changes.functionToCall) {
+        if (changes.functionToCall) {
             this.functionToCall = changes.functionToCall?.currentValue
         }
 
@@ -54,13 +53,13 @@ export class PaginationComponent implements OnInit, OnChanges {
             next: data => {
                 this.loading = false;
                 this.length = data.totalElements;
-                this.organizers = data.content;
+                this.content = data.content;
                 if (this.pageIndex >= data.totalPages) {
                     this.pageIndex = data.totalPages - 1;
                     this.newPageEvent();
                 }
 
-                this.result.emit(this.organizers);
+                this.result.emit(this.content);
             }
         })
 

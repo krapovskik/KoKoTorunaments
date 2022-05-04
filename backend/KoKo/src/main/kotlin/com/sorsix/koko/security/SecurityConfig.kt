@@ -24,10 +24,11 @@ class SecurityConfig(
 
     private val publicMatchers = arrayOf(
         "/api/auth/**",
+        "/api/tournament",
         "/api/tournament/ongoing",
         "/api/tournament/finished",
         "/api/tournament/comingSoon",
-        "api/tournament/tournamentTypes",
+        "/api/tournament/tournamentTypes",
         "/api/tournament/bracket/**",
         "/api/tournament/profile/**"
     )

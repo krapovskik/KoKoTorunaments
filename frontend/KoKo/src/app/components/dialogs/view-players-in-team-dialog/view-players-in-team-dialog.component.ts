@@ -21,24 +21,21 @@ export class ViewPlayersInTeamDialogComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        this.teamService.findAllPlayersByTeam(this.participantId)
-            .pipe(
-                map(data => data.response.map(player => {
-                            let splited = player.fullNameId.split('-')
-                            let participantName = splited[0]
-                            let participantId = +splited[1]
-                            return {
-                                participantId,
-                                participantName
-                            } as Participant
-                        }
-                    )
+        this.teamService.findAllPlayersByTeam(this.participantId).pipe(
+            map(data => data.response.map(player => {
+                        let splited = player.fullNameId.split('-')
+                        let participantName = splited[0]
+                        let participantId = +splited[1]
+                        return {
+                            participantId,
+                            participantName
+                        } as Participant
+                    }
                 )
             )
-            .subscribe({
-                next: data => this.participants = data
-            })
-
+        ).subscribe({
+            next: data => this.participants = data
+        })
     }
 
     onClose() {

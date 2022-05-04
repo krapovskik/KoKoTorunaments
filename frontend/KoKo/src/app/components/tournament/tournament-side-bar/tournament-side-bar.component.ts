@@ -1,20 +1,21 @@
-import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {Tournament} from "../../../model/Tournament";
 import {Participant} from "../../../model/Participant";
-import {JoinTournamentDialogComponent} from "../../tournaments/joinToutnamentDialog/join-tournament-dialog.component";
+import {JoinTournamentDialogComponent} from "../../dialogs/joinToutnamentDialog/join-tournament-dialog.component";
 import {MatDialog, MatDialogRef} from "@angular/material/dialog";
 import {TokenService} from "../../../service/token.service";
 import {MessageService} from "../../../service/message.service";
 import {TournamentService} from "../../../service/tournament.service";
-import {ViewPlayersInTeamDialogComponent} from "../view-players-in-team-dialog/view-players-in-team-dialog.component";
-import {Router} from "@angular/router";
+import {
+    ViewPlayersInTeamDialogComponent
+} from "../../dialogs/view-players-in-team-dialog/view-players-in-team-dialog.component";
 
 @Component({
     selector: 'app-tournament-side-bar',
     templateUrl: './tournament-side-bar.component.html',
     styleUrls: ['./tournament-side-bar.component.css']
 })
-export class TournamentSideBarComponent implements OnInit, OnDestroy {
+export class TournamentSideBarComponent {
 
     @Input() tournament!: Tournament;
     @Input() participants!: string[]
@@ -24,21 +25,12 @@ export class TournamentSideBarComponent implements OnInit, OnDestroy {
 
     dialogRef!: MatDialogRef<ViewPlayersInTeamDialogComponent>
 
-    constructor(private dialog: MatDialog,
-                private tokenService: TokenService,
-                private messageService: MessageService,
-                private tournamentService: TournamentService,
-                private router: Router
+    constructor(
+        private dialog: MatDialog,
+        private tokenService: TokenService,
+        private messageService: MessageService,
+        private tournamentService: TournamentService,
     ) {
-    }
-
-    ngOnDestroy(): void {
-        if(this.dialogRef) {
-            this.dialogRef.close()
-        }
-    }
-
-    ngOnInit() {
     }
 
     sideBarToggle() {
@@ -64,14 +56,15 @@ export class TournamentSideBarComponent implements OnInit, OnDestroy {
                 }
             })
         } else {
-            let appUserId = this.tokenService.getUser()?.id
-            this.tournamentService.addPlayerToTournament(appUserId!, tournamentId)
+            this.tournamentService.addPlayerToTournament(tournamentId)
                 .subscribe({
                     next: data => {
                         this.messageService.showSuccessMessage(data.response)
                         this.joinEvent.emit()
                     },
-                    error: data => this.messageService.showErrorMessage(data.error.message)
+                    error: err => {
+                        this.messageService.showErrorMessage(err.error.message)
+                    }
                 })
         }
     }
@@ -82,5 +75,4 @@ export class TournamentSideBarComponent implements OnInit, OnDestroy {
             data: participant.participantId
         })
     }
-
 }
